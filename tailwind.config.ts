@@ -15,6 +15,9 @@ const config: Config = {
         "3/2": "3 / 2",
         "16/9": "16 / 9",
       },
+      maxWidth: {
+        1300: "1300px",
+      },
     },
     fontFamily: {
       PressStart: ['"Press Start 2P"', "system-ui"],

@@ -1,0 +1,24 @@
+/* This will affect the container */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+
+/* This is the background of the scrollbar */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* This is the actual scrollbar */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+  opacity: 0.5;
+  margin: 2px;
+}
+
+/* Change the scrollbar color when hovering */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  opacity: 0.8;
+}
