@@ -12,7 +12,9 @@ const config: Config = {
         "custom-amber-800": "#FF8F00",
       },
       aspectRatio: {
+        "1/1": "1 / 1",
         "3/2": "3 / 2",
+        "3/4": "3 / 4",
         "16/9": "16 / 9",
       },
       maxWidth: {

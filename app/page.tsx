@@ -1,28 +1,31 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { FrontpageTitle } from "@/components/FrontpageTitle";
-import { Featured } from "@/components/articles/sections/Featured";
-import { VerticalList } from "@/components/articles/sections/VerticalList";
+import { Latest } from "@/components/articles/sections/latest/Latest";
+import { HorizontalList } from "@/components/articles/sections/horizontalList/HorizontalList";
+import { Slideshow } from "@/components/articles/sections/slideshow/Slideshow";
+
+import { dummyArticles } from "@/utils/dummyData";
+import { SectionContainer } from "@/components/containers/SectionContainer";
 
 export default function Home() {
   return (
-    <main className="bg-neutral-900">
-      <Header />
+    <main>
       <Hero />
 
-      <div className="p-4 sm:p-8">
-        <FrontpageTitle />
-      </div>
+      <SectionContainer>
+        <Slideshow slides={dummyArticles} />
+      </SectionContainer>
 
-      <section className="p-4 sm:p-8">
-        <Featured title="Latest" link="/news" />
-      </section>
+      <SectionContainer>
+        <Latest title="Latest" link="/news" />
+      </SectionContainer>
 
-      <section className="p-4 sm:p-8">
-        <VerticalList title="News" link="/news" />
-        <VerticalList title="Videos" link="/videos" />
-        <VerticalList title="Reviews" link="/reviews" />
-      </section>
+      <SectionContainer>
+        <HorizontalList title="News" link="/news" />
+        <HorizontalList title="Videos" link="/videos" />
+        <HorizontalList title="Reviews" link="/reviews" />
+      </SectionContainer>
     </main>
   );
 }

@@ -1,29 +1,41 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { ArticleTitleDefault } from "./titles/ArticleTitleDefault";
-import { ArticleTitleSpotlight } from "./titles/ArticleTitleSpotlight";
+import { TArticleContent } from "@/utils/Types";
 
 export const Article: React.FC<{
-  isSpotlight?: boolean;
-  title?: string;
   noFlex?: boolean;
-}> = ({ isSpotlight, title, noFlex }) => {
+  content: TArticleContent;
+}> = ({ noFlex, content }) => {
+  const limitTitleLength =
+    content.title.length > 50
+      ? content.title.substring(0, 84) + "..."
+      : content.title;
+
   return (
     <article
-      className={`relative aspect-16/9 ${
+      className={`relative flex w-full flex-col rounded-xl bg-neutral-800 hover:bg-teal-500 sm:w-[320px] ${
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >
-      <Link href="/article">
-        <Image
-          className="aspect-16/9 object-cover object-center"
-          alt=""
-          src="/images/placeholder.webp"
-          fill
-        />
-        <div className="absolute bottom-0 left-0 w-full">
-          {isSpotlight ? <ArticleTitleSpotlight /> : <ArticleTitleDefault />}
+      <Link href="/article" className="flex flex-grow flex-col">
+        <div className="relative aspect-3/2">
+          <Image
+            className="object-cover object-center"
+            alt=""
+            src="/images/placeholder.webp"
+            fill
+            sizes="1000px"
+          />
+          <div className="absolute left-4 top-4">
+            <span className="rounded-xl bg-neutral-900/50 px-2 py-1 text-xs">
+              {content.date.toLocaleDateString()}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light">
+          <h6>{limitTitleLength}</h6>
         </div>
       </Link>
     </article>
