@@ -1,66 +1,89 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
 import Link from "next/link";
 
 import { FaUserCircle } from "react-icons/fa";
 import { HiMenu } from "react-icons/hi";
+import { IoCloseOutline } from "react-icons/io5";
 
-// Items to display in the navigation
-const MENU_ITEMS = [
-  {
-    text: "Home",
-    link: "/",
-  },
-  {
-    text: "News",
-    link: "/news",
-  },
-  {
-    text: "Reviews",
-    link: "/reviews",
-  },
-  {
-    text: "About",
-    link: "/about",
-  },
-];
-
-// Navigation item component
-const NavItem: React.FC<{ text: string; link: string }> = ({ text, link }) => {
-  return (
-    <li className="mx-3 text-sm font-medium text-gray-300 hover:text-white cursor-pointer">
-      <Link href={link}>{text}</Link>
-    </li>
-  );
-};
+import { ROUTES } from "@/utils/routes";
 
 export const Header: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
   return (
-    <header className="grid grid-cols-4 grid-rows-1 items-center justify-between p-4 bg-neutral-900 text-white">
+    <header className="sticky top-0 z-50 grid h-16 grid-cols-4 grid-rows-1 items-center justify-between bg-neutral-900/90 p-4 text-white">
       {/* Logo and title */}
-      <div className="flex items-center w-fit row-start-1 row-end-2 col-start-2 col-end-4 place-self-center md:place-self-start md:col-start-1 md:col-end-2">
-        <h1 className="uppercase text-lg text-center font-normal font-PressStart">
-          <span className="text-custom-amber-800">Gaming</span> News
+      <div className="col-start-2 col-end-4 row-start-1 row-end-2 flex w-fit items-center place-self-center pt-1 md:col-start-1 md:col-end-2 md:place-self-start">
+        <h1 className="text-center font-PressStart text-lg font-normal uppercase">
+          Game
+          <span className="text-custom-amber-800">Zone</span>
         </h1>
       </div>
 
-      {/* Navigation menu */}
-      <nav className="w-fit md:w-full row-start-1 col-span-2 col-start-1 col-end-2 row-end-2 md:col-start-2 md:col-end-4">
+      {/* Navigation */}
+      <nav className="col-span-2 col-start-1 col-end-2 row-start-1 row-end-2 w-fit md:col-start-2 md:col-end-4 md:w-full">
         {/* Mobile Menu */}
         <div className="block md:hidden">
-          <HiMenu size={30} />
+          {isMenuOpen ? (
+            <IoCloseOutline
+              size={30}
+              className="cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
+            />
+          ) : (
+            <HiMenu
+              size={30}
+              className="cursor-pointer"
+              onClick={() => setIsMenuOpen(true)}
+            />
+          )}
+
+          {isMenuOpen && (
+            <ul className="absolute left-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md md:hidden">
+              {ROUTES.map((item) => (
+                <li
+                  key={item.name}
+                  className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white"
+                >
+                  <Link href={item.path}>{item.name}</Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex justify-center">
-          {MENU_ITEMS.map((item) => (
-            <NavItem key={item.link} text={item.text} link={item.link} />
+        <ul className="hidden justify-center md:flex">
+          {ROUTES.map((item) => (
+            <li
+              key={item.name}
+              className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white"
+            >
+              <Link href={item.path}>{item.name}</Link>
+            </li>
           ))}
         </ul>
       </nav>
 
-      {/* Navigation icons */}
-      <div className="w-fit items-center justify-self-end col-start-4 col-end-5 row-start-1 row-end-2">
-        <FaUserCircle size={28} />
+      {/* User icon */}
+      <div className="col-start-4 col-end-5 row-start-1 row-end-2 w-fit items-center justify-self-end">
+        <FaUserCircle
+          size={28}
+          className="cursor-pointer"
+          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+        />
+        {isUserMenuOpen && (
+          <ul className="absolute right-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md">
+            <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
+              <Link href="/login">Login</Link>
+            </li>
+            <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
+              <Link href="/register">Register</Link>
+            </li>
+          </ul>
+        )}
       </div>
     </header>
   );

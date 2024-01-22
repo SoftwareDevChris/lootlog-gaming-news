@@ -3,13 +3,13 @@ import { SectionTitleDefault } from "../../SectionTitleDefault";
 
 import { dummyArticles } from "@/utils/dummyData";
 
-export const Latest: React.FC<{ title: string; link: string }> = ({
+export const Latest: React.FC<{ title: string; route: string }> = ({
   title,
-  link,
+  route,
 }) => {
   return (
     <div className="mx-auto max-w-1300">
-      <SectionTitleDefault title={title} link={link} />
+      <SectionTitleDefault title={title} route={route} />
       <div className="grid grid-cols-1 grid-rows-2 gap-3 lg:grid-cols-4">
         {/* Big article */}
         <div className="col-span-1 row-span-1 flex w-full lg:col-span-2 lg:row-span-2">

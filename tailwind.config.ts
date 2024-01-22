@@ -19,6 +19,7 @@ const config: Config = {
       },
       maxWidth: {
         1300: "1300px",
+        1920: "1920px",
       },
     },
     fontFamily: {

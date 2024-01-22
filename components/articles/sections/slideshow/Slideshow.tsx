@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-import { TArticleContent } from "@/utils/Types";
+import { TArticleContent } from "@/utils/types";
 
 import { Slide } from "./Slide";
 
@@ -57,7 +57,7 @@ export const Slideshow: React.FC<{ slides: TArticleContent[] }> = ({
             <FaArrowRight className="text-sm sm:text-xl" />
           </button>
         </div>
-        <div className="relative flex w-full overflow-hidden rounded-md pt-[56.25%]">
+        <div className="relative flex w-full overflow-hidden rounded-xl pt-[56.25%]">
           {slides.map((slide, index) => (
             <div
               key={index}

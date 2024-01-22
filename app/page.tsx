@@ -1,6 +1,3 @@
-import { Header } from "@/components/Header";
-import { Hero } from "@/components/Hero";
-import { FrontpageTitle } from "@/components/FrontpageTitle";
 import { Latest } from "@/components/articles/sections/latest/Latest";
 import { HorizontalList } from "@/components/articles/sections/horizontalList/HorizontalList";
 import { Slideshow } from "@/components/articles/sections/slideshow/Slideshow";
@@ -11,20 +8,18 @@ import { SectionContainer } from "@/components/containers/SectionContainer";
 export default function Home() {
   return (
     <main>
-      <Hero />
-
       <SectionContainer>
         <Slideshow slides={dummyArticles} />
       </SectionContainer>
 
       <SectionContainer>
-        <Latest title="Latest" link="/news" />
+        <Latest title="Latest" route="/news" />
       </SectionContainer>
 
       <SectionContainer>
-        <HorizontalList title="News" link="/news" />
-        <HorizontalList title="Videos" link="/videos" />
-        <HorizontalList title="Reviews" link="/reviews" />
+        <HorizontalList title="News" route="/news" />
+        <HorizontalList title="Videos" route="/videos" />
+        <HorizontalList title="Reviews" route="/reviews" />
       </SectionContainer>
     </main>
   );

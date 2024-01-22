@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { TArticleContent } from "@/utils/Types";
+import { TArticleContent } from "@/utils/types";
 import { SlideTitle } from "./SlideTitle";
 
 export const Slide: React.FC<{ content: TArticleContent }> = ({ content }) => {
@@ -15,7 +15,7 @@ export const Slide: React.FC<{ content: TArticleContent }> = ({ content }) => {
           fill
           sizes="1300px"
         />
-        <div className="text-md absolute bottom-0 left-0 z-10 mb-2 w-full px-4 text-center sm:mb-10  md:mb-16 md:px-40 ">
+        <div className="text-md absolute bottom-0 left-0 z-10 mb-2 w-full px-4 text-center text-white sm:mb-10  md:mb-16 md:px-40 ">
           <SlideTitle title={content.title} />
         </div>
       </article>

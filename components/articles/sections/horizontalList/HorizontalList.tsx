@@ -3,13 +3,13 @@ import { SectionTitleDefault } from "../../SectionTitleDefault";
 
 import { dummyArticles } from "@/utils/dummyData";
 
-export const HorizontalList: React.FC<{ title: string; link: string }> = ({
+export const HorizontalList: React.FC<{ title: string; route: string }> = ({
   title,
-  link,
+  route,
 }) => {
   return (
     <div className="mx-auto mb-8 w-full max-w-1300">
-      <SectionTitleDefault title={title} link={link} />
+      <SectionTitleDefault title={title} route={route} />
       <div className="custom-scrollbar flex w-full flex-col space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0 sm:overflow-x-scroll sm:pb-1">
         <Article noFlex content={dummyArticles[0]} />
         <Article noFlex content={dummyArticles[1]} />

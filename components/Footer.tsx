@@ -2,17 +2,20 @@ import Link from "next/link";
 
 import { FaFacebook, FaYoutube, FaTwitter } from "react-icons/fa";
 
+import { ROUTES } from "@/utils/routes";
+
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-900 py-8 text-white">
-      <div className="mx-auto grid max-w-1300 px-4 sm:px-0 md:grid-cols-3 md:grid-rows-1">
+    <footer className=" bg-gray-900 px-4 py-8 text-white">
+      <div className="mx-auto grid max-w-1300 space-y-8 px-4 sm:px-0 md:grid-cols-3 md:grid-rows-1">
         {/* Logo and mission text */}
         <div className="items-center pb-4 md:pb-0">
-          <h3 className="pb-4 font-PressStart text-lg font-normal uppercase">
-            <span className="text-custom-amber-800">Gaming</span> News
+          <h3 className="pb-4 text-center font-PressStart text-lg font-normal uppercase md:text-start">
+            Game
+            <span className="text-custom-amber-800">Zone</span>
           </h3>
-          <p className="pr-4 text-xs font-normal">
-            Gaming News is a website dedicated to providing gamers with the most
+          <p className="mx-auto max-w-80 pr-4 text-center text-xs font-normal md:mx-0 md:text-start">
+            GameZone is a website dedicated to providing gamers with the most
             relevant and engaging content about the world of video games. Our
             mission is to inform, entertain, and inspire our readers with our
             comprehensive coverage of the gaming industry, culture, and
@@ -23,35 +26,22 @@ export const Footer: React.FC = () => {
 
         {/* Navigation */}
         <div className="">
-          <div className="w-fit sm:mx-auto">
+          <div className="mx-auto w-fit">
             <h6 className="text-lg uppercase">Navigation</h6>
-            <ul className="py-4 text-sm">
-              <li>
-                <Link href="/" className="hover:text-gray-400">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/news" className="hover:text-gray-400">
-                  News
-                </Link>
-              </li>
-              <li>
-                <Link href="/reviews" className="hover:text-gray-400">
-                  Reviews
-                </Link>
-              </li>
-              <li>
-                <Link href="About" className="hover:text-gray-400">
-                  About
-                </Link>
-              </li>
+            <ul className="py-4 text-center text-sm md:text-start">
+              {ROUTES.map((route) => (
+                <li key={route.name}>
+                  <Link href={route.path} className="hover:text-gray-400">
+                    {route.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         {/* Social media */}
-        <div className="flex flex-col sm:items-center">
+        <div className="mx-auto flex flex-col sm:items-center md:mx-0">
           <h6 className="text-lg uppercase">Social Media</h6>
           <div className="space-x-4 py-4">
             <Link href="">

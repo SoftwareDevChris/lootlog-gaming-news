@@ -2,20 +2,24 @@ import Link from "next/link";
 
 export const SectionTitleDefault: React.FC<{
   title: string;
-  link: string;
-}> = ({ title, link }) => {
+  route?: string;
+}> = ({ title, route }) => {
   return (
-    <div className="flex items-end justify-between py-2">
+    <div className="flex items-center justify-between pb-4">
       <div>
-        <h3 className="m-0 text-2xl font-bold uppercase">{title}</h3>
+        <h3 className="m-0 text-2xl font-bold capitalize text-white">
+          {title}
+        </h3>
         <div className="h-0.5 w-full bg-custom-amber-800" />
       </div>
-      <Link
-        href={link}
-        className="max-w-40 cursor-pointer text-sm font-light hover:underline"
-      >
-        See all
-      </Link>
+      {route && (
+        <Link
+          href={route}
+          className="max-w-40 cursor-pointer rounded-xl bg-neutral-800 px-4 py-2 text-sm font-light text-white"
+        >
+          See all
+        </Link>
+      )}
     </div>
   );
 };

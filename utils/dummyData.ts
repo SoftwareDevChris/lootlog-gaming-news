@@ -1,4 +1,4 @@
-import { TArticleContent } from "./Types";
+import { TArticleContent } from "./types";
 
 export const dummyArticles: TArticleContent[] = [
   {

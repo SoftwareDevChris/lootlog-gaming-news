@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { TArticleContent } from "@/utils/Types";
+import { TArticleContent } from "@/utils/types";
 
 export const Article: React.FC<{
   noFlex?: boolean;
@@ -28,13 +28,13 @@ export const Article: React.FC<{
             sizes="1000px"
           />
           <div className="absolute left-4 top-4">
-            <span className="rounded-xl bg-neutral-900/50 px-2 py-1 text-xs">
+            <span className="rounded-xl bg-neutral-900/50 px-2 py-1 text-xs text-white">
               {content.date.toLocaleDateString()}
             </span>
           </div>
         </div>
 
-        <div className="flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light">
+        <div className="flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light text-white">
           <h6>{limitTitleLength}</h6>
         </div>
       </Link>
