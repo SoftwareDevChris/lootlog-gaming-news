@@ -1,13 +1,11 @@
-import { dummyArticles } from "@/utils/dummyData";
+import { DUMMY_ARTICLES } from "@/utils/dummyData";
 
-import { ArticleTable } from "./article-table";
-import { columns } from "./columns";
+import { ArticleTable } from "@/components/tables/ArticleTable";
+import { articleColumns } from "@/components/tables/articleColumns";
 
-export default function Dashboard() {
+export const AdminDashboard = () => {
   return (
-    <div className="p-4 sm:p-8">
-      <h1 className="pb-4 text-4xl font-bold text-neutral-100">Dashboard</h1>
-
+    <>
       <div className=" my-4 rounded-md bg-neutral-700 p-4 sm:flex">
         <ul className="flex space-x-4 text-neutral-100">
           <li className="cursor-pointer hover:underline">Articles</li>
@@ -17,8 +15,8 @@ export default function Dashboard() {
       </div>
 
       <div className="overflow-hidden rounded-md bg-neutral-700">
-        <ArticleTable data={dummyArticles} columns={columns} />
+        <ArticleTable data={DUMMY_ARTICLES} columns={articleColumns} />
       </div>
-    </div>
+    </>
   );
-}
+};

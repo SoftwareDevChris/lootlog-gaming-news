@@ -3,13 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-import { TArticleContent } from "@/types/types";
+import { TArticle } from "@/types/types";
 
 import { Slide } from "./Slide";
 
-export const Slideshow: React.FC<{ slides: TArticleContent[] }> = ({
-  slides,
-}) => {
+export const Slideshow: React.FC<{ slides: TArticle[] }> = ({ slides }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slideAnimationClasses = {
@@ -39,7 +37,7 @@ export const Slideshow: React.FC<{ slides: TArticleContent[] }> = ({
   }, [goToNextSlide]);
 
   return (
-    <div className="max-w-1300 mx-auto w-full">
+    <div className="mx-auto w-full max-w-1300">
       <div className="relative">
         <div className="absolute left-0 top-1/2 flex w-full items-center justify-between">
           <button

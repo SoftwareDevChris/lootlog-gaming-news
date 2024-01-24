@@ -1,6 +1,6 @@
 "use client";
 
-import { TArticleContent } from "@/types/types";
+import { TArticle } from "@/types/types";
 import {
   ColumnDef,
   flexRender,
@@ -11,8 +11,8 @@ import {
 } from "@tanstack/react-table";
 
 export const ArticleTable: React.FC<{
-  data: TArticleContent[];
-  columns: ColumnDef<TArticleContent>[];
+  data: TArticle[];
+  columns: ColumnDef<TArticle>[];
 }> = ({ data, columns }) => {
   const table = useReactTable({
     data,
@@ -55,7 +55,7 @@ export const ArticleTable: React.FC<{
         <tbody className="">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="hover:bg-neutral-500">
+              <tr key={row.id} className="hover:bg-neutral-600">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}

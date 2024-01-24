@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { TArticleContent } from "@/types/types";
+import { TArticle } from "@/types/types";
 
 export const Article: React.FC<{
   noFlex?: boolean;
-  content: TArticleContent;
+  content: TArticle;
 }> = ({ noFlex, content }) => {
   const limitTitleLength =
     content.title.length > 50
@@ -19,7 +19,7 @@ export const Article: React.FC<{
       } overflow-hidden`}
     >
       <Link href="/article" className="flex flex-grow flex-col">
-        <div className="aspect-3/2 relative">
+        <div className="relative aspect-3/2">
           <Image
             className="object-cover object-center"
             alt=""

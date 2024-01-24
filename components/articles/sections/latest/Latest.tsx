@@ -1,7 +1,7 @@
 import { Article } from "./Article";
 import { SectionTitleDefault } from "../../SectionTitleDefault";
 
-import { dummyArticles } from "@/utils/dummyData";
+import { DUMMY_ARTICLES } from "@/utils/dummyData";
 
 export const Latest: React.FC<{ title: string; route: string }> = ({
   title,
@@ -13,14 +13,14 @@ export const Latest: React.FC<{ title: string; route: string }> = ({
       <div className="grid grid-cols-1 grid-rows-2 gap-3 lg:grid-cols-4">
         {/* Big article */}
         <div className="col-span-1 row-span-1 flex w-full lg:col-span-2 lg:row-span-2">
-          <Article isSpotlight content={dummyArticles[0]} />
+          <Article isSpotlight content={DUMMY_ARTICLES[0]} />
         </div>
         {/* Small articles */}
 
-        <Article content={dummyArticles[1]} />
-        <Article content={dummyArticles[2]} />
-        <Article content={dummyArticles[3]} />
-        <Article content={dummyArticles[4]} />
+        <Article content={DUMMY_ARTICLES[1]} />
+        <Article content={DUMMY_ARTICLES[2]} />
+        <Article content={DUMMY_ARTICLES[3]} />
+        <Article content={DUMMY_ARTICLES[4]} />
       </div>
     </div>
   );

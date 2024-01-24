@@ -1,10 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { TArticleContent } from "@/types/types";
+import { TArticle } from "@/types/types";
 
-export const GridItem: React.FC<{ content: TArticleContent }> = ({
-  content,
-}) => {
+export const GridItem: React.FC<{ content: TArticle }> = ({ content }) => {
   const limitTitleLength =
     content.title.length > 50
       ? content.title.substring(0, 84) + "..."
@@ -15,7 +13,7 @@ export const GridItem: React.FC<{ content: TArticleContent }> = ({
       className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-neutral-800 hover:bg-teal-500`}
     >
       <Link href="/article" className="flex flex-grow flex-col">
-        <div className="aspect-3/2 relative">
+        <div className="relative aspect-3/2">
           <Image
             className="object-cover object-center"
             alt=""

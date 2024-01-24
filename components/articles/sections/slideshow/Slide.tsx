@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { TArticleContent } from "@/types/types";
+import { TArticle } from "@/types/types";
 import { SlideTitle } from "./SlideTitle";
 
-export const Slide: React.FC<{ content: TArticleContent }> = ({ content }) => {
+export const Slide: React.FC<{ content: TArticle }> = ({ content }) => {
   return (
     <Link href={`/articles/${content.id}`}>
-      <article className="aspect-16/9 relative overflow-hidden">
+      <article className="relative aspect-16/9 overflow-hidden">
         <Image
           className="aspect-16/9 object-cover object-center"
           alt=""
