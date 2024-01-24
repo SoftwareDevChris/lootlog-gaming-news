@@ -3,6 +3,8 @@ export type TArticleContent = {
   date: Date;
   title: string;
   content: string;
-  tag: string;
+  tags: string | string[];
   author: string;
+  status: "public" | "not released" | "draft";
+  isFeatured: boolean;
 };

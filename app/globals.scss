@@ -7,9 +7,6 @@
 @tailwind utilities;
 
 body {
-  position: sticky;
-  top: 0;
-  z-index: -1;
   width: 100%;
   background: rgb(23, 23, 23);
   background-image: linear-gradient(

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { TitleDefault } from "./TitleDefault";
 import { TitleSpotlight } from "./TitleSpotlight";
 
-import { TArticleContent } from "@/utils/types";
+import { TArticleContent } from "@/types/types";
 
 export const Article: React.FC<{
   isSpotlight?: boolean;
@@ -13,7 +13,7 @@ export const Article: React.FC<{
 }> = ({ isSpotlight, noFlex, content }) => {
   return (
     <article
-      className={`relative aspect-16/9 rounded-xl ${
+      className={`aspect-16/9 relative rounded-xl ${
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >

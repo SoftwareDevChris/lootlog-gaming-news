@@ -1,4 +1,4 @@
-import { TArticleContent } from "./types";
+import { TArticleContent } from "../types/types";
 
 export const dummyArticles: TArticleContent[] = [
   {
@@ -6,32 +6,40 @@ export const dummyArticles: TArticleContent[] = [
     date: new Date(),
     title: "The Evolution of Gaming",
     content: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tag: "gaming",
+    tags: "gaming",
     author: "John Doe",
+    status: "public",
+    isFeatured: true,
   },
   {
     id: "gw5w98j3ghj9q3q3gh34GH",
     date: new Date(),
     title: "Top 10 Must-Play Games of the Year",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tag: "gaming",
+    tags: "gaming",
     author: "Jane Smith",
+    status: "public",
+    isFeatured: true,
   },
   {
     id: "hsgfpsdjh95nvRHG84wng4yhjv0E3W478H",
     date: new Date(),
     title: "The Impact of Esports on the Gaming Industry",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tag: "esports",
+    tags: "esports",
     author: "Alex Johnson",
+    status: "public",
+    isFeatured: true,
   },
   {
     id: "gw5w98j3ae5jweACRHGWEH",
     date: new Date(),
     title: "New games on the horizon for 2024",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tag: "gaming",
+    tags: "gaming",
     author: "Jane Smith",
+    status: "public",
+    isFeatured: true,
   },
   {
     id: "hsgfpsdaerhASWGHARqwSFHHSDagEG",
@@ -39,7 +47,9 @@ export const dummyArticles: TArticleContent[] = [
     title:
       "New promising MMORPG is ready for release soon! Sign up now to get early access and exclusive rewards and bonuses!",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tag: "esports",
+    tags: "esports",
     author: "Alex Johnson",
+    status: "public",
+    isFeatured: true,
   },
 ];

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { TArticleContent } from "@/utils/types";
+import { TArticleContent } from "@/types/types";
 
 export const GridItem: React.FC<{ content: TArticleContent }> = ({
   content,
@@ -15,7 +15,7 @@ export const GridItem: React.FC<{ content: TArticleContent }> = ({
       className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-neutral-800 hover:bg-teal-500`}
     >
       <Link href="/article" className="flex flex-grow flex-col">
-        <div className="relative aspect-3/2">
+        <div className="aspect-3/2 relative">
           <Image
             className="object-cover object-center"
             alt=""

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { TArticleContent } from "@/utils/types";
+import { TArticleContent } from "@/types/types";
 
 export const Article: React.FC<{
   noFlex?: boolean;
@@ -19,7 +19,7 @@ export const Article: React.FC<{
       } overflow-hidden`}
     >
       <Link href="/article" className="flex flex-grow flex-col">
-        <div className="relative aspect-3/2">
+        <div className="aspect-3/2 relative">
           <Image
             className="object-cover object-center"
             alt=""

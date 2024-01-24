@@ -12,11 +12,14 @@ export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
+  const isLoggedIn = true;
+  const userRole = "admin";
+
   return (
     <header className="sticky top-0 z-50 grid h-16 grid-cols-4 grid-rows-1 items-center justify-between bg-neutral-900/90 p-4 text-white">
       {/* Logo and title */}
       <div className="col-start-2 col-end-4 row-start-1 row-end-2 flex w-fit items-center place-self-center pt-1 md:col-start-1 md:col-end-2 md:place-self-start">
-        <h1 className="text-center font-PressStart text-lg font-normal uppercase">
+        <h1 className="font-PressStart text-center text-lg font-normal uppercase">
           Game
           <span className="text-custom-amber-800">Zone</span>
         </h1>
@@ -74,16 +77,37 @@ export const Header: React.FC = () => {
           className="cursor-pointer"
           onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
         />
-        {isUserMenuOpen && (
-          <ul className="absolute right-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md">
-            <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-              <Link href="/login">Login</Link>
-            </li>
-            <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-              <Link href="/register">Register</Link>
-            </li>
-          </ul>
-        )}
+        {isUserMenuOpen &&
+          (isLoggedIn ? (
+            <ul className="absolute right-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md">
+              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
+                <Link
+                  href={`/dashboard/${userRole}`}
+                  onClick={() => setIsUserMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
+                <Link href="/logout" onClick={() => setIsUserMenuOpen(false)}>
+                  Logout
+                </Link>
+              </li>
+            </ul>
+          ) : (
+            <ul className="absolute right-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md">
+              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
+                <Link href="/login" onClick={() => setIsUserMenuOpen(false)}>
+                  Login
+                </Link>
+              </li>
+              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
+                <Link href="/register" onClick={() => setIsUserMenuOpen(false)}>
+                  Register
+                </Link>
+              </li>
+            </ul>
+          ))}
       </div>
     </header>
   );
