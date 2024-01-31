@@ -10,6 +10,8 @@ export default async function Home() {
   const { userId } = auth();
   const user = await currentUser();
 
+  // Check DB for user
+
   return (
     <main>
       <SectionContainer>
