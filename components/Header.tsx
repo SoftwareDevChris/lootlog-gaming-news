@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Link from "next/link";
 
+import { UserButton, useUser } from "@clerk/nextjs";
+
 import { FaUserCircle } from "react-icons/fa";
 import { HiMenu } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
@@ -12,17 +14,20 @@ export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const isLoggedIn = true;
+  const { isSignedIn } = useUser();
+
   const userRole = "admin";
 
   return (
     <header className="sticky top-0 z-50 grid h-16 grid-cols-4 grid-rows-1 items-center justify-between bg-neutral-900/90 p-4 text-white">
       {/* Logo and title */}
       <div className="col-start-2 col-end-4 row-start-1 row-end-2 flex w-fit items-center place-self-center pt-1 md:col-start-1 md:col-end-2 md:place-self-start">
-        <h1 className="font-PressStart text-center text-lg font-normal uppercase">
-          Game
-          <span className="text-custom-amber-800">Zone</span>
-        </h1>
+        <Link href="/">
+          <h1 className="text-center font-PressStart text-lg font-normal uppercase">
+            Game
+            <span className="text-custom-amber-800">Zone</span>
+          </h1>
+        </Link>
       </div>
 
       {/* Navigation */}
@@ -71,27 +76,33 @@ export const Header: React.FC = () => {
       </nav>
 
       {/* User icon */}
+
       <div className="col-start-4 col-end-5 row-start-1 row-end-2 w-fit items-center justify-self-end">
-        <FaUserCircle
-          size={28}
-          className="cursor-pointer"
-          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-        />
+        {isSignedIn ? (
+          <UserButton afterSignOutUrl="/">Logout</UserButton>
+        ) : (
+          <FaUserCircle
+            size={28}
+            className="cursor-pointer"
+            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+          />
+        )}
+
         {isUserMenuOpen &&
-          (isLoggedIn ? (
+          (isSignedIn ? (
             <ul className="absolute right-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md">
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
                 <Link
-                  href={`/dashboard/${userRole}`}
+                  href="/dashboard"
                   onClick={() => setIsUserMenuOpen(false)}
                 >
                   Dashboard
                 </Link>
               </li>
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link href="/logout" onClick={() => setIsUserMenuOpen(false)}>
+                {/* <Link href="/logout" onClick={() => setIsUserMenuOpen(false)}>
                   Logout
-                </Link>
+                </Link> */}
               </li>
             </ul>
           ) : (

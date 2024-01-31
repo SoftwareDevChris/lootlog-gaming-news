@@ -7,7 +7,7 @@ export const AuthorDashboard = () => {
   const authorName = "Christian Rosenville";
 
   const filteredArticles = DUMMY_ARTICLES.filter(
-    (article) => article.author === authorName,
+    (article) => article.author.name === authorName,
   );
 
   return (

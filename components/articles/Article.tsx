@@ -29,7 +29,7 @@ export const Article: React.FC<{
           />
           <div className="absolute left-4 top-4">
             <span className="rounded-xl bg-neutral-900/50 px-2 py-1 text-xs text-white">
-              {content.date.toLocaleDateString()}
+              {content.created_at.toLocaleDateString()}
             </span>
           </div>
         </div>

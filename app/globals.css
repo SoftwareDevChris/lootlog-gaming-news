@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
-@import "../components/articles/sections/HorizontalList/HorizontalList.scss";
+@import "../components/articles/sections/horizontalList/HorizontalList.css";
 
 @tailwind base;
 @tailwind components;

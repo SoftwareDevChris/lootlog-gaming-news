@@ -1,12 +1,16 @@
 export type TArticle = {
   id: string;
-  date: Date;
+  created_at: Date;
   title: string;
   content: string;
   tags: string | string[];
-  author: string;
-  status: "public" | "draft";
-  isFeatured: boolean;
+  author: {
+    name: string;
+    email: string;
+    id: string;
+  };
+  is_released: boolean;
+  is_featured: boolean;
 };
 
 export type TAuthor = {

@@ -4,8 +4,12 @@ import { Slideshow } from "@/components/articles/sections/slideshow/Slideshow";
 
 import { DUMMY_ARTICLES } from "@/utils/dummyData";
 import { SectionContainer } from "@/components/containers/SectionContainer";
+import { auth, currentUser } from "@clerk/nextjs";
 
-export default function Home() {
+export default async function Home() {
+  const { userId } = auth();
+  const user = await currentUser();
+
   return (
     <main>
       <SectionContainer>
