@@ -13,15 +13,17 @@ export type TArticle = {
   is_featured: boolean;
 };
 
-export type TAuthor = {
-  id: string;
-  name: string;
+export type TUser = {
+  id?: string;
   email: string;
-  avatar: string;
-  bio: string;
-  twitter: string;
-  github: string;
-  linkedin: string;
-  articles: string[];
-  isActive: boolean;
+  bio?: string;
+  isActive?: boolean;
+  role?: "USER" | "AUTHOR" | "ADMIN";
+  firstName?: string | null;
+  image_url?: string;
+  lastName?: string | null;
+  linkedin_url?: string;
+  twitter_url?: string;
+  github_url?: string;
+  articles?: TArticle[];
 };

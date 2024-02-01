@@ -1,40 +1,37 @@
 "use client";
 
 import { ReactNode, createContext, useState } from "react";
-
-// Define the shape of the user object
-interface User {
-  id: string | null;
-  username: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
-  imageUrl: string | null;
-}
+import { TUser } from "../types/types";
 
 type TAuthContext = {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  user: TUser | null;
+  setUser: (user: TUser | null) => void;
+  signOut: () => void;
 };
 
 // Create the context
-const AuthContext = createContext<TAuthContext>({
+export const AuthContext = createContext<TAuthContext>({
   user: null,
   setUser: () => {},
+  signOut: () => {},
 });
 
 // Create the provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
 
-  const setUserHandler = (user: User | null) => {
+  const setUserHandler = (user: TUser | null) => {
     setUser(user);
   };
 
+  const signOut = () => {
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser: setUserHandler }}>
+    <AuthContext.Provider value={{ user, setUser: setUserHandler, signOut }}>
       {children}
     </AuthContext.Provider>
   );

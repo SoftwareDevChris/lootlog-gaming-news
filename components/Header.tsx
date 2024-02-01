@@ -1,22 +1,37 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+// Next
 import Link from "next/link";
+import Image from "next/image";
 
-import { UserButton, useUser } from "@clerk/nextjs";
+// Clerk Auth
+import { UserButton, useUser, useClerk } from "@clerk/nextjs";
 
+// Icons
 import { FaUserCircle } from "react-icons/fa";
 import { HiMenu } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 
+// Routes
 import { ROUTES } from "@/utils/routes";
+
+// Context
+import { AuthContext } from "@/context/auth";
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
+  const { signOut } = useClerk();
 
-  const userRole = "admin";
+  const authContext = useContext(AuthContext);
+
+  const logoutHandler = () => {
+    signOut();
+    authContext.signOut();
+  };
 
   return (
     <header className="sticky top-0 z-50 grid h-16 grid-cols-4 grid-rows-1 items-center justify-between bg-neutral-900/90 p-4 text-white">
@@ -79,7 +94,12 @@ export const Header: React.FC = () => {
 
       <div className="col-start-4 col-end-5 row-start-1 row-end-2 w-fit items-center justify-self-end">
         {isSignedIn ? (
-          <UserButton afterSignOutUrl="/">Logout</UserButton>
+          <div
+            className="relative h-8 w-8 cursor-pointer overflow-hidden rounded-full"
+            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+          >
+            <Image alt="" src={user?.imageUrl} fill sizes="64px 64px" />
+          </div>
         ) : (
           <FaUserCircle
             size={28}
@@ -100,9 +120,9 @@ export const Header: React.FC = () => {
                 </Link>
               </li>
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                {/* <Link href="/logout" onClick={() => setIsUserMenuOpen(false)}>
+                <Link href="/" onClick={logoutHandler}>
                   Logout
-                </Link> */}
+                </Link>
               </li>
             </ul>
           ) : (
