@@ -1,8 +1,7 @@
-import { clerkClient } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { TUser } from "@/types/types";
 
 export async function deleteUser(userId: string) {
-  const del = await fetch("/api/delete-user", {
+  const response = await fetch("/api/delete-user", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -10,6 +9,17 @@ export async function deleteUser(userId: string) {
     body: JSON.stringify({ userId }),
   });
 
-  console.log(del);
-  return del;
+  return response;
+}
+
+export async function createUser(user: TUser) {
+  const response = await fetch("/api/create-user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+
+  return response;
 }

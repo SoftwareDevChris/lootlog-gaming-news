@@ -3,8 +3,27 @@
 import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 
+// Components
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+// React Hook Form
+import { useForm } from "react-hook-form";
+
 // Clerk Auth
 import { useSignIn } from "@clerk/nextjs";
+
+// Zod
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Context
 import { AuthContext } from "@/context/auth";
@@ -15,88 +34,113 @@ import { findOrCreateUser } from "@/lib/queries";
 // Types
 import { TUser } from "@/types/types";
 
+// Login Form Schema
+const loginFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, { message: "Password is too short" }),
+});
+
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { isLoaded, signIn, setActive } = useSignIn();
 
   const router = useRouter();
   const authContext = useContext(AuthContext);
 
-  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // Signup Form
+  const loginForm = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
+  const onSubmitHandler = async (values: z.infer<typeof loginFormSchema>) => {
     if (!isLoaded) return;
 
     try {
       const result = await signIn.create({
-        identifier: email,
-        password,
+        identifier: values.email,
+        password: values.password,
       });
 
       if (result.status === "complete") {
         console.log("Login successful");
 
-        const query: TUser = await findOrCreateUser({
-          email,
-          firstName: result.userData.firstName,
-          lastName: result.userData.lastName,
-          image_url: result.userData.imageUrl,
-        });
-
-        if (!query) {
-          console.log("DB query failed:", query);
-          return;
-        } else {
-          authContext.setUser(query);
-          await setActive({ session: result.createdSessionId });
-          router.push("/");
-        }
+        await setActive({ session: result.createdSessionId });
+        router.push("/");
       } else {
+        setErrorMessage("An unknown error occurred. Please try again");
         console.log("Login failed:", result);
       }
-    } catch (error) {
-      console.log("Login catch error:", error);
+    } catch (err: any) {
+      setErrorMessage(err.errors[0]?.longMessage ?? "An error occurred");
+      console.error("error", err.errors[0]?.longMessage ?? "An error occurred");
     }
   };
 
   return (
-    <div className="flex items-center justify-center bg-neutral-900 px-4 py-8 sm:py-40">
-      <div className="rounded-lg bg-white p-8 shadow-lg">
+    <div className="px-4 py-8 md:py-40">
+      <div className="mx-auto w-full max-w-[640px] overflow-hidden rounded-md bg-neutral-100 p-8">
+        {/* Title */}
         <h1 className="mb-8 text-center text-3xl font-bold text-neutral-900">
           Login
         </h1>
-        <form action="" onSubmit={onSubmitHandler}>
-          <div className="mb-4">
-            <label htmlFor="email" className="text-sm text-neutral-900">
-              Email
-            </label>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              id="email"
-              type="email"
-              className="w-full rounded border border-gray-400 p-2 text-neutral-900"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="text-sm text-neutral-900">
-              Password
-            </label>
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              id="password"
-              type="password"
-              className="w-full rounded border border-gray-400 p-2 text-neutral-900"
-            />
-          </div>
-          <button
-            type="submit"
-            className="hover:bg-custom-amber-700 mt-4 w-full rounded bg-custom-amber-800 p-2 text-white"
+
+        {/* Error Message */}
+        {errorMessage && (
+          <p className="mb-8 text-center text-sm text-red-500">
+            {errorMessage}
+          </p>
+        )}
+
+        {/* Sign Up Form */}
+        <Form {...loginForm}>
+          <form
+            onSubmit={loginForm.handleSubmit(onSubmitHandler)}
+            className="space-y-4"
           >
-            Login
-          </button>
-        </form>
+            {/* Email */}
+            <FormField
+              control={loginForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Password */}
+            <FormField
+              control={loginForm.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Submit */}
+            <Button
+              type="submit"
+              className="w-full rounded bg-custom-amber-800 py-2 text-white hover:bg-amber-800"
+            >
+              Submit
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );

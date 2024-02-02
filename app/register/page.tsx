@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 // Clerk Auth
-import { useAuth, useSignUp } from "@clerk/nextjs";
+import { useAuth, useClerk, useSignUp } from "@clerk/nextjs";
 
 // Zod
 import * as z from "zod";
@@ -25,8 +25,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 // React Hook Form
 import { useForm } from "react-hook-form";
-import { createUser } from "@/lib/queries";
-import { deleteUser } from "@/lib/auth";
+
+// Helper functions
+import { createUser, deleteUser } from "@/lib/auth";
 
 // Signup Schema Form
 const registerFormSchema = z.object({
@@ -47,6 +48,7 @@ const Register: React.FC = () => {
   const [pendingVerification, setPendingVerification] = useState(false);
 
   const { isLoaded, signUp, setActive } = useSignUp();
+  const { signOut } = useClerk();
 
   const router = useRouter();
 
@@ -115,8 +117,6 @@ const Register: React.FC = () => {
         code: verify.verificationCode,
       });
 
-      console.log("Complete signup:", completeSignUp.status);
-
       if (completeSignUp.status !== "complete") {
         console.log(
           "Verification failed:",
@@ -127,17 +127,21 @@ const Register: React.FC = () => {
       }
 
       if (completeSignUp.status === "complete") {
-        await createUser({
+        console.log("Verification complete");
+
+        const res = await createUser({
+          id: completeSignUp.id,
           firstName: formValues.firstName,
           lastName: formValues.lastName,
           email: formValues.email,
         });
 
+        console.log(res);
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/");
       }
     } catch (err: any) {
-      setErrorMessage(err.errors[0]?.longMessage ?? "Verification failed");
+      setErrorMessage("Verification failed");
       console.error(JSON.stringify(err, null, 2));
     }
   };
@@ -145,8 +149,13 @@ const Register: React.FC = () => {
   const deleteUserHandler = async () => {
     if (!userId) return;
 
-    const status = await deleteUser(userId);
-    return status;
+    const res = await deleteUser(userId);
+
+    if (res.status === 200) {
+      console.log("User deleted");
+      await signOut();
+      router.push("/");
+    }
   };
 
   return (

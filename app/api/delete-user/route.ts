@@ -1,21 +1,16 @@
 import { clerkClient } from "@clerk/nextjs";
 import { NextRequest } from "next/server";
-import { ZodError, z } from "zod";
-
-type RequestBody = {
-  userId: string;
-};
-
-const RequestBody = z.object({
-  userId: z.string(),
-});
 
 export async function DELETE(request: NextRequest) {
+  if (request.method !== "DELETE") {
+    return Response.json("Method not allowed", { status: 405 });
+  }
+
   const body = await request.json();
 
-  // Delte the user from Clerk
+  const deleteUser = clerkClient.users.deleteUser(body.userId);
 
-  console.log({ body });
+  console.log(deleteUser);
 
-  return Response.json({ body });
+  return Response.json(deleteUser, { status: 200 });
 }

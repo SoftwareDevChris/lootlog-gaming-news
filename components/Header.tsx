@@ -3,10 +3,9 @@ import { useState, useContext } from "react";
 
 // Next
 import Link from "next/link";
-import Image from "next/image";
 
 // Clerk Auth
-import { UserButton, useUser, useClerk } from "@clerk/nextjs";
+import { useUser, useClerk } from "@clerk/nextjs";
 
 // Icons
 import { FaUserCircle } from "react-icons/fa";
@@ -23,7 +22,7 @@ export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn } = useUser();
   const { signOut } = useClerk();
 
   const authContext = useContext(AuthContext);
@@ -93,20 +92,11 @@ export const Header: React.FC = () => {
       {/* User icon */}
 
       <div className="col-start-4 col-end-5 row-start-1 row-end-2 w-fit items-center justify-self-end">
-        {isSignedIn ? (
-          <div
-            className="relative h-8 w-8 cursor-pointer overflow-hidden rounded-full"
-            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-          >
-            <Image alt="" src={user?.imageUrl} fill sizes="64px 64px" />
-          </div>
-        ) : (
-          <FaUserCircle
-            size={28}
-            className="cursor-pointer"
-            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-          />
-        )}
+        <FaUserCircle
+          size={28}
+          className="cursor-pointer"
+          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+        />
 
         {isUserMenuOpen &&
           (isSignedIn ? (
