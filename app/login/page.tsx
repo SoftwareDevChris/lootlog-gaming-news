@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 // React Hook Form
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 
 // Clerk Auth
 import { useSignIn } from "@clerk/nextjs";
@@ -28,11 +28,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // Context
 import { AuthContext } from "@/context/auth";
 
-// Queries
-import { findOrCreateUser } from "@/lib/queries";
-
 // Types
 import { TUser } from "@/types/types";
+import { LoadingSpinner } from "@/components/ui/loading";
 
 // Login Form Schema
 const loginFormSchema = z.object({
@@ -42,6 +40,7 @@ const loginFormSchema = z.object({
 
 const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isLoaded, signIn, setActive } = useSignIn();
 
@@ -59,6 +58,7 @@ const Login: React.FC = () => {
 
   const onSubmitHandler = async (values: z.infer<typeof loginFormSchema>) => {
     if (!isLoaded) return;
+    setIsLoading(true);
 
     try {
       const result = await signIn.create({
@@ -78,6 +78,8 @@ const Login: React.FC = () => {
     } catch (err: any) {
       setErrorMessage(err.errors[0]?.longMessage ?? "An error occurred");
       console.error("error", err.errors[0]?.longMessage ?? "An error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,8 +87,8 @@ const Login: React.FC = () => {
     <div className="px-4 py-8 md:py-40">
       <div className="mx-auto w-full max-w-[640px] overflow-hidden rounded-md bg-neutral-100 p-8">
         {/* Title */}
-        <h1 className="mb-8 text-center text-3xl font-bold text-neutral-900">
-          Login
+        <h1 className="mb-8 text-center text-3xl font-bold capitalize text-neutral-900">
+          Sign in
         </h1>
 
         {/* Error Message */}
@@ -135,9 +137,10 @@ const Login: React.FC = () => {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full rounded bg-custom-amber-800 py-2 text-white hover:bg-amber-800"
+              disabled={isLoading}
+              className="w-full rounded bg-custom-amber-800 py-2 capitalize text-white hover:bg-amber-800"
             >
-              Submit
+              {isLoading ? <LoadingSpinner theme="orange" /> : "Sign in"}
             </Button>
           </form>
         </Form>

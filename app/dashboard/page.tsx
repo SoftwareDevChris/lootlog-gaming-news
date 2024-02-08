@@ -1,22 +1,34 @@
-import Link from "next/link";
+// Components
+import { AdminDashboard } from "@/components/dashboards/AdminDashboard";
+import { AuthorDashboard } from "@/components/dashboards/AuthorDashboard";
+import { UserDashboard } from "@/components/dashboards/UserDashboard";
+import { LoadingSpinner } from "@/components/ui/loading";
 
-import { Button } from "@/components/ui/button";
-import { AdminDashboard } from "./admin";
-import { AuthorDashboard } from "./author";
+import { auth } from "@clerk/nextjs";
 
-export default function Dashboard() {
-  const isAdmin = false;
+// Queries
+import { getUserByEmail } from "@/lib/queries";
 
-  return (
-    <div className="p-4 sm:p-8">
-      <div className="flex justify-between">
-        <h1 className="pb-4 text-4xl font-bold text-neutral-100">Dashboard</h1>
-        <Button className="bg-neutral-100 text-neutral-900 hover:bg-neutral-100">
-          <Link href="/dashboard/create-article">Create Article</Link>
-        </Button>
+export default async function DashboardPage() {
+  const userData = await getUserByEmail();
+
+  const currentUser = auth();
+  console.log(currentUser);
+
+  if (!userData.data) {
+    return (
+      <div className="m-32 mx-auto h-32 w-32 p-4">
+        <LoadingSpinner theme="blue" />
       </div>
+    );
+  }
 
-      {isAdmin ? <AdminDashboard /> : <AuthorDashboard />}
-    </div>
-  );
+  switch (userData.data.role) {
+    case "ADMIN":
+      return <AdminDashboard />;
+    case "AUTHOR":
+      return <AuthorDashboard />;
+    default:
+      return <UserDashboard userData={userData} />;
+  }
 }

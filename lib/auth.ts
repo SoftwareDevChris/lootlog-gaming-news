@@ -1,25 +1,52 @@
+"use server";
+import { redirect } from "next/navigation";
+
+// Clerk Auth
+import { auth, clerkClient } from "@clerk/nextjs";
+
+import { prisma } from "./db";
+
+// Types
 import { TUser } from "@/types/types";
 
-export async function deleteUser(userId: string) {
-  const response = await fetch("/api/delete-user", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ userId }),
-  });
+// ---------------------------------------------------------
+// Create User
+// ---------------------------------------------------------
+export async function createUser(user: TUser) {
+  if (!user.id) {
+    return { message: "No user ID was provided" };
+  }
 
-  return response;
+  try {
+    await prisma.user.create({
+      data: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    });
+
+    return { message: "User has been created" };
+  } catch (error) {
+    return { message: "There was an error creating the user" };
+  }
 }
 
-export async function createUser(user: TUser) {
-  const response = await fetch("/api/create-user", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  });
+// ---------------------------------------------------------
+// Delete User
+// ---------------------------------------------------------
+export async function deleteUser() {
+  const { userId } = auth();
 
-  return response;
+  if (!userId) {
+    return { message: "User not found" };
+  }
+
+  try {
+    await clerkClient.users.deleteUser(userId);
+    redirect("/");
+  } catch (error) {
+    return { message: "There was an error deleting the user" };
+  }
 }

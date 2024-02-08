@@ -1,16 +1,33 @@
-import { TUser } from "@/types/types";
+// Prisma
+import { prisma } from "./db";
 
-import { db } from "./db";
+// Clerk Auth
+import { currentUser } from "@clerk/nextjs";
 
-export const getUserByEmail = async (email: string) => {
-  if (!email) throw new Error("No email provided");
+// Types
+import { TUser } from "./../types/types";
 
-  const query = await db.user.findUnique({
+type TReturn = {
+  data: TUser | null;
+  error: string | null;
+};
+
+export async function getUserByEmail(): Promise<TReturn> {
+  const user = await currentUser();
+
+  if (!user) {
+    return { data: null, error: "No user was provided" };
+  }
+
+  const queryResult = await prisma.user.findUnique({
     where: {
-      email,
+      email: user.emailAddresses[0].emailAddress,
     },
   });
 
-  console.log("Get user by email:", query);
-  return query;
-};
+  if (!queryResult) {
+    return { data: null, error: "No user was found" };
+  }
+
+  return { data: queryResult, error: null };
+}

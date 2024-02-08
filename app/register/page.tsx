@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Components
@@ -27,7 +27,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 // Helper functions
-import { createUser, deleteUser } from "@/lib/auth";
+import { createUser } from "@/lib/auth";
+import { LoadingSpinner } from "@/components/ui/loading";
 
 // Signup Schema Form
 const registerFormSchema = z.object({
@@ -44,16 +45,13 @@ const verificationFormSchema = z.object({
 });
 
 const Register: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [pendingVerification, setPendingVerification] = useState(false);
 
   const { isLoaded, signUp, setActive } = useSignUp();
-  const { signOut } = useClerk();
 
   const router = useRouter();
-
-  const { userId } = useAuth();
-  console.log("User ID:", userId);
 
   // Signup Form
   const registerForm = useForm<z.infer<typeof registerFormSchema>>({
@@ -78,8 +76,11 @@ const Register: React.FC = () => {
   const onSubmitHandler = async (
     values: z.infer<typeof registerFormSchema>,
   ) => {
+    // Is Clerk loaded
     if (!isLoaded) return;
+
     setErrorMessage("");
+    setIsLoading(true);
 
     if (values.password !== values.repeatPassword) {
       setErrorMessage("Passwords do not match");
@@ -98,8 +99,12 @@ const Register: React.FC = () => {
       // Change UI to the pending section
       setPendingVerification(true);
     } catch (err: any) {
-      setErrorMessage(err.errors[0].longMessage ?? "Signup failed");
+      setErrorMessage(
+        err.errors[0] ? err.errors[0].longMessage : "Signup failed",
+      );
       console.error(JSON.stringify(err, null, 2));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -129,32 +134,28 @@ const Register: React.FC = () => {
       if (completeSignUp.status === "complete") {
         console.log("Verification complete");
 
-        const res = await createUser({
-          id: completeSignUp.id,
-          firstName: formValues.firstName,
-          lastName: formValues.lastName,
-          email: formValues.email,
+        if (!completeSignUp.createdUserId) {
+          setErrorMessage("Verification failed: Could not find user id");
+          return;
+        }
+
+        const create = await createUser({
+          id: completeSignUp.createdUserId,
+          email: registerForm.getValues("email"),
+          firstName: registerForm.getValues("firstName"),
+          lastName: registerForm.getValues("lastName"),
         });
 
-        console.log(res);
+        console.log("User created:", create);
+
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/");
       }
     } catch (err: any) {
       setErrorMessage("Verification failed");
       console.error(JSON.stringify(err, null, 2));
-    }
-  };
-
-  const deleteUserHandler = async () => {
-    if (!userId) return;
-
-    const res = await deleteUser(userId);
-
-    if (res.status === 200) {
-      console.log("User deleted");
-      await signOut();
-      router.push("/");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -260,9 +261,14 @@ const Register: React.FC = () => {
               {/* Submit */}
               <Button
                 type="submit"
-                className="w-full rounded bg-custom-amber-800 py-2 text-white hover:bg-amber-800"
+                disabled={isLoading}
+                className="w-full rounded bg-custom-amber-800 py-2 capitalize text-white hover:bg-amber-800"
               >
-                Submit
+                {isLoading ? (
+                  <LoadingSpinner theme="orange" />
+                ) : (
+                  "Create Account"
+                )}
               </Button>
             </form>
           </Form>
@@ -303,15 +309,19 @@ const Register: React.FC = () => {
               {/* Submit */}
               <Button
                 type="submit"
-                className="w-full rounded bg-custom-amber-800 py-2 text-white hover:bg-amber-800"
+                disabled={isLoading}
+                className="w-full rounded bg-custom-amber-800 py-2 capitalize text-white hover:bg-amber-800"
               >
-                Verify
+                {isLoading ? (
+                  <LoadingSpinner theme="orange" />
+                ) : (
+                  "Create Account"
+                )}
               </Button>
             </form>
           </Form>
         </div>
       </div>
-      <Button onClick={deleteUserHandler}>Delete User</Button>
     </div>
   );
 };
