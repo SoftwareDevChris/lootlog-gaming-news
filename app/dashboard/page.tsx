@@ -1,19 +1,12 @@
 // Components
-import { AdminDashboard } from "@/components/dashboards/AdminDashboard";
-import { AuthorDashboard } from "@/components/dashboards/AuthorDashboard";
-import { UserDashboard } from "@/components/dashboards/UserDashboard";
+import { Dashboard } from "@/components/dashboard/Dashboard";
 import { LoadingSpinner } from "@/components/ui/loading";
-
-import { auth } from "@clerk/nextjs";
 
 // Queries
 import { getUserByEmail } from "@/lib/queries";
 
 export default async function DashboardPage() {
   const userData = await getUserByEmail();
-
-  const currentUser = auth();
-  console.log(currentUser);
 
   if (!userData.data) {
     return (
@@ -23,12 +16,9 @@ export default async function DashboardPage() {
     );
   }
 
-  switch (userData.data.role) {
-    case "ADMIN":
-      return <AdminDashboard />;
-    case "AUTHOR":
-      return <AuthorDashboard />;
-    default:
-      return <UserDashboard userData={userData} />;
-  }
+  return (
+    <div className="min-h-screen w-full bg-neutral-100">
+      <Dashboard userData={userData} />
+    </div>
+  );
 }

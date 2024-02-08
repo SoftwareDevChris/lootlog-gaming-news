@@ -27,3 +27,5 @@ export type TUser = {
   github_url?: string;
   articles?: TArticle[];
 };
+
+export type TDashboardViews = "Account" | "Articles" | "Users" | "Settings";
