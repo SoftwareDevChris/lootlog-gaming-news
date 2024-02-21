@@ -1,4 +1,4 @@
-import { TArticle, TAuthor } from "../types/types";
+import { TArticle, TUser } from "../types/types";
 
 export const DUMMY_ARTICLES: TArticle[] = [
   {
@@ -74,16 +74,17 @@ export const DUMMY_ARTICLES: TArticle[] = [
   },
 ];
 
-export const DUMMY_AUTHORS: TAuthor[] = [
+export const DUMMY_AUTHORS: TUser[] = [
   {
     id: "ahbuiujh4ting3q4hj34q8hg438BJ3a",
-    name: "Christian Rosenville",
+    firstName: "Christian",
+    lastName: "Rosenville",
     email: "web.chrisr@gmail.com",
-    avatar: "https://avatars.githubusercontent.com/u/183812?v=4",
+    image_url: "https://avatars.githubusercontent.com/u/183812?v=4",
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    twitter: "https://twitter.com/chrisrosenville",
-    github: "@SoftwareDevChris",
-    linkedin: "https://www.linkedin.com/in/christianrosenville/",
+    twitter_url: "https://twitter.com/chrisrosenville",
+    github_url: "@SoftwareDevChris",
+    linkedin_url: "https://www.linkedin.com/in/christianrosenville/",
     articles: [
       "ga3ag4334q8gbhn5g94387bq34hq3",
       "gw5w98j3ghj9q3q3gh34GH",
@@ -92,6 +93,6 @@ export const DUMMY_AUTHORS: TAuthor[] = [
       "gw5w98j3ae5jweACRHGWEH",
       "hsgfpsdaerhASWGHARqwSFHHSDagEG",
     ],
-    isActive: true,
+    is_active: true,
   },
 ];

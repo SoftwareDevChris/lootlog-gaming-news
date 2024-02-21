@@ -36,6 +36,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Docker Compose
-docker-compose.dev.yml
-docker-compose.prod.yml
+# Docker Compose files
+/docker

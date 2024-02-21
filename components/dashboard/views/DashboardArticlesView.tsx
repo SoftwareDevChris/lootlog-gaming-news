@@ -1,9 +1,12 @@
-import { TUser } from "@/types/types";
+import { DashboardCreateArticleField } from "../fields/DashboardCreateArticleField";
 
-type Props = {
-  data: TUser;
-};
-
-export const DashboardArticlesView: React.FC<Props> = ({ data }) => {
-  return <div>Articles view</div>;
+export const DashboardArticlesView: React.FC = () => {
+  return (
+    <>
+      <DashboardCreateArticleField
+        title="Create Article"
+        description="Start writing a new article."
+      />
+    </>
+  );
 };

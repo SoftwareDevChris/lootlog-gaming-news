@@ -1,85 +1,91 @@
 "use client";
+import { useState } from "react";
 
+// Types
 import { TDashboardViews, TUser } from "@/types/types";
 
 // Components
 import { DashboardNavigationItem } from "./DashboardNavigationItem";
 
 // Icons
-import { FaUserCircle } from "react-icons/fa";
 import { HiOutlineUser } from "react-icons/hi";
 import { IoSettingsOutline, IoDocumentsOutline } from "react-icons/io5";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FiUsers } from "react-icons/fi";
 
 type Props = {
-  data: TUser;
-  activeView: TDashboardViews;
-  setActiveView: (view: TDashboardViews) => void;
+  user: TUser | null;
+  setActiveView: React.Dispatch<React.SetStateAction<TDashboardViews>>;
 };
 
 export const DashboardNavigation: React.FC<Props> = ({
-  data,
-  activeView,
+  user,
   setActiveView,
 }) => {
-  const userRole = data.role;
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const setActiveViewHandler = (view: TDashboardViews) => {
-    setActiveView(view);
-  };
+  const userRole = user?.role;
 
   return (
-    <div className="h-full md:col-span-1">
-      {/* User Icon & Name */}
-      <div className="flex items-center">
-        <FaUserCircle size={42} />
-        <div className="ml-3">
-          <h6 className="h-fit text-lg font-bold text-neutral-950">
-            {data.firstName}
-          </h6>
-          <span className="text-sm text-neutral-500">{data.email}</span>
-        </div>
-      </div>
-
+    <div
+      className={`flex h-full w-full flex-col overflow-hidden bg-neutral-100 px-3 transition-[max-width] delay-0 duration-300 ease-linear ${
+        isMenuOpen ? "max-w-36" : "max-w-12"
+      }`}
+    >
       {/* Navigation */}
-      <div className="mt-8">
-        <span className="text-xs font-medium uppercase text-neutral-400">
-          Menu
-        </span>
-        <ul className="mt-4 space-y-6">
+      <div className="">
+        <div
+          className="flex cursor-pointer items-end"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? (
+            <IoIosArrowBack
+              size={25}
+              className="text-neutral-500"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            />
+          ) : (
+            <IoIosArrowForward
+              size={25}
+              className="text-neutral-500"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            />
+          )}
+        </div>
+        <ul className={`mt-4 flex flex-col space-y-4 lg:my-4`}>
           {/* ALL USERS */}
           <DashboardNavigationItem
-            activeView={activeView}
-            setActiveView={setActiveViewHandler}
+            isMenuOpen={isMenuOpen}
             title="Account"
-            icon={<HiOutlineUser size={20} />}
+            icon={<HiOutlineUser size={24} />}
+            setActiveView={setActiveView}
           />
 
           {/* ADMIN ONLY */}
           {userRole === "ADMIN" ? (
             <DashboardNavigationItem
-              activeView={activeView}
-              setActiveView={setActiveViewHandler}
+              isMenuOpen={isMenuOpen}
               title="Users"
-              icon={<FiUsers size={20} />}
+              icon={<FiUsers size={24} />}
+              setActiveView={setActiveView}
             />
           ) : null}
 
           {/* ADMIN AND AUTHORS ONLY */}
           {userRole === "ADMIN" || userRole === "AUTHOR" ? (
             <DashboardNavigationItem
-              activeView={activeView}
-              setActiveView={setActiveViewHandler}
+              isMenuOpen={isMenuOpen}
               title="Articles"
-              icon={<IoDocumentsOutline size={20} />}
+              icon={<IoDocumentsOutline size={24} />}
+              setActiveView={setActiveView}
             />
           ) : null}
 
           <DashboardNavigationItem
-            activeView={activeView}
-            setActiveView={setActiveViewHandler}
+            isMenuOpen={isMenuOpen}
             title="Settings"
-            icon={<IoSettingsOutline size={20} />}
+            icon={<IoSettingsOutline size={24} />}
+            setActiveView={setActiveView}
           />
         </ul>
       </div>

@@ -1,19 +1,38 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChangeEvent, useState } from "react";
+import { getArticleCategories } from "@/lib/queries";
+import { TCategory } from "@/types/types";
+import { useCallback, useEffect, useState } from "react";
 
-import ReactQuill from "react-quill";
+import Quill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 export const Editor = () => {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState("");
+  const [categories, setCategories] = useState<TCategory[]>([]);
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const submitArticle = () => {
     console.log("title:", title);
     console.log("content:", content);
   };
+
+  // const getCategories = useCallback(async () => {
+  //   const categories = await getArticleCategories();
+
+  //   if (categories.data && !categories.error) {
+  //     setCategories(categories.data);
+  //   } else if (categories.error) {
+  //     setErrorMessage(categories.error);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   getCategories();
+  // }, [getCategories]);
 
   const editorModules = {
     toolbar: [
@@ -47,8 +66,8 @@ export const Editor = () => {
     <div>
       <div className="my-4">
         {/* Title */}
-        <label htmlFor="title" className="mb-2 text-neutral-100">
-          Title
+        <label htmlFor="title" className="text-neutral-900">
+          Article title
         </label>
         <input
           type="text"
@@ -56,18 +75,18 @@ export const Editor = () => {
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full rounded-md border border-neutral-500 bg-neutral-100 p-2 text-neutral-900 focus:outline-none"
-          placeholder="Enter title..."
+          className="mt-1 w-full rounded-md border border-neutral-500 bg-neutral-100 p-2 text-neutral-900 focus:outline-none"
+          placeholder="Catchy clickbait title goes here..."
         />
       </div>
 
       {/* Content */}
       <div>
-        <label htmlFor="content" className="mb-2 text-neutral-100">
-          Content
+        <label htmlFor="content" className="text-neutral-900">
+          Article content
         </label>
-        <div className="overflow-hidden rounded-md border border-neutral-500 bg-neutral-100">
-          <ReactQuill
+        <div className="mt-1 overflow-hidden rounded-md border border-neutral-500 bg-neutral-100">
+          <Quill
             theme="snow"
             id="content"
             value={content}
@@ -85,7 +104,7 @@ export const Editor = () => {
         onClick={submitArticle}
         className="mt-4 bg-blue-600 hover:bg-blue-600"
       >
-        Submit
+        Save
       </Button>
     </div>
   );

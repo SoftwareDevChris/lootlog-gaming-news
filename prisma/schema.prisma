@@ -26,7 +26,7 @@ model Article {
   id           String   @id @unique @default(uuid())
   created_at   DateTime @default(now())
   title        String
-  content      Json
+  content      String
   categoryId   Int
   authorId     String
   is_published Boolean  @default(false)
@@ -39,6 +39,11 @@ model Category {
   id       Int       @id @default(autoincrement())
   name     String
   articles Article[]
+}
+
+model Tags {
+  id       Int       @id @default(autoincrement())
+  name     String
 }
 
 enum Role {

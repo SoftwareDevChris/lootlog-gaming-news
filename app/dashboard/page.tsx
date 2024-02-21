@@ -1,24 +1,18 @@
-// Components
-import { Dashboard } from "@/components/dashboard/Dashboard";
-import { LoadingSpinner } from "@/components/ui/loading";
+import { redirect } from "next/navigation";
 
-// Queries
-import { getUserByEmail } from "@/lib/queries";
+// Clerk
+import { currentUser } from "@clerk/nextjs";
+
+// Components
+import { Dashboard } from "@/components/dashboard/DashboardView";
 
 export default async function DashboardPage() {
-  const userData = await getUserByEmail();
+  const user = await currentUser();
 
-  if (!userData.data) {
-    return (
-      <div className="m-32 mx-auto h-32 w-32 p-4">
-        <LoadingSpinner theme="blue" />
-      </div>
-    );
+  // If no user is logged in, redirect to the home page
+  if (!user) {
+    redirect("/");
   }
 
-  return (
-    <div className="min-h-screen w-full bg-neutral-100">
-      <Dashboard userData={userData} />
-    </div>
-  );
+  return <Dashboard />;
 }
