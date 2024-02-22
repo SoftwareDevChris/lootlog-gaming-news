@@ -1,111 +1,136 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { getArticleCategories } from "@/lib/queries";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
+// Types
 import { TCategory } from "@/types/types";
-import { useCallback, useEffect, useState } from "react";
 
-import Quill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+// Zod
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export const Editor = () => {
-  const [title, setTitle] = useState<string>("");
-  const [content, setContent] = useState("");
-  const [categories, setCategories] = useState<TCategory[]>([]);
+// React Hook Form
+import { useForm } from "react-hook-form";
 
-  const [errorMessage, setErrorMessage] = useState<string>("");
+// Components
+import { Button } from "@/components/ui/button";
+import { Input } from "./ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
-  const submitArticle = () => {
-    console.log("title:", title);
-    console.log("content:", content);
+type Props = {
+  categories: TCategory[] | null;
+};
+
+export const Editor: React.FC<Props> = ({ categories }) => {
+  // Schema
+  const formSchema = z.object({
+    title: z.string().min(10, { message: "Title is too short" }),
+    category: z.enum(["", ...categories!.map((category) => category.name)]),
+    content: z.string().min(100, { message: "Content is too short" }),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      category: "",
+      content: "",
+    },
+  });
+
+  const editor = useEditor({
+    content: "<p>Hello World! 🌍️</p>",
+    extensions: [StarterKit],
+  });
+
+  const onSubmitArticle = (values: z.infer<typeof formSchema>) => {
+    console.log("article:", values);
   };
 
-  // const getCategories = useCallback(async () => {
-  //   const categories = await getArticleCategories();
-
-  //   if (categories.data && !categories.error) {
-  //     setCategories(categories.data);
-  //   } else if (categories.error) {
-  //     setErrorMessage(categories.error);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   getCategories();
-  // }, [getCategories]);
-
-  const editorModules = {
-    toolbar: [
-      [{ header: [2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link"],
-      ["clean"],
-    ],
-  };
-
-  const editorFormats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-  ];
+  if (!categories) {
+    return null;
+  }
 
   return (
-    <div>
-      <div className="my-4">
-        {/* Title */}
-        <label htmlFor="title" className="text-neutral-900">
-          Article title
-        </label>
-        <input
-          type="text"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmitArticle)}>
+        <FormField
+          control={form.control}
           name="title"
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 w-full rounded-md border border-neutral-500 bg-neutral-100 p-2 text-neutral-900 focus:outline-none"
-          placeholder="Catchy clickbait title goes here..."
+          render={({ field }) => (
+            <FormItem className="mt-2 space-y-1">
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input
+                  className="ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder="Catchy title goes here"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
         />
-      </div>
 
-      {/* Content */}
-      <div>
-        <label htmlFor="content" className="text-neutral-900">
-          Article content
-        </label>
-        <div className="mt-1 overflow-hidden rounded-md border border-neutral-500 bg-neutral-100">
-          <Quill
-            theme="snow"
-            id="content"
-            value={content}
-            onChange={(val) => setContent(val)}
-            placeholder="Write something awesome..."
-            preserveWhitespace
-            modules={editorModules}
-            formats={editorFormats}
-            className="h-[70svh] md:h-[50vh]"
-          />
-        </div>
-      </div>
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem className="mt-2 space-y-1">
+              <FormLabel>Category</FormLabel>
+              <FormControl>
+                <Select onValueChange={field.onChange}>
+                  <SelectTrigger className="w-[180px] outline-none ring-0 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+            </FormItem>
+          )}
+        />
 
-      <Button
-        onClick={submitArticle}
-        className="mt-4 bg-blue-600 hover:bg-blue-600"
-      >
-        Save
-      </Button>
-    </div>
+        {/* Content */}
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem className="mt-2 space-y-1">
+              <FormLabel htmlFor="content">Content</FormLabel>
+              <FormControl>
+                <div className="overflow-hidden rounded-md border border-neutral-500 bg-neutral-100">
+                  <EditorContent onChange={field.onChange} editor={editor} />
+                </div>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="mt-4 bg-blue-600 hover:bg-blue-600">
+          Save
+        </Button>
+      </form>
+    </Form>
   );
 };
