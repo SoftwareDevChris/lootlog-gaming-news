@@ -1,8 +1,5 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-
 // Types
 import { TCategory } from "@/types/types";
 
@@ -15,7 +12,7 @@ import { useForm } from "react-hook-form";
 
 // Components
 import { Button } from "@/components/ui/button";
-import { Input } from "./ui/input";
+import { Input } from "../../ui/input";
 import {
   Select,
   SelectContent,
@@ -32,31 +29,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ArticleEditor } from "./ArticleEditor";
 
 type Props = {
   categories: TCategory[] | null;
 };
 
-export const Editor: React.FC<Props> = ({ categories }) => {
+export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
   // Schema
   const formSchema = z.object({
     title: z.string().min(10, { message: "Title is too short" }),
-    category: z.enum(["", ...categories!.map((category) => category.name)]),
+    category: z.string().min(1, { message: "Please select a category" }),
     content: z.string().min(100, { message: "Content is too short" }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    reValidateMode: "onBlur",
     defaultValues: {
       title: "",
       category: "",
       content: "",
     },
-  });
-
-  const editor = useEditor({
-    content: "<p>Hello World! 🌍️</p>",
-    extensions: [StarterKit],
   });
 
   const onSubmitArticle = (values: z.infer<typeof formSchema>) => {
@@ -70,6 +64,7 @@ export const Editor: React.FC<Props> = ({ categories }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmitArticle)}>
+        {/* Title */}
         <FormField
           control={form.control}
           name="title"
@@ -86,7 +81,11 @@ export const Editor: React.FC<Props> = ({ categories }) => {
             </FormItem>
           )}
         />
+        <FormMessage className="text-xs">
+          {form.formState.errors.title?.message}
+        </FormMessage>
 
+        {/* Category */}
         <FormField
           control={form.control}
           name="category"
@@ -110,6 +109,9 @@ export const Editor: React.FC<Props> = ({ categories }) => {
             </FormItem>
           )}
         />
+        <FormMessage className="text-xs">
+          {form.formState.errors.category?.message}
+        </FormMessage>
 
         {/* Content */}
         <FormField
@@ -119,14 +121,18 @@ export const Editor: React.FC<Props> = ({ categories }) => {
             <FormItem className="mt-2 space-y-1">
               <FormLabel htmlFor="content">Content</FormLabel>
               <FormControl>
-                <div className="overflow-hidden rounded-md border border-neutral-500 bg-neutral-100">
-                  <EditorContent onChange={field.onChange} editor={editor} />
+                <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-100">
+                  <ArticleEditor onChange={field.onChange} />
                 </div>
               </FormControl>
             </FormItem>
           )}
         />
+        <FormMessage className="text-xs">
+          {form.formState.errors.content?.message}
+        </FormMessage>
 
+        {/* Save */}
         <Button type="submit" className="mt-4 bg-blue-600 hover:bg-blue-600">
           Save
         </Button>

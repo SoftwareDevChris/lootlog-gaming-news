@@ -1,10 +1,9 @@
 // Components
+import Link from "next/link";
+
+// Components
 import { DashboardFieldContainer } from "../containers/DashboardFieldContainer";
 import { Button } from "@/components/ui/button";
-
-// Types
-import { TCategory } from "@/types/types";
-import Link from "next/link";
 
 type Props = {
   title: string;

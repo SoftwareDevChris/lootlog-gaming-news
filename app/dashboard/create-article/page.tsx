@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { getArticleCategories } from "@/lib/queries";
 
 // Components
-import { Editor } from "@/components/Editor";
+import { CreateArticleForm } from "@/components/dashboard/editor/CreateArticleForm";
 import { LoadingSpinner } from "@/components/ui/loading";
 
 const LoadingFallback = () => {
@@ -27,7 +27,7 @@ export default async function CreateArticlePage() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <div className="h-full w-full pl-2 md:pl-8">
-        <Editor categories={categories.data} />
+        <CreateArticleForm categories={categories.data} />
       </div>
     </Suspense>
   );
