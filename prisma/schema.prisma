@@ -23,7 +23,6 @@ model User {
 }
 
 model Article {
-  id           String   @id @unique @default(uuid())
   created_at   DateTime @default(now())
   title        String
   content      String
@@ -31,6 +30,7 @@ model Article {
   authorId     String
   is_published Boolean  @default(false)
   is_featured  Boolean  @default(false)
+  id           String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   author       User     @relation(fields: [authorId], references: [id])
   category     Category @relation(fields: [categoryId], references: [id])
 }
@@ -42,8 +42,8 @@ model Category {
 }
 
 model Tags {
-  id       Int       @id @default(autoincrement())
-  name     String
+  id   Int    @id @default(autoincrement())
+  name String
 }
 
 enum Role {

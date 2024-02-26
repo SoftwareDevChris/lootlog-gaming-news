@@ -52,14 +52,18 @@ export async function getArticleCategories(): Promise<TArticleCategories> {
   } else return { data: categories, error: null };
 }
 
-export async function createArticle(
-  article: TArticle,
-): Promise<TCreateArticle> {
+export async function createArticle(article: {
+  title: string;
+  categoryId: number;
+  content: string;
+}): Promise<TCreateArticle> {
   const user = await currentUser();
 
   if (!user) {
     return { data: null, error: "No user was provided" };
   }
+
+  console.log(article.categoryId);
 
   const postResult = await prisma.article.create({
     data: {
@@ -67,15 +71,21 @@ export async function createArticle(
       // created_at:
       title: article.title,
       content: article.content,
-      categoryId: article.categoryId,
-      authorId: user.id,
-      // is_published:
-      // is_featured:
+      category: {
+        connect: {
+          id: article.categoryId,
+        },
+      },
+      author: {
+        connect: {
+          id: user.id,
+        },
+      },
     },
   });
 
   if (!postResult) {
-    return { data: null, error: "No article was created" };
+    return { data: null, error: "There was an error creating the article" };
   }
 
   return { data: postResult, error: null };

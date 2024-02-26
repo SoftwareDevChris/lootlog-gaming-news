@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Components
@@ -16,20 +16,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 // React Hook Form
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 // Clerk Auth
-import { useSignIn } from "@clerk/nextjs";
+import { useSignIn, useUser } from "@clerk/nextjs";
 
 // Zod
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// Context
-import { AuthContext } from "@/context/auth";
-
 // Types
-import { TUser } from "@/types/types";
 import { LoadingSpinner } from "@/components/ui/loading";
 
 // Login Form Schema
@@ -45,7 +41,11 @@ const Login: React.FC = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
 
   const router = useRouter();
-  const authContext = useContext(AuthContext);
+  const { isSignedIn } = useUser();
+
+  if (isSignedIn) {
+    router.push("/");
+  }
 
   // Signup Form
   const loginForm = useForm<z.infer<typeof loginFormSchema>>({
