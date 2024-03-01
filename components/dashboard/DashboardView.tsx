@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 // Queries
-import { getUserByEmail } from "@/lib/queries";
+import { getUserById } from "@/lib/queries";
 
 // Types
 import { TDashboardViews, TUser } from "@/types/types";
@@ -17,23 +17,22 @@ import { DashboardAccountView } from "@/components/dashboard/views/DashboardAcco
 import { DashboardSettingsView } from "@/components/dashboard/views/DashboardSettingsView";
 import { DashboardUsersView } from "@/components/dashboard/views/DashboardUsersView";
 import { DashboardArticlesView } from "@/components/dashboard/views/DashboardArticlesView";
+import { useUser } from "@clerk/nextjs";
 
-type Props = {};
-
-export const Dashboard: React.FC<Props> = () => {
+export const Dashboard: React.FC = () => {
   const [activeView, setActiveView] = useState<TDashboardViews>("Account");
   const [userData, setUserData] = useState<TUser | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const getUserData = useCallback(async () => {
-    const res = await getUserByEmail();
+  const user = useUser();
 
-    if (res.data && !res.error) {
-      setUserData(res.data);
-    } else if (res.error) {
-      setErrorMessage(res.error);
-    }
-  }, []);
+  const getUserData = useCallback(async () => {
+    const res = await getUserById(user.user?.id!);
+
+    if (res.status === 201) {
+      setUserData(res.user);
+    } else setErrorMessage(res.error);
+  }, [user.user?.id]);
 
   useEffect(() => {
     getUserData();

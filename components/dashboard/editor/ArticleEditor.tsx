@@ -35,12 +35,11 @@ export const ArticleEditor: React.FC<Props> = ({ onChange }) => {
     },
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
-      console.log(editor.getHTML());
     },
   });
 
   return (
-    <div id="editor">
+    <div id="editor" className="bg-neutral-100">
       <ArticleEditorToolbar editor={editor} />
       <EditorContent editor={editor} />
     </div>

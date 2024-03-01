@@ -28,9 +28,10 @@ model Article {
   content      String
   categoryId   Int
   authorId     String
+  image_url    String
   is_published Boolean  @default(false)
   is_featured  Boolean  @default(false)
-  id           String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id           String   @id @unique @default(uuid())
   author       User     @relation(fields: [authorId], references: [id])
   category     Category @relation(fields: [categoryId], references: [id])
 }

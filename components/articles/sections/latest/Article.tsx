@@ -17,7 +17,7 @@ export const Article: React.FC<{
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >
-      <Link href="/article">
+      <Link href={`/article/${content.id}`}>
         <Image
           className="aspect-16/9 object-cover object-center"
           alt=""

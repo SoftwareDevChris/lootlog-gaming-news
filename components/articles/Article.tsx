@@ -18,7 +18,7 @@ export const Article: React.FC<{
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >
-      <Link href="/article" className="flex flex-grow flex-col">
+      <Link href={`/article/${content.id}`} className="flex flex-grow flex-col">
         <div className="relative aspect-3/2">
           <Image
             className="object-cover object-center"

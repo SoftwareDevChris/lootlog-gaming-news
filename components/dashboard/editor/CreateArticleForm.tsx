@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { TCategory } from "@/types/types";
 
 // Zod
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // React Hook Form
@@ -35,52 +35,42 @@ import {
 
 // Queries
 import { createArticle } from "@/lib/queries";
+import { resizeImage } from "@/lib/resize-image";
+import { Label } from "@radix-ui/react-select";
 
 type Props = {
   categories: TCategory[] | null;
 };
 
 export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
+  const [content, setContent] = useState("");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
   const router = useRouter();
 
-  // Schema
-  const formSchema = z.object({
-    title: z.string().min(10, { message: "Title is too short" }),
-    category: z.string().max(1, { message: "Category is required" }),
-    content: z.string().min(100, { message: "Content is too short" }),
-  });
+  const onSubmit = async (formData: FormData) => {
+    setIsSubmitting(true);
+    // Resize the image before sending it to the server
+    const resize = await resizeImage(formData.get("image") as File);
+    if (resize.image) {
+      formData.set("image", resize.image);
+    }
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    reValidateMode: "onBlur",
-    defaultValues: {
-      title: "",
-      category: "",
-      content: "",
-    },
-  });
+    // Send the article's content to the server along with the form data
+    const createNewArticle = createArticle.bind(null, content);
+    const res = await createNewArticle(formData);
 
-  const onSubmitArticle = async (values: z.infer<typeof formSchema>) => {
-    const create = await createArticle({
-      title: values.title,
-      categoryId: parseInt(values.category),
-      content: values.content,
-    });
-
-    if (create.error || !create.data) {
-      setStatusMessage(
-        create.error ??
-          "An error occurred. Please try again or contact support.",
-      );
+    if (res.status !== 200) {
+      setStatusMessage(res.statusText);
+      setIsSubmitting(false);
       return;
     }
 
+    setIsSubmitting(false);
     setStatusMessage("Article created successfully");
-    setTimeout(() => {
-      router.push(`/dashboard`);
-    }, 3000);
+    router.push("/dashboard");
   };
 
   if (!categories) {
@@ -94,85 +84,67 @@ export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
           <p className="text-center">{statusMessage}</p>
         </div>
       )}
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmitArticle)}>
-          {/* Title */}
-          <FormField
-            control={form.control}
+      <form action={onSubmit}>
+        {/* Title */}
+        <div className="pb-2">
+          <label htmlFor="title" className="text-sm">
+            Title
+          </label>
+          <Input
+            required
             name="title"
-            render={({ field }) => (
-              <FormItem className="mt-2 space-y-1">
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input
-                    className="ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                    placeholder="Catchy title goes here"
-                    {...field}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
+            placeholder="Catchy title goes here"
+            className="ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <FormMessage className="text-xs">
-            {form.formState.errors.title?.message}
-          </FormMessage>
+        </div>
 
-          {/* Category */}
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem className="mt-2 space-y-1">
-                <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger className="w-[180px] outline-none ring-0 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0">
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id.toString()}
-                        >
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-              </FormItem>
-            )}
+        {/* Category */}
+        <div className="pb-2">
+          <label htmlFor="category" className="text-sm">
+            Category
+          </label>
+          <Select required name="category">
+            <SelectTrigger className="w-[180px] outline-none ring-0 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.id.toString()}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Image */}
+        <div className="pb-2">
+          <label htmlFor="image" className="text-sm">
+            Select image
+          </label>
+          <Input
+            name="image"
+            required
+            type="file"
+            accept="image/*"
+            className="cursor-pointer pt-2"
           />
-          <FormMessage className="text-xs">
-            {form.formState.errors.category?.message}
-          </FormMessage>
+        </div>
 
-          {/* Content */}
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem className="mt-2 space-y-1">
-                <FormLabel htmlFor="content">Content</FormLabel>
-                <FormControl>
-                  <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-100">
-                    <ArticleEditor onChange={field.onChange} />
-                  </div>
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormMessage className="text-xs">
-            {form.formState.errors.content?.message}
-          </FormMessage>
+        {/* Content */}
+        <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-100 pb-2">
+          <ArticleEditor onChange={(txt) => setContent(txt)} />
+        </div>
 
-          {/* Save */}
-          <Button type="submit" className="mt-4 bg-blue-600 hover:bg-blue-600">
-            Save
-          </Button>
-        </form>
-      </Form>
+        {/* Save */}
+        <Button
+          aria-disabled={isSubmitting}
+          type="submit"
+          className="mt-4 bg-blue-600 hover:bg-blue-600"
+        >
+          Save
+        </Button>
+      </form>
     </>
   );
 };

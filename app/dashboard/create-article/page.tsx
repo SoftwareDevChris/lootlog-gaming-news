@@ -20,14 +20,14 @@ const LoadingFallback = () => {
 export default async function CreateArticlePage() {
   const categories = await getArticleCategories();
 
-  if (!categories.data) {
+  if (categories.status !== 201) {
     return null;
   }
 
   return (
     <Suspense fallback={<LoadingFallback />}>
       <div className="h-full w-full pl-2 md:pl-8">
-        <CreateArticleForm categories={categories.data} />
+        <CreateArticleForm categories={categories.categories} />
       </div>
     </Suspense>
   );

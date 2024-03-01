@@ -12,7 +12,7 @@ export const GridItem: React.FC<{ content: TArticle }> = ({ content }) => {
     <article
       className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-neutral-800 hover:bg-teal-500`}
     >
-      <Link href="/article" className="flex flex-grow flex-col">
+      <Link href={`/article/${content.id}`} className="flex flex-grow flex-col">
         <div className="relative aspect-3/2">
           <Image
             className="object-cover object-center"
