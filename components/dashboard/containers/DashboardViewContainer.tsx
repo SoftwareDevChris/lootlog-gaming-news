@@ -4,7 +4,7 @@ type Props = {
 
 export const DashboardViewContainer: React.FC<Props> = ({ children }) => {
   return (
-    <div className="relative flex min-h-screen flex-grow">
+    <div className="relative flex h-full flex-grow">
       <div
         className={`flex-grow overflow-hidden rounded-2xl bg-neutral-200 p-2 md:mt-0 md:p-8`}
       >

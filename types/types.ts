@@ -3,6 +3,7 @@ export type TArticle = {
   created_at: Date;
   title: string;
   content: string;
+  image_url: string;
   categoryId: number;
   authorId: string;
   is_released: boolean;

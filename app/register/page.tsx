@@ -100,7 +100,9 @@ const Register: React.FC = () => {
       setPendingVerification(true);
     } catch (err: any) {
       setErrorMessage(
-        err.errors[0] ? err.errors[0].longMessage : "Signup failed",
+        err.errors[0]
+          ? err.errors[0].longMessage
+          : "Signup failed. Please try again later.",
       );
       console.error(JSON.stringify(err, null, 2));
     } finally {
@@ -114,48 +116,54 @@ const Register: React.FC = () => {
     if (!isLoaded) return;
     setErrorMessage("");
 
-    const formValues = registerForm.getValues();
-    console.log("Formvalues:", formValues);
-
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code: verify.verificationCode,
       });
 
+      // Check the verification status
       if (completeSignUp.status !== "complete") {
         console.log(
           "Verification failed:",
           JSON.stringify(completeSignUp, null, 2),
         );
         setErrorMessage("Verification failed");
+        setIsLoading(false);
         return;
       }
 
       if (completeSignUp.status === "complete") {
         console.log("Verification complete");
 
+        // If no user ID was created despite the verification being complete
         if (!completeSignUp.createdUserId) {
-          setErrorMessage("Verification failed: Could not find user id");
+          setErrorMessage("Verification failed: Could not create user");
+          setIsLoading(false);
           return;
         }
 
-        const create = await createUser({
+        // Create user in the database
+        const createNewUser = await createUser({
           id: completeSignUp.createdUserId,
           email: registerForm.getValues("email"),
           firstName: registerForm.getValues("firstName"),
           lastName: registerForm.getValues("lastName"),
         });
 
-        console.log("User created:", create);
-
-        await setActive({ session: completeSignUp.createdSessionId });
-        router.push("/");
+        if (createNewUser.status !== 201) {
+          setErrorMessage("Failed to create user");
+          setIsLoading(false);
+          return;
+        } else {
+          await setActive({ session: completeSignUp.createdSessionId });
+          router.push("/");
+        }
       }
     } catch (err: any) {
-      setErrorMessage("Verification failed");
+      setErrorMessage("Verification failed. Please try again later.");
       console.error(JSON.stringify(err, null, 2));
-    } finally {
       setIsLoading(false);
+      return;
     }
   };
 

@@ -71,15 +71,14 @@ const Login: React.FC = () => {
 
         await setActive({ session: result.createdSessionId });
         router.push("/");
+        return;
       } else {
-        setErrorMessage("An unknown error occurred. Please try again");
+        setErrorMessage("An unknown error occurred. Please try again later.");
         console.log("Login failed:", result);
       }
     } catch (err: any) {
       setErrorMessage(err.errors[0]?.longMessage ?? "An error occurred");
       console.error("error", err.errors[0]?.longMessage ?? "An error occurred");
-    } finally {
-      setIsLoading(false);
     }
   };
 

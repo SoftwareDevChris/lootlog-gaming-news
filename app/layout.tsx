@@ -6,7 +6,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
 // Components
-import { Header } from "@/components/Header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/Footer";
 
 // Context
@@ -15,8 +15,8 @@ import { AuthProvider } from "@/context/auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Gaming News | Home",
-  description: "Your nerdy source for gaming news and reviews.",
+  title: "Gaming News",
+  description: "Your source for the lastest gaming news and reviews.",
 };
 
 export default function RootLayout({
@@ -30,7 +30,9 @@ export default function RootLayout({
         <html lang="en">
           <body className={`${inter.className} relative bg-neutral-900`}>
             <Header />
-            {children}
+            <div className="relative flex min-h-[calc(100svh-540px-64px)] flex-col md:min-h-[calc(100vh-240px-64px)]">
+              {children}
+            </div>
             <Footer />
           </body>
         </html>

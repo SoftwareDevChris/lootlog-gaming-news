@@ -1,21 +1,15 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Types
 import { TCategory } from "@/types/types";
 
-// Zod
-import { set, z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-// React Hook Form
-import { useForm } from "react-hook-form";
-
 // Components
 import { Button } from "@/components/ui/button";
-import { Input } from "../../ui/input";
-import { ArticleEditor } from "./ArticleEditor";
+import { Input } from "@/components/ui/input";
+import { ArticleEditor } from "@/components/editor/ArticleEditor";
 import {
   Select,
   SelectContent,
@@ -23,20 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { OverlayLoading } from "@/components/overlays/OverlayLoading";
+import { OverlayError } from "@/components/overlays/OverlayError";
+import { OverlaySuccess } from "@/components/overlays/OverlaySuccess";
 
 // Queries
 import { createArticle } from "@/lib/queries";
 import { resizeImage } from "@/lib/resize-image";
-import { Label } from "@radix-ui/react-select";
+import { LoadingSpinner } from "../ui/loading";
 
 type Props = {
   categories: TCategory[] | null;
@@ -45,48 +33,63 @@ type Props = {
 export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
   const [content, setContent] = useState("");
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
+  const [submitStatus, setSubmitStatus] = useState<
+    "submitting" | "error" | "success" | null
+  >(null);
 
   const router = useRouter();
 
   const onSubmit = async (formData: FormData) => {
-    setIsSubmitting(true);
+    setSubmitStatus("submitting");
     // Resize the image before sending it to the server
     const resize = await resizeImage(formData.get("image") as File);
+
     if (resize.image) {
       formData.set("image", resize.image);
+    } else {
+      setSubmitStatus("error");
+      return;
     }
 
     // Send the article's content to the server along with the form data
     const createNewArticle = createArticle.bind(null, content);
     const res = await createNewArticle(formData);
 
-    if (res.status !== 200) {
-      setStatusMessage(res.statusText);
-      setIsSubmitting(false);
+    if (res.status !== 201) {
+      setSubmitStatus("error");
+      return;
+    } else {
+      setSubmitStatus("success");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 3000);
       return;
     }
-
-    setIsSubmitting(false);
-    setStatusMessage("Article created successfully");
-    router.push("/dashboard");
   };
 
-  if (!categories) {
-    return null;
+  // If the editor is not loaded yet, show a loading overlay
+  if (ArticleEditor === undefined) {
+    return <OverlayLoading message="Loading editor..." />;
   }
 
   return (
-    <>
-      {statusMessage && (
-        <div className="w-full">
-          <p className="text-center">{statusMessage}</p>
-        </div>
-      )}
+    <div className="h-full">
+      {/* Overlays */}
+      {submitStatus === "submitting" ? (
+        <OverlayLoading message="Creating article..." />
+      ) : null}
+      {submitStatus === "error" ? (
+        <OverlayError message="Failed to create article" />
+      ) : null}
+      {submitStatus === "success" ? (
+        <OverlaySuccess message="Article created successfully" />
+      ) : null}
+
+      {/* Form */}
+      <h1 className="mb-4 text-2xl font-bold">Create a new article</h1>
       <form action={onSubmit}>
         {/* Title */}
-        <div className="pb-2">
+        <div className="space-y-1 pb-2">
           <label htmlFor="title" className="text-sm">
             Title
           </label>
@@ -99,7 +102,7 @@ export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
         </div>
 
         {/* Category */}
-        <div className="pb-2">
+        <div className="space-y-1 pb-2">
           <label htmlFor="category" className="text-sm">
             Category
           </label>
@@ -108,7 +111,7 @@ export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((category) => (
+              {categories!.map((category) => (
                 <SelectItem key={category.id} value={category.id.toString()}>
                   {category.name}
                 </SelectItem>
@@ -118,9 +121,9 @@ export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
         </div>
 
         {/* Image */}
-        <div className="pb-2">
+        <div className="space-y-1 pb-2">
           <label htmlFor="image" className="text-sm">
-            Select image
+            {"Select image (1300x732 or above)"}
           </label>
           <Input
             name="image"
@@ -133,18 +136,23 @@ export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
 
         {/* Content */}
         <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-100 pb-2">
-          <ArticleEditor onChange={(txt) => setContent(txt)} />
+          <ArticleEditor onChange={(text) => setContent(text)} />
         </div>
 
         {/* Save */}
         <Button
-          aria-disabled={isSubmitting}
+          aria-disabled={submitStatus !== null ? true : false}
+          disabled={submitStatus !== null ? true : false}
           type="submit"
-          className="mt-4 bg-blue-600 hover:bg-blue-600"
+          className="mt-4 bg-blue-950"
         >
-          Save
+          {submitStatus === "submitting" ? (
+            <LoadingSpinner theme="orange" />
+          ) : (
+            "Create article"
+          )}
         </Button>
       </form>
-    </>
+    </div>
   );
 };

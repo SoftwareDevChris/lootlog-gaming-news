@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { getArticleCategories } from "@/lib/queries";
 
 // Components
-import { CreateArticleForm } from "@/components/dashboard/editor/CreateArticleForm";
+import { CreateArticleForm } from "@/components/forms/CreateArticleForm";
 import { LoadingSpinner } from "@/components/ui/loading";
 
 const LoadingFallback = () => {

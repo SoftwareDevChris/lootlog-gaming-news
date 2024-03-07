@@ -6,7 +6,7 @@ import { ROUTES } from "@/utils/routes";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className=" bg-gray-900 px-4 py-8 text-white">
+    <footer className=" bg-gray-900 px-4 py-8 text-white md:h-60">
       <div className="mx-auto grid max-w-1300 space-y-8 px-4 sm:px-0 md:grid-cols-3 md:grid-rows-1">
         {/* Logo and mission text */}
         <div className="items-center pb-4 md:pb-0">

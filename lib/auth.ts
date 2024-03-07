@@ -14,7 +14,7 @@ import { TUser } from "@/types/types";
 // ---------------------------------------------------------
 export async function createUser(user: TUser) {
   if (!user.id) {
-    return { message: "No user ID was provided" };
+    return { status: 400, message: "User ID is required" };
   }
 
   try {
@@ -27,9 +27,9 @@ export async function createUser(user: TUser) {
       },
     });
 
-    return { message: "User has been created" };
+    return { status: 201, message: "User created successfully" };
   } catch (error) {
-    return { message: "There was an error creating the user" };
+    return { status: 500, message: "There was an error creating the user" };
   }
 }
 

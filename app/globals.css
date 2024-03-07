@@ -1,13 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
-@import "../components/articles/sections/horizontalList/HorizontalList.css";
+@import "../components/articles/sections/scrollable-section/ScrollableSection.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  width: 100%;
   background: rgb(23, 23, 23);
   background-image: linear-gradient(
       180deg,

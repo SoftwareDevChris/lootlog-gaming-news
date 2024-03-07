@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent, Editor } from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import { ArticleEditorToolbar } from "./ArticleEditorToolbar";
@@ -17,7 +17,7 @@ export const ArticleEditor: React.FC<Props> = ({ onChange }) => {
       StarterKit.configure({
         heading: {
           HTMLAttributes: {
-            class: "text-2xl font-bold",
+            class: "text-lg font-bold",
           },
         },
         blockquote: {

@@ -1,24 +1,49 @@
+import { unstable_cache } from "next/cache";
+
+// Components
 import { PageTitle } from "@/components/PageTitle";
 import { SectionContainer } from "@/components/containers/SectionContainer";
-import { Grid } from "@/components/articles/sections/grid/Grid";
-import { SectionTitleDefault } from "@/components/articles/SectionTitleDefault";
+import { PaginationGrid } from "@/components/articles/sections/pagination-grid/PaginationGrid";
+import { ArticleSectionTitleDefault } from "@/components/articles/ArticleSectionTitleDefault";
+import { OverlayError } from "@/components/overlays/OverlayError";
 
-export default function News() {
-  const title = "News";
-  const paragraph =
-    "Stay updated with the latest happenings in the gaming world. GameZone's news section is your one-stop shop for all things gaming.";
+// Lib
+import { getAllArticles } from "@/lib/queries";
+import { sortByDate } from "@/lib/sort-by-date";
+
+// Types
+import { TArticle } from "@/types/types";
+
+export default async function News() {
+  const allArticles = unstable_cache(getAllArticles, ["allArticles"], {
+    revalidate: 60 * 60,
+  });
+
+  // If there is an error getting the articles, display an error overlay
+  if ((await allArticles()).status !== 201) {
+    return <OverlayError message="There was an error getting the articles" />;
+  }
+
+  // Sort the articles by date
+  const filteredArticles = (await allArticles()).articles.filter(
+    (article: TArticle) => article.categoryId === 1,
+  );
+  const sortedArticles = sortByDate(filteredArticles);
 
   return (
     <main>
       <SectionContainer>
-        <PageTitle title={title} paragraph={paragraph} />
+        <PageTitle
+          title="News"
+          paragraph="Stay updated with the latest happenings in the gaming world. GameZone's news section is your one-stop shop for all things gaming."
+        />
       </SectionContainer>
 
       <SectionContainer>
         <div className="mx-auto max-w-1300">
-          <SectionTitleDefault title="All news articles" />
+          <ArticleSectionTitleDefault title="All news articles" />
         </div>
-        <Grid />
+        <PaginationGrid articles={sortedArticles} />
       </SectionContainer>
     </main>
   );

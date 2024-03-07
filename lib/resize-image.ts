@@ -11,8 +11,8 @@ export async function resizeImage(
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
         if (ctx) {
-          const MAX_WIDTH = 1280;
-          const MAX_HEIGHT = 720;
+          const MAX_WIDTH = 1300;
+          const MAX_HEIGHT = 731.25;
           let width = img.width;
           let height = img.height;
 

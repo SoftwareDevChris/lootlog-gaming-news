@@ -43,17 +43,36 @@ export async function getArticleCategories() {
   }
 }
 
+// ----------------
+// Get all articles
+// ----------------
+export async function getAllArticles(): Promise<{
+  status: number;
+  articles: any;
+  error: string | null;
+}> {
+  try {
+    const articles = await prisma.article.findMany({});
+    console.log("Fetched all articles");
+
+    return { status: 201, articles: articles, error: null };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, articles: null, error: "An error occurred" };
+  }
+}
+
 // ---------------------
 // Create a new article
 // ---------------------
 const createArticleSchema = z.object({
-  title: z.string().min(3).max(100),
+  title: z.string().min(3).max(120),
   content: z.string().min(10).max(10000),
   category: z.number(),
   image: z.object({
     name: z.string(),
     type: z.string().regex(/image\/.*/),
-    size: z.number().max(1000000),
+    size: z.number().max(5000000),
   }),
 });
 
@@ -75,14 +94,14 @@ export async function createArticle(content: string, data: FormData) {
 
   try {
     const image: File = data.get("image") as File;
-    const storageRef = ref(storage, `images/${image.name}-${Date.now()}`);
+    const storageRef = ref(storage, `images/${image.name}`);
 
     // Upload image file
     await uploadBytes(storageRef, image);
 
     // Get the URL of the image and return it
     const imageUrl = await getDownloadURL(
-      ref(storage, `images/${image.name}-${Date.now()}`),
+      ref(storage, `images/${image.name}`),
     ).then((url) => {
       return url;
     });

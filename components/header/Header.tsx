@@ -2,8 +2,8 @@
 import Link from "next/link";
 
 // Components
-import { UserMenu } from "./header/UserMenu";
-import { Navigation } from "./header/Navigation";
+import { UserMenu } from "./UserMenu";
+import { Navigation } from "./Navigation";
 
 export const Header: React.FC = () => {
   return (

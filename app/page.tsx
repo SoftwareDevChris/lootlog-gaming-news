@@ -1,27 +1,54 @@
+import { unstable_cache } from "next/cache";
+
 // Components
-import { Latest } from "@/components/articles/sections/latest/Latest";
-import { HorizontalList } from "@/components/articles/sections/horizontalList/HorizontalList";
+import { LatestSection } from "@/components/articles/sections/latest-section/LatestSection";
+import { ScrollableSection } from "@/components/articles/sections/scrollable-section/ScrollableSection";
 import { Slideshow } from "@/components/articles/sections/slideshow/Slideshow";
 import { SectionContainer } from "@/components/containers/SectionContainer";
+import { OverlayError } from "@/components/overlays/OverlayError";
 
-// Utils
-import { DUMMY_ARTICLES } from "@/utils/dummyData";
+// Lib
+import { getAllArticles } from "@/lib/queries";
+import { sortByDate } from "@/lib/sort-by-date";
 
 export default async function Home() {
+  const allArticles = unstable_cache(getAllArticles, ["allArticles"], {
+    revalidate: 60 * 60,
+  });
+
+  // If there is an error getting the articles, display an error overlay
+  if ((await allArticles()).status !== 201) {
+    return <OverlayError message="There was an error getting the articles" />;
+  }
+
+  // Sort the articles by date
+  const sortedArticles = sortByDate((await allArticles()).articles);
+
+  const newsArticles = sortedArticles
+    .filter((article) => article.categoryId === 1)
+    .slice(0, 6);
+
+  const reviewArticles = sortedArticles
+    .filter((article) => article.categoryId === 2)
+    .slice(0, 6);
+
   return (
     <main>
       <SectionContainer>
-        <Slideshow slides={DUMMY_ARTICLES} />
+        <Slideshow articles={sortedArticles} />
       </SectionContainer>
 
       <SectionContainer>
-        <Latest title="Latest" route="/news" />
+        <LatestSection title="Latest" route="/news" articles={sortedArticles} />
       </SectionContainer>
 
       <SectionContainer>
-        <HorizontalList title="News" route="/news" />
-        <HorizontalList title="Videos" route="/videos" />
-        <HorizontalList title="Reviews" route="/reviews" />
+        <ScrollableSection title="News" route="/news" articles={newsArticles} />
+        <ScrollableSection
+          title="Reviews"
+          route="/reviews"
+          articles={reviewArticles}
+        />
       </SectionContainer>
     </main>
   );

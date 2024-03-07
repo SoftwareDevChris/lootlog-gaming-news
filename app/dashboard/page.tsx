@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
 // Components
-import { Dashboard } from "@/components/dashboard/DashboardView";
+import { DashboardViewHandler } from "@/components/dashboard/DashboardViewHandler";
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -14,5 +14,5 @@ export default async function DashboardPage() {
     redirect("/");
   }
 
-  return <Dashboard />;
+  return <DashboardViewHandler clerkUser={{ id: user.id }} />;
 }

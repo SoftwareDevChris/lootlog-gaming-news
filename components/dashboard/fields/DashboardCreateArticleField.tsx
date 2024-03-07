@@ -1,9 +1,30 @@
-// Components
+import { useState } from "react";
 import Link from "next/link";
 
 // Components
 import { DashboardFieldContainer } from "../containers/DashboardFieldContainer";
 import { Button } from "@/components/ui/button";
+import { LoadingSpinner } from "@/components/ui/loading";
+
+const CreateArticleButton = () => {
+  "use client";
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <Button
+      disabled={isLoading}
+      onClick={() => setIsLoading(true)}
+      className="border border-neutral-300 bg-neutral-100 text-neutral-900 hover:border-neutral-200 hover:bg-neutral-200"
+    >
+      {isLoading ? (
+        <LoadingSpinner theme="orange" />
+      ) : (
+        <Link href="/dashboard/create-article">Open editor</Link>
+      )}
+    </Button>
+  );
+};
 
 type Props = {
   title: string;
@@ -22,9 +43,7 @@ export const DashboardCreateArticleField: React.FC<Props> = ({
           <p className="pt-2 text-sm text-neutral-500">{description}</p>
         </div>
         <div className="mt-4 lg:mt-0">
-          <Button className="border border-neutral-300 bg-neutral-100 text-neutral-900 hover:border-neutral-200 hover:bg-neutral-200">
-            <Link href="/dashboard/create-article">Open editor</Link>
-          </Button>
+          <CreateArticleButton />
         </div>
       </DashboardFieldContainer>
     </div>
