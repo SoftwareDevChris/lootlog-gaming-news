@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // Types
 import { TDashboardViews } from "@/types/types";
 
@@ -10,35 +12,25 @@ import {
 } from "@/components/ui/tooltip";
 
 type Props = {
-  isMenuOpen: boolean;
   title: TDashboardViews;
   icon: React.ReactNode;
-  setActiveView: React.Dispatch<React.SetStateAction<TDashboardViews>>;
 };
 
-export const DashboardNavigationItem: React.FC<Props> = ({
-  title,
-  icon,
-  setActiveView,
-  isMenuOpen,
-}) => {
+export const DashboardNavigationItem: React.FC<Props> = ({ title, icon }) => {
   return (
-    <li
-      onClick={() => setActiveView(title)}
-      className="flex cursor-pointer items-center overflow-hidden rounded-md  transition-all duration-200 ease-in-out hover:text-blue-600 hover:underline"
-    >
-      <TooltipProvider delayDuration={300}>
-        <Tooltip>
-          <TooltipTrigger>{icon}</TooltipTrigger>
-          {!isMenuOpen && (
-            <TooltipContent className="" side="right">
+    <li className="flex cursor-pointer items-center overflow-hidden hover:text-blue-600 hover:underline">
+      <Link href={`/dashboard/${title.toLowerCase()}`} className="flex">
+        <TooltipProvider delayDuration={300}>
+          <Tooltip>
+            <TooltipTrigger>{icon}</TooltipTrigger>
+            <TooltipContent className="" side="bottom">
               <p>{title}</p>
             </TooltipContent>
-          )}
-        </Tooltip>
-      </TooltipProvider>
+          </Tooltip>
+        </TooltipProvider>
 
-      <span className="hover:text-primary-500 ml-2">{title}</span>
+        <span className="ml-1 hidden md:block">{title}</span>
+      </Link>
     </li>
   );
 };

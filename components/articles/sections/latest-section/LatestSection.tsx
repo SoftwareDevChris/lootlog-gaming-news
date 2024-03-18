@@ -1,5 +1,5 @@
 import { LatestSectionItem } from "./LatestSectionItem";
-import { ArticleSectionTitleDefault } from "../../ArticleSectionTitleDefault";
+import { ArticleSectionTitleDefault } from "../ArticleSectionTitleDefault";
 
 import { DUMMY_ARTICLES } from "@/utils/dummyData";
 import { TArticle } from "@/types/types";

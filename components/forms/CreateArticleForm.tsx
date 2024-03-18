@@ -135,7 +135,8 @@ export const CreateArticleForm: React.FC<Props> = ({ categories }) => {
         </div>
 
         {/* Content */}
-        <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-100 pb-2">
+        <span className="bg-transparent text-sm">Content</span>
+        <div className="mt-1 overflow-hidden rounded-md border border-neutral-200 bg-neutral-100">
           <ArticleEditor onChange={(text) => setContent(text)} />
         </div>
 

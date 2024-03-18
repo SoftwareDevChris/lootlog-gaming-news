@@ -1,5 +1,3 @@
-import { SectionContainer } from "@/components/containers/SectionContainer";
-
 const TermsAndConditionsPage: React.FC = () => {
   return (
     <div className="mx-auto max-w-1300 text-neutral-200">

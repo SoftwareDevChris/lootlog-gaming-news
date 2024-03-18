@@ -1,6 +1,6 @@
 // Components
 import { ScrollableSectionItem } from "./ScrollableSectionItem";
-import { ArticleSectionTitleDefault } from "../../ArticleSectionTitleDefault";
+import { ArticleSectionTitleDefault } from "../ArticleSectionTitleDefault";
 
 // Types
 import { TArticle } from "@/types/types";

@@ -1,33 +1,29 @@
-import { TUser } from "@/types/types";
+import { Dashboard2StepVerificationField } from "@/components/dashboard/fields/Dashboard2StepVerificationField";
+import { DashboardBioField } from "@/components/dashboard/fields/DashboardBioField";
+import { DashboardDeleteAccountField } from "@/components/dashboard/fields/DashboardDeleteAccountField";
+import { DashboardInfoField } from "@/components/dashboard/fields/DashboardInfoField";
+import { getUserById } from "@/lib/queries";
+import { currentUser } from "@clerk/nextjs";
 
-// Components
-import { DashboardInfoField } from "../fields/DashboardInfoField";
-import { DashboardDeleteAccountField } from "../fields/DashboardDeleteAccountField";
-import { Dashboard2StepVerificationField } from "../fields/Dashboard2StepVerificationField";
-import { DashboardBioField } from "../fields/DashboardBioField";
-
-type Props = {
-  user: TUser | null;
-};
-
-export const DashboardAccountView: React.FC<Props> = ({ user }) => {
-  if (!user) return null;
+export default async function AccountPage() {
+  const user = await currentUser();
+  const userDetails = await getUserById(user!.id);
 
   return (
     <>
       <DashboardInfoField
         title="Name"
         description="Your full name."
-        value={`${user.firstName!} ${user.lastName!}`}
+        value={`${userDetails.user.firstName!} ${userDetails.user.lastName!}`}
       />
       <DashboardInfoField
         title="Email"
         description="The email address associated with your account."
-        value={user.email}
+        value={userDetails.user.email}
       />
 
       {/* BIOGRAPHY - ONLY FOR AUTHORS */}
-      {user.role === "AUTHOR" && (
+      {userDetails.user.role === "AUTHOR" && (
         <DashboardBioField
           title="Biography"
           description="The 'About me' text displayed on your author profile page."
@@ -37,7 +33,7 @@ export const DashboardAccountView: React.FC<Props> = ({ user }) => {
       <DashboardInfoField
         title="Account status"
         description="The current status of your account."
-        value={user.is_active ? "Active" : "Inactive"}
+        value={userDetails.user.is_active ? "Active" : "Inactive"}
       />
       <Dashboard2StepVerificationField
         title="Two-Step Verification"
@@ -46,7 +42,7 @@ export const DashboardAccountView: React.FC<Props> = ({ user }) => {
       <DashboardInfoField
         title="Role"
         description="Your role on the website."
-        value={user.role!}
+        value={userDetails.user.role!}
       />
       <DashboardDeleteAccountField
         title="Delete Account"
@@ -54,4 +50,4 @@ export const DashboardAccountView: React.FC<Props> = ({ user }) => {
       />
     </>
   );
-};
+}

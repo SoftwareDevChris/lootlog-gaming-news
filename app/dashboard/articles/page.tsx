@@ -1,6 +1,6 @@
-import { DashboardCreateArticleField } from "../fields/DashboardCreateArticleField";
+import { DashboardCreateArticleField } from "@/components/dashboard/fields/DashboardCreateArticleField";
 
-export const DashboardArticlesView: React.FC = () => {
+export default function ArticlesPage() {
   return (
     <>
       <DashboardCreateArticleField
@@ -9,4 +9,4 @@ export const DashboardArticlesView: React.FC = () => {
       />
     </>
   );
-};
+}

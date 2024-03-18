@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 import { PageTitle } from "@/components/PageTitle";
 import { SectionContainer } from "@/components/containers/SectionContainer";
 import { PaginationGrid } from "@/components/articles/sections/pagination-grid/PaginationGrid";
-import { ArticleSectionTitleDefault } from "@/components/articles/ArticleSectionTitleDefault";
+import { ArticleSectionTitleDefault } from "@/components/articles/sections/ArticleSectionTitleDefault";
 import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib

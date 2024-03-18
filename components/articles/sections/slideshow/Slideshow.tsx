@@ -43,24 +43,26 @@ export const Slideshow: React.FC<Props> = ({ articles }) => {
   }, [goToNextSlide]);
 
   return (
-    <div className="mx-auto w-full max-w-[1200px]">
+    <div className="mx-auto w-full max-w-[1300px] md:px-[50px]">
       <div className="relative">
+        {/* Arrows */}
         <div className="absolute left-0 top-1/2 flex w-full items-center justify-between">
           <button
             title="Previous slide"
-            className="absolute -left-[50px] top-[calc(50%-20px)] z-10 mr-2 -translate-y-1/2 rounded-full bg-custom-amber-800 p-2 text-white sm:top-1/2"
+            className="absolute left-5 top-[calc(50%-20px)] z-10 mr-2 -translate-y-1/2 rounded-full bg-custom-amber-800 p-2 text-white sm:top-1/2 md:-left-[50px]"
             onClick={goToPreviousSlide}
           >
             <FaArrowLeft className="text-sm sm:text-xl" />
           </button>
           <button
             title="Next slide"
-            className="absolute -right-[50px] top-[calc(50%-20px)] z-10 ml-2 -translate-y-1/2 rounded-full bg-custom-amber-800 p-2 text-white sm:top-1/2"
+            className="absolute right-5 top-[calc(50%-20px)] z-10 ml-2 -translate-y-1/2 rounded-full bg-custom-amber-800 p-2 text-white sm:top-1/2 md:-right-[50px]"
             onClick={goToNextSlide}
           >
             <FaArrowRight className="text-sm sm:text-xl" />
           </button>
         </div>
+        {/* Images */}
         <div className="relative flex w-full overflow-hidden rounded-xl pt-[56.25%]">
           {slideshowArticles.map((slide, index) => (
             <div
@@ -79,6 +81,7 @@ export const Slideshow: React.FC<Props> = ({ articles }) => {
             </div>
           ))}
         </div>
+        {/* Bullet indicators */}
         <div className="-bottom-12 flex w-full justify-center space-x-2 py-4 sm:absolute lg:bottom-0">
           {slideshowArticles.map((_, index) => (
             <div

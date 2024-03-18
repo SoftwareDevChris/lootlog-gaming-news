@@ -30,6 +30,20 @@ export async function getUserById(userId: string) {
 }
 
 // --------------------------
+// Get all users (ADMIN ONLY)
+// --------------------------
+export async function getAllUsers() {
+  try {
+    const user = await prisma.user.findMany();
+
+    return { status: 201, users: user, error: null };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, users: null, error: "An error occurred" };
+  }
+}
+
+// --------------------------
 // Get all article categories
 // --------------------------
 export async function getArticleCategories() {
