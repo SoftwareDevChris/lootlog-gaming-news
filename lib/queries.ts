@@ -10,6 +10,7 @@ import { storage } from "../firebase/init";
 import { prisma } from "./db";
 
 import { currentUser } from "@clerk/nextjs";
+import { TArticle, TUser } from "@/types/types";
 
 // ----------------------
 // Get a user by their ID
@@ -54,6 +55,31 @@ export async function getArticleCategories() {
   } catch (e) {
     console.error(e);
     return { status: 500, categories: null, error: "An error occurred" };
+  }
+}
+
+// ---------------------
+// Get one article by ID
+// ---------------------
+export async function getArticleById(id: string): Promise<{
+  status: number;
+  article: TArticle | null;
+  error: string | null;
+}> {
+  try {
+    const article = await prisma.article.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        author: true,
+      },
+    });
+
+    return { status: 201, article: article, error: null };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, article: null, error: "An error occurred" };
   }
 }
 

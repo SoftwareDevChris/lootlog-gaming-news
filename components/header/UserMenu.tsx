@@ -17,7 +17,7 @@ import { useUser, useClerk } from "@clerk/nextjs";
 export const UserMenu: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const { isSignedIn } = useUser();
+  const { isSignedIn, isLoaded } = useUser();
   const { signOut } = useClerk();
 
   const authContext = useContext(AuthContext);
@@ -26,6 +26,10 @@ export const UserMenu: React.FC = () => {
     signOut();
     authContext.signOut();
   };
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
     <div className="col-start-4 col-end-5 row-start-1 row-end-2 w-fit items-center justify-self-end">

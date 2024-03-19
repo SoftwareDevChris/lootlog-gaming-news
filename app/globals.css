@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
+/* CSS */
 @import "../components/articles/sections/scrollable-section/ScrollableSection.css";
+@import "../app/article/[id]/article.css";
 
 @tailwind base;
 @tailwind components;

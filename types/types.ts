@@ -8,7 +8,8 @@ export type TArticle = {
   authorId: string;
   is_released: boolean;
   is_featured: boolean;
-  tags: string | string[];
+  tags?: string | string[];
+  author?: TUser;
 };
 
 export type TCategory = {

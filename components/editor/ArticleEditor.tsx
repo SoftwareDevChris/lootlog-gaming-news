@@ -15,11 +15,6 @@ export const ArticleEditor: React.FC<Props> = ({ onChange }) => {
     content: "Write something awesome!",
     extensions: [
       StarterKit.configure({
-        heading: {
-          HTMLAttributes: {
-            class: "text-lg font-bold",
-          },
-        },
         blockquote: {
           HTMLAttributes: {
             class:
