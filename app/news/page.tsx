@@ -20,7 +20,7 @@ export default async function News() {
   });
 
   // If there is an error getting the articles, display an error overlay
-  if ((await allArticles()).status !== 201) {
+  if ((await allArticles()).status !== 200) {
     return <OverlayError message="There was an error getting the articles" />;
   }
 

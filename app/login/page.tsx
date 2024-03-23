@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Components
@@ -28,6 +28,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // Types
 import { LoadingSpinner } from "@/components/ui/loading";
 
+// Toast
+import toast from "react-hot-toast";
+
 // Login Form Schema
 const loginFormSchema = z.object({
   email: z.string().email(),
@@ -39,9 +42,9 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { isLoaded, signIn, setActive } = useSignIn();
+  const { isSignedIn } = useUser();
 
   const router = useRouter();
-  const { isSignedIn } = useUser();
 
   if (isSignedIn) {
     router.push("/");
@@ -67,9 +70,16 @@ const Login: React.FC = () => {
       });
 
       if (result.status === "complete") {
+        setIsLoading(false);
         console.log("Login successful");
 
         await setActive({ session: result.createdSessionId });
+        toast.success("Login Success", {
+          position: "top-right",
+          duration: 4000,
+          className: "mt-16",
+          id: "login-success",
+        });
         router.push("/");
         return;
       } else {
@@ -83,68 +93,71 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="px-4 py-8 md:py-40">
-      <div className="mx-auto w-full max-w-[640px] overflow-hidden rounded-md bg-neutral-100 p-8">
-        {/* Title */}
-        <h1 className="mb-8 text-center text-3xl font-bold capitalize text-neutral-900">
-          Sign in
-        </h1>
+    <>
+      {/* Sign In Form */}
+      <div className="px-4 py-8 md:py-40">
+        <div className="mx-auto w-full max-w-[640px] overflow-hidden rounded-md bg-neutral-100 p-8">
+          {/* Title */}
+          <h1 className="mb-8 text-center text-3xl font-bold capitalize text-neutral-900">
+            Sign in
+          </h1>
 
-        {/* Error Message */}
-        {errorMessage && (
-          <p className="mb-8 text-center text-sm text-red-500">
-            {errorMessage}
-          </p>
-        )}
+          {/* Error Message */}
+          {errorMessage && (
+            <p className="mb-8 text-center text-sm text-red-500">
+              {errorMessage}
+            </p>
+          )}
 
-        {/* Sign Up Form */}
-        <Form {...loginForm}>
-          <form
-            onSubmit={loginForm.handleSubmit(onSubmitHandler)}
-            className="space-y-4"
-          >
-            {/* Email */}
-            <FormField
-              control={loginForm.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Password */}
-            <FormField
-              control={loginForm.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Submit */}
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full rounded bg-custom-amber-800 py-2 capitalize text-white hover:bg-amber-800"
+          {/* Sign Up Form */}
+          <Form {...loginForm}>
+            <form
+              onSubmit={loginForm.handleSubmit(onSubmitHandler)}
+              className="space-y-4"
             >
-              {isLoading ? <LoadingSpinner theme="orange" /> : "Sign in"}
-            </Button>
-          </form>
-        </Form>
+              {/* Email */}
+              <FormField
+                control={loginForm.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password */}
+              <FormField
+                control={loginForm.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Submit */}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full rounded bg-custom-amber-800 py-2 capitalize text-white hover:bg-amber-800"
+              >
+                {isLoading ? <LoadingSpinner theme="orange" /> : "Sign in"}
+              </Button>
+            </form>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

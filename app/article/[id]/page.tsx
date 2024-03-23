@@ -13,11 +13,9 @@ export default async function ArticlePage({
 }) {
   const { article, error, status } = await getArticleById(params.id);
 
-  console.log(article);
-
-  if (status !== 201 || !article) {
+  if (status !== 200 || !article) {
     return (
-      <div className="min-h-[500px] text-neutral-100">
+      <div className="mx-auto flex min-h-[500px] flex-col items-center justify-center text-neutral-100">
         <h1>Error</h1>
         <p>{error}</p>
       </div>
@@ -46,7 +44,7 @@ export default async function ArticlePage({
         <Image
           className="object-cover object-center"
           alt=""
-          src={article!.image_url}
+          src={article!.image[0].url}
           fill
           sizes="1000px"
         />

@@ -28,7 +28,7 @@ export const ScrollableSectionItem: React.FC<Props> = ({ noFlex, article }) => {
           <Image
             className="object-cover object-center"
             alt=""
-            src={article.image_url}
+            src={article.image[0].url ?? "/images/placeholder.webp"}
             fill
             sizes="1000px"
           />

@@ -6,6 +6,11 @@ article.article-page h3 {
   line-height: 1.75rem /* 28px */;
 }
 
+article.article-page a {
+  color: #0070f3;
+  text-decoration: underline;
+}
+
 @media screen and (min-width: 640px) {
   article.article-page h2,
   article.article-page h3 {

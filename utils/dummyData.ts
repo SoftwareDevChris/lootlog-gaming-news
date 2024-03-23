@@ -6,11 +6,16 @@ export const DUMMY_ARTICLES: TArticle[] = [
     created_at: new Date(),
     title: "The Evolution of Gaming",
     content: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tags: "gaming",
     authorId: "ahbuiujh4ting3q4hj34q8hg438BJ3a",
     categoryId: 1,
-    image_url: "https://via.placeholder.com/150",
-    is_released: true,
+    image: [
+      {
+        name: "",
+        url: "https://via.placeholder.com/150",
+        articleId: "ga3ag4334q8gbhn5g94387bq34hq3",
+      },
+    ],
+    is_published: true,
     is_featured: true,
   },
   {
@@ -18,11 +23,16 @@ export const DUMMY_ARTICLES: TArticle[] = [
     created_at: new Date(),
     title: "Top 10 Must-Play Games of the Year",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tags: "gaming",
     authorId: "ahbuiujh4ting3q4hj34q8hg438BJ3a",
     categoryId: 1,
-    image_url: "https://via.placeholder.com/150",
-    is_released: true,
+    image: [
+      {
+        name: "",
+        url: "https://via.placeholder.com/150",
+        articleId: "gw5w98j3ghj9q3q3gh34GH",
+      },
+    ],
+    is_published: true,
     is_featured: true,
   },
   {
@@ -30,11 +40,16 @@ export const DUMMY_ARTICLES: TArticle[] = [
     created_at: new Date(),
     title: "The Impact of Esports on the Gaming Industry",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tags: "esports",
     authorId: "ahbuiujh4ting3q4hj34q8hg438BJ3a",
     categoryId: 1,
-    image_url: "https://via.placeholder.com/150",
-    is_released: true,
+    image: [
+      {
+        name: "",
+        url: "https://via.placeholder.com/150",
+        articleId: "hsgfpsdjh95nvRHG84wng4yhjv0E3W478H",
+      },
+    ],
+    is_published: true,
     is_featured: true,
   },
   {
@@ -42,11 +57,16 @@ export const DUMMY_ARTICLES: TArticle[] = [
     created_at: new Date(),
     title: "New games on the horizon for 2024",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tags: "gaming",
     authorId: "ahbuiujh4ting3q4hj34q8hg438BJ3a",
     categoryId: 1,
-    image_url: "https://via.placeholder.com/150",
-    is_released: true,
+    image: [
+      {
+        name: "",
+        url: "https://via.placeholder.com/150",
+        articleId: "gw5w98j3ae5jweACRHGWEH",
+      },
+    ],
+    is_published: true,
     is_featured: true,
   },
   {
@@ -55,11 +75,16 @@ export const DUMMY_ARTICLES: TArticle[] = [
     title:
       "New promising MMORPG is ready for release soon! Sign up now to get early access and exclusive rewards and bonuses!",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    tags: "esports",
     authorId: "ahbuiujh4ting3q4hj34q8hg438BJ3a",
     categoryId: 1,
-    image_url: "https://via.placeholder.com/150",
-    is_released: true,
+    image: [
+      {
+        name: "",
+        url: "https://via.placeholder.com/150",
+        articleId: "hsgfpsdaerhASWGHARqwSFHHSDagEG",
+      },
+    ],
+    is_published: true,
     is_featured: true,
   },
 ];
@@ -70,7 +95,6 @@ export const DUMMY_AUTHORS: TUser[] = [
     firstName: "Christian",
     lastName: "Rosenville",
     email: "web.chrisr@gmail.com",
-    image_url: "https://avatars.githubusercontent.com/u/183812?v=4",
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     twitter_url: "https://twitter.com/chrisrosenville",
     github_url: "@SoftwareDevChris",

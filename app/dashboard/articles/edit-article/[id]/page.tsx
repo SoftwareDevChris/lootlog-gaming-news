@@ -1,34 +1,38 @@
-import { Suspense } from "react";
-
 // Queries
-import { getArticleCategories } from "@/lib/queries";
+import { getArticleById, getArticleCategories } from "@/lib/queries";
 
 // Components
 import { CreateArticleForm } from "@/components/forms/CreateArticleForm";
-import { LoadingSpinner } from "@/components/ui/loading";
 
-const LoadingFallback = () => {
-  return (
-    <div className="h-full w-full items-center justify-center">
-      <div className="h-20 w-20">
-        <LoadingSpinner theme="orange" />
-      </div>
-    </div>
-  );
-};
+export default async function EditArticlePage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  // Get the article ID passed via the URL
+  const articleId = params.id;
+  if (!articleId) {
+    return null;
+  }
 
-export default async function EditArticlePage() {
+  // Get the article to edit
+  const articleToEdit = await getArticleById(articleId);
+  if (articleToEdit.status !== 200) {
+    return null;
+  }
+
+  // Get the categories to display in the form
   const categories = await getArticleCategories();
-
-  if (!categories.data) {
+  if (categories.status !== 200) {
     return null;
   }
 
   return (
-    <Suspense fallback={<LoadingFallback />}>
-      <div className="h-full w-full pl-2 md:pl-8">
-        <CreateArticleForm categories={categories.data} />
-      </div>
-    </Suspense>
+    <div className="h-full w-full pl-2 md:pl-8">
+      <CreateArticleForm
+        categories={categories.categories}
+        existingArticle={articleToEdit.article}
+      />
+    </div>
   );
 }

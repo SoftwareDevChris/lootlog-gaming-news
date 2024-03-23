@@ -11,7 +11,7 @@ export const Slide: React.FC<{ article: TArticle }> = ({ article }) => {
         <Image
           className="aspect-16/9 object-cover object-center"
           alt=""
-          src={article.image_url}
+          src={article?.image[0]?.url ?? "/images/placeholder.webp"}
           fill
           sizes="1300px"
         />

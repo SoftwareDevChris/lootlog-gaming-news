@@ -1,18 +1,16 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 // Next
 import Link from "next/link";
-
-// Context
-import { AuthContext } from "@/context/auth";
 
 // Icons
 import { FaUserCircle } from "react-icons/fa";
 
 // Clerk Auth
 import { useUser, useClerk } from "@clerk/nextjs";
+import toast from "react-hot-toast";
 
 export const UserMenu: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -20,11 +18,9 @@ export const UserMenu: React.FC = () => {
   const { isSignedIn, isLoaded } = useUser();
   const { signOut } = useClerk();
 
-  const authContext = useContext(AuthContext);
-
   const logoutHandler = () => {
     signOut();
-    authContext.signOut();
+    toast.success("You have been logged out.");
   };
 
   if (!isLoaded) {

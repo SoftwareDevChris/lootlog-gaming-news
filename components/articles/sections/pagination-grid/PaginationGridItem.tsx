@@ -21,7 +21,9 @@ export const PaginationGridItem: React.FC<Props> = ({ article }) => {
           <Image
             className="object-cover object-center"
             alt=""
-            src={article.image_url}
+            src={
+              article.image ? article.image[0].url : "/images/placeholder.jpg"
+            }
             fill
             sizes="1000px"
           />

@@ -17,11 +17,11 @@ export const LatestSectionItem: React.FC<{
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >
-      <Link className="bg-inherit" href={`/article/${article.id}`}>
+      <Link className="bg-inherit" href={`/article/${article?.id}`}>
         <Image
           className="aspect-16/9 object-cover object-center"
           alt=""
-          src={article?.image_url ?? "/images/placeholder.webp"}
+          src={article?.image[0]?.url ?? "/images/placeholder.webp"}
           fill
           sizes="1000px"
         />

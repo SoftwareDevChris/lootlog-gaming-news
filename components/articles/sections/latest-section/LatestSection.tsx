@@ -17,11 +17,11 @@ export const LatestSection: React.FC<{
         <div className="col-span-1 row-span-1 flex w-full lg:col-span-2 lg:row-span-2">
           <LatestSectionItem
             isSpotlight
-            article={articles ? articles[0] : DUMMY_ARTICLES[0]}
+            article={articles[0] ? articles[0] : DUMMY_ARTICLES[0]}
           />
         </div>
-        {/* Small articles */}
 
+        {/* Small articles */}
         <LatestSectionItem
           article={articles[1] ? articles[1] : DUMMY_ARTICLES[1]}
         />

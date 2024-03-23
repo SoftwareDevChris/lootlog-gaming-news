@@ -1,31 +1,3 @@
-export type TArticle = {
-  id?: string;
-  created_at: Date;
-  title: string;
-  content: string;
-  image_url: string;
-  categoryId: number;
-  authorId: string;
-  is_released: boolean;
-  is_featured: boolean;
-  tags?: string | string[];
-  author?: TUser;
-};
-
-export type TCategory = {
-  id: number;
-  name: string;
-  articles: TArticle[] | null;
-};
-
-export type TTag = {
-  id: string;
-  name: string;
-  articles: TArticle[] | null;
-};
-
-export type TRole = "AUTHOR" | "ADMIN" | "USER";
-
 export type TUser = {
   id?: string;
   email: string;
@@ -41,4 +13,38 @@ export type TUser = {
   articles?: string[] | null;
 };
 
-export type TDashboardViews = "Account" | "Articles" | "Users" | "Settings";
+export type TArticle = {
+  created_at: Date;
+  title: string;
+  content: string;
+  categoryId: number;
+  authorId: string;
+  image: TImage;
+  is_published: boolean;
+  is_featured: boolean;
+  id?: string;
+  author?: TUser;
+  category?: TCategory;
+};
+
+export type TImage = [
+  {
+    id?: string;
+    name: string;
+    url: string;
+    articleId: string;
+  },
+];
+
+export type TCategory = {
+  id: number;
+  name: string;
+  articles: TArticle[] | null;
+};
+
+export type TTag = {
+  id: string;
+  name: string;
+};
+
+export type TRole = "AUTHOR" | "ADMIN" | "USER";

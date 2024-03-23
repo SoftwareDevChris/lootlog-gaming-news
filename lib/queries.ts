@@ -3,14 +3,20 @@
 import { z } from "zod";
 
 // Firebase
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { storage } from "../firebase/init";
 
 // Prisma
 import { prisma } from "./db";
 
 import { currentUser } from "@clerk/nextjs";
-import { TArticle, TUser } from "@/types/types";
+import { TArticle, TImage, TUser } from "@/types/types";
+import { parse } from "path";
 
 // ----------------------
 // Get a user by their ID
@@ -23,7 +29,7 @@ export async function getUserById(userId: string) {
       },
     });
 
-    return { status: 201, user: user, error: null };
+    return { status: 200, user: user, error: null };
   } catch (e) {
     console.error(e);
     return { status: 500, user: null, error: "An error occurred" };
@@ -37,7 +43,7 @@ export async function getAllUsers() {
   try {
     const user = await prisma.user.findMany();
 
-    return { status: 201, users: user, error: null };
+    return { status: 200, users: user, error: null };
   } catch (e) {
     console.error(e);
     return { status: 500, users: null, error: "An error occurred" };
@@ -51,7 +57,7 @@ export async function getArticleCategories() {
   try {
     const categories = await prisma.category.findMany();
 
-    return { status: 201, categories: categories, error: null };
+    return { status: 200, categories: categories, error: null };
   } catch (e) {
     console.error(e);
     return { status: 500, categories: null, error: "An error occurred" };
@@ -73,15 +79,42 @@ export async function getArticleById(id: string): Promise<{
       },
       include: {
         author: true,
+        category: true,
+        image: true,
       },
     });
 
-    return { status: 201, article: article, error: null };
+    return { status: 200, article: article, error: null };
   } catch (e) {
     console.error(e);
     return { status: 500, article: null, error: "An error occurred" };
   }
 }
+
+// --------------------------
+// Delete article image by ID
+// --------------------------
+export const deleteArticleImage = async (article: TArticle) => {
+  const imageRef = ref(storage, `images/${article.image[0].name}`);
+  const imageId = parseInt(article.image[0].id!);
+
+  try {
+    await deleteObject(imageRef);
+    console.log("Deleted image from storage");
+
+    await prisma.image.delete({
+      where: {
+        id: imageId,
+      },
+    });
+    console.log("Deleted image database");
+
+    return { status: 200, statusText: "OK" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, statusText: "Internal Server Error" };
+  }
+};
 
 // ----------------
 // Get all articles
@@ -92,10 +125,37 @@ export async function getAllArticles(): Promise<{
   error: string | null;
 }> {
   try {
-    const articles = await prisma.article.findMany({});
+    const articles = await prisma.article.findMany({
+      include: {
+        image: true,
+      },
+    });
     console.log("Fetched all articles");
 
-    return { status: 201, articles: articles, error: null };
+    return { status: 200, articles: articles, error: null };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, articles: null, error: "An error occurred" };
+  }
+}
+
+// ------------------------
+// Get all articles by user
+// ------------------------
+export async function getArticlesByUser(userId: string) {
+  try {
+    const articles = await prisma.article.findMany({
+      where: {
+        authorId: userId,
+      },
+      include: {
+        image: true,
+        author: true,
+        category: true,
+      },
+    });
+
+    return { status: 200, articles: articles, error: null };
   } catch (e) {
     console.error(e);
     return { status: 500, articles: null, error: "An error occurred" };
@@ -105,19 +165,21 @@ export async function getAllArticles(): Promise<{
 // ---------------------
 // Create a new article
 // ---------------------
-const createArticleSchema = z.object({
+const articleSchema = z.object({
   title: z.string().min(3).max(120),
   content: z.string().min(10).max(10000),
   category: z.number(),
-  image: z.object({
-    name: z.string(),
-    type: z.string().regex(/image\/.*/),
-    size: z.number().max(5000000),
-  }),
+  image: z
+    .object({
+      name: z.string(),
+      type: z.string().regex(/image\/.*/),
+      size: z.number().max(5000000),
+    })
+    .nullable(),
 });
 
 export async function createArticle(content: string, data: FormData) {
-  const validatedFields = createArticleSchema.safeParse({
+  const validatedFields = articleSchema.safeParse({
     title: data.get("title"),
     category: parseInt(data.get("category") as string),
     image: data.get("image"),
@@ -155,7 +217,6 @@ export async function createArticle(content: string, data: FormData) {
         title: data.get("title") as string,
         content: content,
         // @ts-ignore
-        image_url: imageUrl,
         category: {
           connect: {
             id: parseInt(data.get("category") as string),
@@ -166,6 +227,12 @@ export async function createArticle(content: string, data: FormData) {
             id: user?.id,
           },
         },
+        image: {
+          create: {
+            name: image.name,
+            url: imageUrl,
+          },
+        },
       },
     });
 
@@ -174,4 +241,109 @@ export async function createArticle(content: string, data: FormData) {
     console.error(e);
     return { status: 500, statusText: "Internal Server Error" };
   }
+}
+
+// -----------------------
+// Update an article by ID
+// -----------------------
+export async function updateArticle(
+  newArticleBody: string,
+  newArticleFields: FormData,
+  previousImage?: TImage,
+  previousArticleId?: string,
+) {
+  const validatedFields = articleSchema.safeParse({
+    title: newArticleFields.get("title") as string,
+    category: parseInt(newArticleFields.get("category") as string),
+    image: newArticleFields.get("image"),
+    content: newArticleBody,
+  });
+
+  if (!validatedFields.success) {
+    console.error(validatedFields.error);
+    return { status: 400, statusText: `Error: ${validatedFields.error}` };
+  }
+
+  const newImage = newArticleFields.get("image") as File;
+
+  try {
+    // --------------------------------------------------------
+    // If the user has chosen a different image for the article
+    // --------------------------------------------------------
+    if (
+      newImage &&
+      previousImage &&
+      previousArticleId &&
+      previousImage[0].name !== newImage.name
+    ) {
+      console.log("Different image chosen");
+
+      // Delete the existing image from storage
+      const imageRef = ref(storage, `images/${previousImage[0].name}`);
+      await deleteObject(imageRef);
+
+      // Upload the new image to storage
+      const storageRef = ref(storage, `images/${newImage.name}`);
+      await uploadBytes(storageRef, newImage);
+
+      // Get the URL of the newly uploaded image and return it
+      const imageUrl = await getDownloadURL(
+        ref(storage, `images/${newImage.name}`),
+      ).then((url) => {
+        return url;
+      });
+
+      // Update the article in the database
+      await prisma.article.update({
+        where: {
+          id: previousArticleId!,
+        },
+        data: {
+          title: newArticleFields.get("title") as string,
+          content: newArticleBody,
+          category: {
+            connect: {
+              id: parseInt(newArticleFields.get("category") as string),
+            },
+          },
+          image: {
+            delete: {
+              id: parseInt(previousImage[0].id!), // Delete the previous image
+            },
+            create: {
+              name: newImage.name,
+              url: imageUrl,
+            },
+          },
+        },
+      });
+    }
+    // -------------------------------------------------------------
+    // If the user has chosen the same image for the updated article
+    // -------------------------------------------------------------
+    else {
+      console.log("Same image chosen");
+
+      // Update the article in the database with the new values
+      await prisma.article.update({
+        where: {
+          id: previousArticleId!,
+        },
+        data: {
+          title: newArticleFields.get("title") as string,
+          content: newArticleBody,
+          category: {
+            connect: {
+              id: parseInt(newArticleFields.get("category") as string),
+            },
+          },
+        },
+      });
+    }
+  } catch (e) {
+    console.error(e);
+    return { status: 500, statusText: "Internal Server Error" };
+  }
+
+  return { status: 200, statusText: "OK" };
 }

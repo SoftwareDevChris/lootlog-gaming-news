@@ -17,8 +17,10 @@ export default async function Home() {
   });
 
   // If there is an error getting the articles, display an error overlay
-  if ((await allArticles()).status !== 201) {
-    return <OverlayError message="There was an error getting the articles" />;
+  if ((await allArticles()).status !== 200) {
+    return (
+      <OverlayError message="The website is under maintenance. Please come back later." />
+    );
   }
 
   // Sort the articles by date

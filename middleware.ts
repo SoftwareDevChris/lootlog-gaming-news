@@ -13,6 +13,7 @@ export default authMiddleware({
     "/about",
     "/terms-and-conditions",
     "/privacy-policy",
+    "/article",
   ],
   afterAuth(auth, req, evt) {
     if (auth.userId && !auth.isPublicRoute) {
