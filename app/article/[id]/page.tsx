@@ -11,13 +11,13 @@ export default async function ArticlePage({
 }: {
   params: { id: string };
 }) {
-  const { article, error, status } = await getArticleById(params.id);
+  const { status, statusText, article } = await getArticleById(params.id);
 
   if (status !== 200 || !article) {
     return (
       <div className="mx-auto flex min-h-[500px] flex-col items-center justify-center text-neutral-100">
         <h1>Error</h1>
-        <p>{error}</p>
+        <p>{statusText}</p>
       </div>
     );
   }
