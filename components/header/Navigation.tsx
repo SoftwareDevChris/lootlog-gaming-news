@@ -36,6 +36,7 @@ export const Navigation: React.FC = () => {
           <ul className="absolute left-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md md:hidden">
             {ROUTES.map((item) => (
               <li
+                onClick={() => setIsMenuOpen(false)}
                 key={item.name}
                 className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white"
               >

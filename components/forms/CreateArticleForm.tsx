@@ -85,7 +85,7 @@ export const CreateArticleForm: React.FC<Props> = ({
             icon: "🎉",
             duration: 5000,
           });
-          router.push("/dashboard");
+          router.push("/dashboard/articles");
         }
       }
       // If the user is creating a new article
@@ -99,7 +99,7 @@ export const CreateArticleForm: React.FC<Props> = ({
             icon: "🎉",
             duration: 5000,
           });
-          router.push("/dashboard");
+          router.push("/dashboard/articles");
         }
       }
     } catch (error) {

@@ -41,7 +41,7 @@ export const UserMenu: React.FC = () => {
             <>
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
                 <Link
-                  href="/dashboard"
+                  href="/dashboard/account"
                   onClick={() => setIsUserMenuOpen(false)}
                 >
                   Dashboard

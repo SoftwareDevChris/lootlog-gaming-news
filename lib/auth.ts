@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 
 // Clerk Auth
-import { auth, clerkClient } from "@clerk/nextjs";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs";
 
 import { prisma } from "./db";
 
@@ -37,16 +37,24 @@ export async function createUser(user: TUser) {
 // Delete User
 // ---------------------------------------------------------
 export async function deleteUser() {
-  const { userId } = auth();
+  const user = await currentUser();
 
-  if (!userId) {
-    return { message: "User not found" };
+  if (!user?.id) {
+    return { status: 400, statusText: "User ID is required" };
   }
 
   try {
-    await clerkClient.users.deleteUser(userId);
-    redirect("/");
+    await clerkClient.users.deleteUser(user.id);
+
+    // Delete user from database
+    await prisma.user.delete({
+      where: {
+        id: user.id,
+      },
+    });
+
+    return { status: 200, statusText: "User deleted successfully" };
   } catch (error) {
-    return { message: "There was an error deleting the user" };
+    return { status: 500, statusText: "There was an error deleting the user" };
   }
 }
