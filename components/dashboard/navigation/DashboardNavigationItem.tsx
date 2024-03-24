@@ -1,8 +1,5 @@
 import Link from "next/link";
 
-// Types
-import { TDashboardViews } from "@/types/types";
-
 // Components
 import {
   Tooltip,
@@ -12,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 
 type Props = {
-  title: TDashboardViews;
+  title: string;
   icon: React.ReactNode;
 };
 

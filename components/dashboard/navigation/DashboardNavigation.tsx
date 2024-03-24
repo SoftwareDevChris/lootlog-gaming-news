@@ -1,5 +1,5 @@
 // Types
-import { TDashboardViews, TUser } from "@/types/types";
+import { TUser } from "@/types/types";
 
 // Components
 import { DashboardNavigationItem } from "./DashboardNavigationItem";
