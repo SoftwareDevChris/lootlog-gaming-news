@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
             <span className="text-custom-amber-800">Log</span>
           </h3>
           <p className="mx-auto max-w-80 pr-4 text-center text-xs font-normal md:mx-0 md:text-start">
-            LootLog is a website dedicated to providing gamers with the most
+            Loot Log is a website dedicated to providing gamers with the most
             relevant and engaging content about the world of video games. Our
             mission is to inform, entertain, and inspire our readers with our
             comprehensive coverage of the gaming industry, culture, and

@@ -35,7 +35,7 @@ export default async function News() {
       <SectionContainer>
         <PageTitle
           title="News"
-          paragraph="Stay updated with the latest happenings in the gaming world. LootLog's news section is your one-stop shop for all things gaming."
+          paragraph="Stay updated with the latest happenings in the gaming world. Loot Log's news section is your one-stop shop for all things gaming."
         />
       </SectionContainer>
 

@@ -14,8 +14,9 @@ import { Footer } from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Gaming News",
-  description: "Your source for the lastest gaming news and reviews.",
+  title: "Loot Log - Gaming News and Reviews",
+  description:
+    "Loot Log is your source for the lastest gaming news and reviews.",
 };
 
 export default function RootLayout({

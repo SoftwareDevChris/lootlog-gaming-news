@@ -35,7 +35,7 @@ export default async function Reviews() {
       <SectionContainer>
         <PageTitle
           title="Reviews"
-          paragraph="Read our honest, detailed, and informative reviews of the best games in the market. LootLog's reviews section is your guide to gaming."
+          paragraph="Read our honest, detailed, and informative reviews of the best games in the market. Loot Log's reviews section is your guide to gaming."
         />
       </SectionContainer>
 
