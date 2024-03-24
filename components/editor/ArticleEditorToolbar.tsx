@@ -48,12 +48,6 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
 
   if (!editor) return null;
 
-  onkeydown = (e) => {
-    if (e.key === "Enter") {
-      editor.chain().focus().setHardBreak().run();
-    }
-  };
-
   return (
     <div className="flex w-full space-x-6 border-b border-neutral-200 bg-neutral-100 p-2">
       <div className="flex space-x-2">

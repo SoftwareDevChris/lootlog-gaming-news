@@ -14,9 +14,25 @@ import { storage } from "../firebase/init";
 // Prisma
 import { prisma } from "./db";
 
+// Clerk
 import { currentUser } from "@clerk/nextjs";
+
+// Types
 import { TArticle, TImage, TUser } from "@/types/types";
-import { parse } from "path";
+
+// Article validation schema
+const articleSchema = z.object({
+  title: z.string().min(3).max(120),
+  content: z.string().min(10).max(10000),
+  category: z.number(),
+  image: z
+    .object({
+      name: z.string(),
+      type: z.string().regex(/image\/.*/),
+      size: z.number().max(5000000),
+    })
+    .nullable(),
+});
 
 // ----------------------
 // Get a user by their ID
@@ -67,11 +83,7 @@ export async function getArticleCategories() {
 // ---------------------
 // Get one article by ID
 // ---------------------
-export async function getArticleById(id: string): Promise<{
-  status: number;
-  article: TArticle | null;
-  error: string | null;
-}> {
+export async function getArticleById(id: string) {
   try {
     const article = await prisma.article.findUnique({
       where: {
@@ -84,10 +96,10 @@ export async function getArticleById(id: string): Promise<{
       },
     });
 
-    return { status: 200, article: article, error: null };
+    return { status: 200, article: article, statusText: "OK" };
   } catch (e) {
     console.error(e);
-    return { status: 500, article: null, error: "An error occurred" };
+    return { status: 500, article: null, statusText: "Internal Server Error" };
   }
 }
 
@@ -116,14 +128,62 @@ export const deleteArticleImage = async (article: TArticle) => {
   }
 };
 
+// ----------------------------------
+// Toggle article public status by ID
+// ----------------------------------
+export async function toggleArticlePublicStatusById(
+  articleId: string,
+  isPublished: boolean,
+) {
+  const shouldPublish = !isPublished;
+
+  try {
+    await prisma.article.update({
+      where: {
+        id: articleId,
+      },
+      data: {
+        is_published: shouldPublish,
+      },
+    });
+
+    return { status: 200, statusText: "OK" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, statusText: "Internal Server Error" };
+  }
+}
+
+// -----------------------------------
+// Toggle article feature status by ID
+// -----------------------------------
+export async function toggleArticleFeatureStatusById(
+  articleId: string,
+  isFeatured: boolean,
+) {
+  const shouldFeature = !isFeatured;
+
+  try {
+    await prisma.article.update({
+      where: {
+        id: articleId,
+      },
+      data: {
+        is_featured: shouldFeature,
+      },
+    });
+
+    return { status: 200, statusText: "OK" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, statusText: "Internal Server Error" };
+  }
+}
+
 // ----------------
 // Get all articles
 // ----------------
-export async function getAllArticles(): Promise<{
-  status: number;
-  articles: any;
-  error: string | null;
-}> {
+export async function getAllArticles() {
   try {
     const articles = await prisma.article.findMany({
       include: {
@@ -132,16 +192,38 @@ export async function getAllArticles(): Promise<{
     });
     console.log("Fetched all articles");
 
-    return { status: 200, articles: articles, error: null };
+    return { status: 200, articles: articles, statusText: "OK" };
   } catch (e) {
     console.error(e);
-    return { status: 500, articles: null, error: "An error occurred" };
+    return { status: 500, articles: null, statusText: "Internal Server Error" };
   }
 }
 
-// ------------------------
-// Get all articles by user
-// ------------------------
+// -----------------------
+// Get all public articles
+// -----------------------
+export async function getAllPublicArticles() {
+  try {
+    const articles = await prisma.article.findMany({
+      where: {
+        is_published: true,
+      },
+      include: {
+        image: true,
+        category: true,
+      },
+    });
+
+    return { status: 200, articles: articles, statusText: "OK" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, articles: null, statusText: "Internal Server Error" };
+  }
+}
+
+// --------------------------
+// Get all articles by userID
+// --------------------------
 export async function getArticlesByUser(userId: string) {
   try {
     const articles = await prisma.article.findMany({
@@ -162,21 +244,9 @@ export async function getArticlesByUser(userId: string) {
   }
 }
 
-// ---------------------
+// --------------------
 // Create a new article
-// ---------------------
-const articleSchema = z.object({
-  title: z.string().min(3).max(120),
-  content: z.string().min(10).max(10000),
-  category: z.number(),
-  image: z
-    .object({
-      name: z.string(),
-      type: z.string().regex(/image\/.*/),
-      size: z.number().max(5000000),
-    })
-    .nullable(),
-});
+// --------------------
 
 export async function createArticle(content: string, data: FormData) {
   const validatedFields = articleSchema.safeParse({

@@ -38,7 +38,6 @@ export const CreateArticleForm: React.FC<Props> = ({
   existingArticle,
 }) => {
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [content, setContent] = useState("");
 
@@ -50,7 +49,6 @@ export const CreateArticleForm: React.FC<Props> = ({
     // If the article is being edited, set the content of the editor
     if (existingArticle) {
       setTitle(existingArticle.title);
-      setCategory(existingArticle.category?.name ?? "");
       setImage(existingArticle.image[0].url ?? null);
       setContent(existingArticle.content);
     }
@@ -97,7 +95,7 @@ export const CreateArticleForm: React.FC<Props> = ({
 
         if ((res.status = 201)) {
           toast.dismiss("toast-loading");
-          toast.success("Article updated successfully", {
+          toast.success("Article has been created", {
             icon: "🎉",
             duration: 5000,
           });
@@ -149,11 +147,7 @@ export const CreateArticleForm: React.FC<Props> = ({
             </SelectTrigger>
             <SelectContent>
               {categories!.map((option) => (
-                <SelectItem
-                  key={option.id}
-                  onChange={() => setCategory(option.id.toString())}
-                  value={option.id.toString()}
-                >
+                <SelectItem key={option.id} value={option.id.toString()}>
                   {option.name}
                 </SelectItem>
               ))}

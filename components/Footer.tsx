@@ -11,11 +11,11 @@ export const Footer: React.FC = () => {
         {/* Logo and mission text */}
         <div className="items-center pb-4 md:pb-0">
           <h3 className="pb-4 text-center font-PressStart text-lg font-normal uppercase md:text-start">
-            Game
-            <span className="text-custom-amber-800">Zone</span>
+            Loot
+            <span className="text-custom-amber-800">Log</span>
           </h3>
           <p className="mx-auto max-w-80 pr-4 text-center text-xs font-normal md:mx-0 md:text-start">
-            GameZone is a website dedicated to providing gamers with the most
+            LootLog is a website dedicated to providing gamers with the most
             relevant and engaging content about the world of video games. Our
             mission is to inform, entertain, and inspire our readers with our
             comprehensive coverage of the gaming industry, culture, and

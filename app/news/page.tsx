@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 import { PageTitle } from "@/components/PageTitle";
 import { SectionContainer } from "@/components/containers/SectionContainer";
 import { PaginationGrid } from "@/components/articles/sections/pagination-grid/PaginationGrid";
-import { ArticleSectionTitleDefault } from "@/components/articles/sections/ArticleSectionTitleDefault";
+import { ArticleSectionTitle } from "@/components/articles/sections/ArticleSectionTitle";
 import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
@@ -35,13 +35,13 @@ export default async function News() {
       <SectionContainer>
         <PageTitle
           title="News"
-          paragraph="Stay updated with the latest happenings in the gaming world. GameZone's news section is your one-stop shop for all things gaming."
+          paragraph="Stay updated with the latest happenings in the gaming world. LootLog's news section is your one-stop shop for all things gaming."
         />
       </SectionContainer>
 
       <SectionContainer>
         <div className="mx-auto max-w-1300">
-          <ArticleSectionTitleDefault title="All news articles" />
+          <ArticleSectionTitle title="News" />
         </div>
         <PaginationGrid articles={sortedArticles} />
       </SectionContainer>

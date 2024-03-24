@@ -19,7 +19,7 @@ export const ScrollableSectionItem: React.FC<Props> = ({ noFlex, article }) => {
 
   return (
     <article
-      className={`relative flex w-full flex-col rounded-xl bg-neutral-800 hover:bg-teal-500 sm:w-[calc(322px-6px)] ${
+      className={`article-section-item relative flex w-full flex-col rounded-xl sm:w-[calc(322px-6px)] ${
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >
@@ -39,7 +39,7 @@ export const ScrollableSectionItem: React.FC<Props> = ({ noFlex, article }) => {
           </div>
         </div>
 
-        <div className="flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light text-white">
+        <div className="article-section-item-title flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light text-white">
           <h6>{articleTitle}</h6>
         </div>
       </Link>

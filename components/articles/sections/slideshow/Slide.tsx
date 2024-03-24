@@ -7,7 +7,7 @@ import { SlideTitle } from "./SlideTitle";
 export const Slide: React.FC<{ article: TArticle }> = ({ article }) => {
   return (
     <Link href={`/article/${article.id}`}>
-      <article className="relative aspect-16/9 overflow-hidden bg-transparent">
+      <article className="relative aspect-16/9 bg-transparent">
         <Image
           className="aspect-16/9 object-cover object-center"
           alt=""

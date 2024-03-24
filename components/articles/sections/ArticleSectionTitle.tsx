@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const ArticleSectionTitleDefault: React.FC<{
+export const ArticleSectionTitle: React.FC<{
   title: string;
   route?: string;
 }> = ({ title, route }) => {

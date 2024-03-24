@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 import { PageTitle } from "@/components/PageTitle";
 import { SectionContainer } from "@/components/containers/SectionContainer";
 import { PaginationGrid } from "@/components/articles/sections/pagination-grid/PaginationGrid";
-import { ArticleSectionTitleDefault } from "@/components/articles/sections/ArticleSectionTitleDefault";
+import { ArticleSectionTitle } from "@/components/articles/sections/ArticleSectionTitle";
 import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
@@ -35,13 +35,13 @@ export default async function Reviews() {
       <SectionContainer>
         <PageTitle
           title="Reviews"
-          paragraph="Read our honest, detailed, and informative reviews of the best games in the market. GameZone's reviews section is your guide to gaming."
+          paragraph="Read our honest, detailed, and informative reviews of the best games in the market. LootLog's reviews section is your guide to gaming."
         />
       </SectionContainer>
 
       <SectionContainer>
         <div className="mx-auto max-w-1300">
-          <ArticleSectionTitleDefault title="All reviews" />
+          <ArticleSectionTitle title="Reviews" />
         </div>
         <PaginationGrid articles={sortedArticles} />
       </SectionContainer>

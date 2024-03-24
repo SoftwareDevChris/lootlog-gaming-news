@@ -12,8 +12,8 @@ export const Header: React.FC = () => {
       <div className="col-start-2 col-end-4 row-start-1 row-end-2 flex w-fit items-center place-self-center pt-1 md:col-start-1 md:col-end-2 md:place-self-start">
         <Link href="/">
           <h1 className="text-center font-PressStart text-lg font-normal uppercase">
-            Game
-            <span className="text-custom-amber-800">Zone</span>
+            Loot
+            <span className="text-custom-amber-800">Log</span>
           </h1>
         </Link>
       </div>

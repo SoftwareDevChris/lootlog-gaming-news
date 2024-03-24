@@ -7,8 +7,8 @@ export default function About() {
         {/* Logo */}
         <div className="p-4 text-center sm:p-8">
           <span className="font-PressStart text-4xl font-normal uppercase">
-            Game
-            <span className="text-custom-amber-800">Zone</span>
+            Loot
+            <span className="text-custom-amber-800">Log</span>
           </span>
         </div>
 

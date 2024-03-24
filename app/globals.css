@@ -28,3 +28,11 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+
+.article-section-item .article-section-item-title {
+  background-color: rgb(38 38 38);
+}
+
+.article-section-item:hover .article-section-item-title {
+  background-color: rgb(20 184 166);
+}

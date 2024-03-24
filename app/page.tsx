@@ -8,40 +8,58 @@ import { SectionContainer } from "@/components/containers/SectionContainer";
 import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
-import { getAllArticles } from "@/lib/queries";
+import { getAllPublicArticles } from "@/lib/queries";
 import { sortByDate } from "@/lib/sort-by-date";
 
 export default async function Home() {
-  const allArticles = unstable_cache(getAllArticles, ["allArticles"], {
-    revalidate: 60 * 60,
-  });
+  const publicArticles = unstable_cache(
+    getAllPublicArticles,
+    ["get-all-public-articles"],
+    {
+      revalidate: 60 * 60,
+    },
+  );
 
   // If there is an error getting the articles, display an error overlay
-  if ((await allArticles()).status !== 200) {
+  if ((await publicArticles()).status !== 200) {
     return (
       <OverlayError message="The website is under maintenance. Please come back later." />
     );
   }
 
   // Sort the articles by date
-  const sortedArticles = sortByDate((await allArticles()).articles);
+  const sortedArticles = sortByDate((await publicArticles()).articles);
 
+  // Get the first 5 featured articles for the slideshow
+  const slideshowArticles = sortedArticles
+    .filter((article) => article.is_featured)
+    .slice(0, 5);
+
+  // Get the latest articles that are not featured
+  const notFeaturedArticles = sortedArticles.filter(
+    (article) => !article.is_featured,
+  );
+
+  // Get the first 5 articles that are not featured
+  const latestArticles = notFeaturedArticles.slice(0, 5);
+
+  // Get the first 6 articles for each category that are not featured
   const newsArticles = sortedArticles
-    .filter((article) => article.categoryId === 1)
+    .filter((article) => article.category?.name === "article")
     .slice(0, 6);
 
   const reviewArticles = sortedArticles
-    .filter((article) => article.categoryId === 2)
+    .filter((article) => article.category?.name === "review")
     .slice(0, 6);
 
   return (
     <main>
       <SectionContainer>
-        <Slideshow articles={sortedArticles} />
+        <Slideshow articles={slideshowArticles} />
       </SectionContainer>
 
       <SectionContainer>
-        <LatestSection title="Latest" route="/news" articles={sortedArticles} />
+        <LatestSection title="Latest" articles={latestArticles} />
       </SectionContainer>
 
       <SectionContainer>

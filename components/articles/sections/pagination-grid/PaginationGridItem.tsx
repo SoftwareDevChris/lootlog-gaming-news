@@ -14,7 +14,7 @@ export const PaginationGridItem: React.FC<Props> = ({ article }) => {
 
   return (
     <article
-      className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-neutral-800 hover:bg-teal-500`}
+      className={`article-section-item relative flex w-full flex-col overflow-hidden rounded-xl`}
     >
       <Link href={`/article/${article.id}`} className="flex flex-grow flex-col">
         <div className="relative aspect-3/2">
@@ -34,7 +34,7 @@ export const PaginationGridItem: React.FC<Props> = ({ article }) => {
           </div>
         </div>
 
-        <div className="flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light text-neutral-100">
+        <div className="article-section-item-title flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light text-neutral-100">
           <h6>{articleTitle}</h6>
         </div>
       </Link>

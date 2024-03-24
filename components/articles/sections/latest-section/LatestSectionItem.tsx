@@ -13,19 +13,19 @@ export const LatestSectionItem: React.FC<{
 }> = ({ isSpotlight, noFlex, article }) => {
   return (
     <article
-      className={`relative aspect-16/9 rounded-xl bg-neutral-800 hover:bg-teal-500 ${
+      className={`article-section-item relative aspect-16/9 ${
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >
       <Link className="bg-inherit" href={`/article/${article?.id}`}>
         <Image
-          className="aspect-16/9 object-cover object-center"
+          className="aspect-16/9 rounded-b-xl object-cover object-center"
           alt=""
           src={article?.image[0]?.url ?? "/images/placeholder.webp"}
           fill
           sizes="1000px"
         />
-        <div className="absolute bottom-0 left-0 z-10 w-full bg-inherit">
+        <div className="absolute bottom-0 z-10 w-full rounded-b-xl bg-inherit">
           {isSpotlight ? (
             <LatestSectionTitleSpotlight title={article?.title} />
           ) : (

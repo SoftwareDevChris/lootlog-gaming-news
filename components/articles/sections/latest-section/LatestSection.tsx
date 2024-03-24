@@ -1,17 +1,20 @@
+// Components
 import { LatestSectionItem } from "./LatestSectionItem";
-import { ArticleSectionTitleDefault } from "../ArticleSectionTitleDefault";
+import { ArticleSectionTitle } from "../ArticleSectionTitle";
 
+// Dummy data
 import { DUMMY_ARTICLES } from "@/utils/dummyData";
+
+// Types
 import { TArticle } from "@/types/types";
 
 export const LatestSection: React.FC<{
   title: string;
-  route: string;
   articles: TArticle[];
-}> = ({ title, route, articles }) => {
+}> = ({ title, articles }) => {
   return (
     <div className="mx-auto max-w-1300">
-      <ArticleSectionTitleDefault title={title} route={route} />
+      <ArticleSectionTitle title={title} />
       <div className="grid grid-cols-1 grid-rows-2 gap-3 lg:grid-cols-4">
         {/* Big article */}
         <div className="col-span-1 row-span-1 flex w-full lg:col-span-2 lg:row-span-2">

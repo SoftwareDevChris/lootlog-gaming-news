@@ -6,23 +6,17 @@ import Link from "next/link";
 // Components
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/ui/loading";
-import { getArticlesByUser } from "@/lib/queries";
+import {
+  getArticlesByUser,
+  toggleArticleFeatureStatusById,
+  toggleArticlePublicStatusById,
+} from "@/lib/queries";
 import { useUser } from "@clerk/nextjs";
 import { TArticle } from "@/types/types";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@radix-ui/react-alert-dialog";
-import {
-  AlertDialogFooter,
-  AlertDialogHeader,
-} from "@/components/ui/alert-dialog";
-import { set } from "zod";
+
+// Toast
+import toast from "react-hot-toast";
+import { get } from "http";
 
 type Props = {
   title: string;
@@ -51,6 +45,40 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
     setIsLoading(false);
   };
 
+  const handleArticlePublicStatus = async (
+    articleId: string,
+    publicStatus: boolean,
+  ) => {
+    const publish = await toggleArticlePublicStatusById(
+      articleId,
+      publicStatus,
+    );
+
+    if (publish.status === 200) {
+      toast.success("The article has been updated");
+      getUserArticles();
+    } else {
+      toast.error("An error occurred");
+    }
+  };
+
+  const handleArticleFeatureStatus = async (
+    articleId: string,
+    featureStatus: boolean,
+  ) => {
+    const feature = await toggleArticleFeatureStatusById(
+      articleId,
+      featureStatus,
+    );
+
+    if (feature.status === 200) {
+      toast.success("The article has been updated");
+      getUserArticles();
+    } else {
+      toast.error("An error occurred");
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col border-b border-neutral-400 py-4 md:flex-row md:items-center md:justify-between">
@@ -69,7 +97,7 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
             ) : articles && articles.length > 0 ? (
               "Refresh"
             ) : (
-              "Load Articles"
+              "Show articles"
             )}
           </Button>
         </div>
@@ -81,6 +109,7 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
             <thead>
               <tr className="text-left">
                 <th>Title</th>
+                <th>Category</th>
                 <th>Published</th>
                 <th>Actions</th>
               </tr>
@@ -89,36 +118,74 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
               {articles.map((article) => (
                 <tr className=" odd:bg-neutral-300" key={article.id}>
                   <td className="p-1">{article.title}</td>
+                  <td className="p-1 capitalize">{article.category?.name}</td>
                   <td className="p-1">{article.is_published ? "Yes" : "No"}</td>
                   <td className="space-x-2 p-1">
+                    {/* Edit */}
                     <Link
                       href={`/dashboard/articles/edit-article/${article.id}`}
                     >
                       <Button className="bg-neutral-400">Edit</Button>
                     </Link>
-                    <AlertDialog>
-                      <AlertDialogTrigger className="rounded-md bg-red-600 px-3 py-2 text-neutral-100 hover:bg-red-700">
-                        Delete
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Delete your account?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete your account and remove your data from our
-                            servers.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction className="bg-red-600 px-3 py-2 text-neutral-100 hover:bg-red-700">
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+
+                    {/* Set public status */}
+                    {article.is_published ? (
+                      <Button
+                        onClick={() =>
+                          handleArticlePublicStatus(
+                            article.id!,
+                            article.is_published,
+                          )
+                        }
+                        className="bg-blue-700 text-neutral-100 hover:bg-blue-800"
+                      >
+                        Unpublish
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          handleArticlePublicStatus(
+                            article.id!,
+                            article.is_published,
+                          )
+                        }
+                        className="bg-green-700 text-neutral-100 hover:bg-green-800"
+                      >
+                        Publish
+                      </Button>
+                    )}
+
+                    {/* Set feature status */}
+                    {article.is_featured ? (
+                      <Button
+                        onClick={() =>
+                          handleArticleFeatureStatus(
+                            article.id!,
+                            article.is_featured,
+                          )
+                        }
+                        className="bg-blue-700 text-neutral-100 hover:bg-blue-800"
+                      >
+                        Unfeature
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          handleArticleFeatureStatus(
+                            article.id!,
+                            article.is_featured,
+                          )
+                        }
+                        className="bg-green-700 text-neutral-100 hover:bg-green-800"
+                      >
+                        Feature
+                      </Button>
+                    )}
+
+                    {/* Delete  */}
+                    <Button className="bg-red-700 text-neutral-100 hover:bg-red-800">
+                      Delete
+                    </Button>
                   </td>
                 </tr>
               ))}

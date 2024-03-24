@@ -8,8 +8,8 @@ const TermsAndConditionsPage: React.FC = () => {
       <div className="p-4 sm:p-8">
         <h2 className="mb-2 underline">Introduction</h2>
         <p>
-          Welcome to GameZone. This website is owned and operated by GameZone.
-          By visiting our website and accessing the information, resources,
+          Welcome to LootLog. This website is owned and operated by LootLog. By
+          visiting our website and accessing the information, resources,
           services, products, and tools we provide, you understand and agree to
           accept and adhere to the following terms and conditions.
         </p>
@@ -45,14 +45,14 @@ const TermsAndConditionsPage: React.FC = () => {
           software, scripts, code, designs, graphics, photos, sounds, music,
           videos, applications, interactive features and all other content is a
           collective work under Denmark and other copyright laws and is the
-          proprietary property of GameZone; All rights reserved.
+          proprietary property of LootLog; All rights reserved.
         </p>
       </div>
 
       <div className="p-4 sm:p-8">
         <h2 className="mb-2 underline">Limitation of Liability</h2>
         <p>
-          GameZone will not be liable for any consequential, incidental,
+          LootLog will not be liable for any consequential, incidental,
           indirect, exemplary, punitive or special damages of any kind, however
           caused, including loss of profits, revenue, data or use, incurred by
           you, whether under theory of contract, tort (including negligence),
@@ -64,7 +64,7 @@ const TermsAndConditionsPage: React.FC = () => {
       <div className="p-4 sm:p-8">
         <h2 className="mb-2 underline">Indemnity</h2>
         <p>
-          You agree to indemnify and hold GameZone harmless from, and against,
+          You agree to indemnify and hold LootLog harmless from, and against,
           any and all claims, liabilities, damages, losses and expenses,
           including reasonable attorney&apos;s fees and costs, relating to or
           arising out of your use or misuse of the website, any violation by you
