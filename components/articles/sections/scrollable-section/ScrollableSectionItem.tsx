@@ -39,7 +39,7 @@ export const ScrollableSectionItem: React.FC<Props> = ({ noFlex, article }) => {
           </div>
         </div>
 
-        <div className="article-section-item-title flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light text-white">
+        <div className="article-section-item-title flex flex-grow border-t border-t-neutral-50 p-2 text-xs font-light text-white sm:text-sm">
           <h6>{articleTitle}</h6>
         </div>
       </Link>
