@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 // Clerk Auth
-import { useAuth, useClerk, useSignUp } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs";
 
 // Zod
 import * as z from "zod";
@@ -29,6 +29,9 @@ import { useForm } from "react-hook-form";
 // Helper functions
 import { createUser } from "@/lib/auth";
 import { LoadingSpinner } from "@/components/ui/loading";
+
+// Toast
+import toast from "react-hot-toast";
 
 // Signup Schema Form
 const registerFormSchema = z.object({
@@ -84,6 +87,7 @@ const Register: React.FC = () => {
 
     if (values.password !== values.repeatPassword) {
       setErrorMessage("Passwords do not match");
+      setIsLoading(false);
       return;
     }
 
@@ -156,6 +160,7 @@ const Register: React.FC = () => {
           return;
         } else {
           await setActive({ session: completeSignUp.createdSessionId });
+          toast.success("Account created successfully.");
           router.push("/");
         }
       }

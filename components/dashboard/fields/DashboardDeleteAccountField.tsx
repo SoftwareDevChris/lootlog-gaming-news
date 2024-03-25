@@ -19,7 +19,8 @@ import { deleteUser } from "@/lib/auth";
 
 // Toast
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 
 type Props = {
   title: string;
@@ -30,6 +31,9 @@ export const DashboardDeleteAccountField: React.FC<Props> = ({
   title,
   description,
 }) => {
+  const clerk = useClerk();
+  const router = useRouter();
+
   const handleDeleteUser = async () => {
     const res = await deleteUser();
 
@@ -37,7 +41,8 @@ export const DashboardDeleteAccountField: React.FC<Props> = ({
       toast("Your account has been deleted.", {
         icon: "👋",
       });
-      redirect("/");
+      clerk.signOut();
+      router.push("/");
     } else {
       toast.error("An error occurred. Please try again later.");
     }
