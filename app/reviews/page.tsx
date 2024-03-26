@@ -8,16 +8,20 @@ import { ArticleSectionTitle } from "@/components/articles/sections/ArticleSecti
 import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
-import { getAllArticles } from "@/lib/queries";
+import { getAllPublicArticles } from "@/lib/queries";
 import { sortByDate } from "@/lib/sort-by-date";
 
 // Types
 import { TArticle } from "@/types/types";
 
 export default async function Reviews() {
-  const allArticles = unstable_cache(getAllArticles, ["allArticles"], {
-    revalidate: 60 * 60,
-  });
+  const allArticles = unstable_cache(
+    getAllPublicArticles,
+    ["get-all-public-articles"],
+    {
+      revalidate: 60 * 60,
+    },
+  );
 
   // If there is an error getting the articles, display an error overlay
   if ((await allArticles()).status !== 200) {
