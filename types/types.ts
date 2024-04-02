@@ -39,7 +39,7 @@ export type TImage = [
 export type TCategory = {
   id: number;
   name: string;
-  articles: TArticle[] | null;
+  articles?: TArticle[] | null;
 };
 
 export type TTag = {

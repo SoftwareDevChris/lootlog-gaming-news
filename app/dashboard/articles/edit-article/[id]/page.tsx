@@ -3,6 +3,7 @@ import { getArticleById, getArticleCategories } from "@/lib/queries";
 
 // Components
 import { CreateArticleForm } from "@/components/forms/CreateArticleForm";
+import { TArticle, TImage } from "@/types/types";
 
 export default async function EditArticlePage({
   params,
@@ -31,7 +32,7 @@ export default async function EditArticlePage({
     <div className="h-full w-full pl-2 md:pl-8">
       <CreateArticleForm
         categories={categories.categories}
-        existingArticle={articleToEdit.article}
+        existingArticle={articleToEdit.article as TArticle}
       />
     </div>
   );

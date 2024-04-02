@@ -14,16 +14,16 @@ export default async function AccountPage() {
       <DashboardInfoField
         title="Name"
         description="Your full name."
-        value={`${userDetails.user.firstName!} ${userDetails.user.lastName!}`}
+        value={`${userDetails.user?.firstName!} ${userDetails.user?.lastName!}`}
       />
       <DashboardInfoField
         title="Email"
         description="The email address associated with your account."
-        value={userDetails.user.email}
+        value={userDetails.user!.email}
       />
 
       {/* BIOGRAPHY - ONLY FOR AUTHORS */}
-      {userDetails.user.role === "AUTHOR" && (
+      {userDetails.user!.role === "AUTHOR" && (
         <DashboardBioField
           title="Biography"
           description="The 'About me' text displayed on your author profile page."
@@ -33,7 +33,7 @@ export default async function AccountPage() {
       <DashboardInfoField
         title="Account status"
         description="The current status of your account."
-        value={userDetails.user.is_active ? "Active" : "Inactive"}
+        value={userDetails.user!.is_active ? "Active" : "Inactive"}
       />
       <Dashboard2StepVerificationField
         title="Two-Step Verification"
@@ -42,7 +42,7 @@ export default async function AccountPage() {
       <DashboardInfoField
         title="Role"
         description="Your role on the website."
-        value={userDetails.user.role!}
+        value={userDetails.user!.role}
       />
       <DashboardDeleteAccountField
         title="Delete Account"
