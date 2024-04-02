@@ -11,6 +11,9 @@ import { OverlayError } from "@/components/overlays/OverlayError";
 import { getAllPublicArticles } from "@/lib/queries";
 import { sortByDate } from "@/lib/sort-by-date";
 
+// Types
+import { TArticle } from "@/types/types";
+
 export default async function Home() {
   const publicArticles = unstable_cache(
     getAllPublicArticles,
@@ -28,7 +31,9 @@ export default async function Home() {
   }
 
   // Sort the articles by date
-  const sortedArticles = sortByDate((await publicArticles()).articles);
+  const sortedArticles = sortByDate(
+    (await publicArticles()).articles as TArticle[],
+  );
 
   // Get the first 5 featured articles for the slideshow
   const slideshowArticles = sortedArticles

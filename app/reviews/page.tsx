@@ -28,11 +28,11 @@ export default async function Reviews() {
     return <OverlayError message="There was an error getting the articles" />;
   }
 
-  // Sort the articles by date
-  const filteredArticles = (await allArticles()).articles.filter(
-    (article: TArticle) => article.categoryId === 2,
+  // If there's no error, filter by category and sort the articles by date
+  const filteredArticles = (await allArticles()).articles!.filter(
+    (article) => article.categoryId === 2,
   );
-  const sortedArticles = sortByDate(filteredArticles);
+  const sortedArticles = sortByDate(filteredArticles as TArticle[]);
 
   return (
     <main>

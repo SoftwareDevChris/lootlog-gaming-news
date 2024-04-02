@@ -23,25 +23,25 @@ model User {
 }
 
 model Article {
+  id           String   @id @unique @default(uuid())
   created_at   DateTime @default(now())
   title        String
   content      String
   categoryId   Int
   authorId     String
-  image        Image[]
   is_published Boolean  @default(false)
   is_featured  Boolean  @default(false)
-  id           String   @id @unique @default(uuid())
   author       User     @relation(fields: [authorId], references: [id])
   category     Category @relation(fields: [categoryId], references: [id])
+  image        Image[]
 }
 
 model Image {
-  id      Int    @id @unique @default(autoincrement())
-  name    String
-  url     String
+  id        Int     @id @unique @default(autoincrement())
+  name      String
+  url       String
   articleId String
-  article Article @relation(fields: [articleId], references: [id])
+  article   Article @relation(fields: [articleId], references: [id])
 }
 
 model Category {

@@ -29,7 +29,7 @@ export type TArticle = {
 
 export type TImage = [
   {
-    id?: string;
+    id?: number;
     name: string;
     url: string;
     articleId: string;

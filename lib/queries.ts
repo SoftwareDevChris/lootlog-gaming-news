@@ -18,7 +18,7 @@ import { prisma } from "./db";
 import { currentUser } from "@clerk/nextjs";
 
 // Types
-import { TArticle, TImage, TUser } from "@/types/types";
+import { TArticle, TImage } from "@/types/types";
 
 // Article validation schema
 const articleSchema = z.object({
@@ -108,7 +108,7 @@ export async function getArticleById(id: string) {
 // --------------------------
 export const deleteArticleImage = async (article: TArticle) => {
   const imageRef = ref(storage, `images/${article.image[0].name}`);
-  const imageId = parseInt(article.image[0].id!);
+  const imageId = article.image[0].id;
 
   try {
     await deleteObject(imageRef);
@@ -378,7 +378,7 @@ export async function updateArticle(
           },
           image: {
             delete: {
-              id: parseInt(previousImage[0].id!), // Delete the previous image
+              id: previousImage[0].id!, // Delete the previous image
             },
             create: {
               name: newImage.name,

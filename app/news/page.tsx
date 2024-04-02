@@ -29,10 +29,10 @@ export default async function News() {
   }
 
   // Sort the articles by date
-  const filteredArticles = (await allArticles()).articles.filter(
-    (article: TArticle) => article.categoryId === 1,
+  const filteredArticles = (await allArticles()).articles?.filter(
+    (article) => article.categoryId === 1,
   );
-  const sortedArticles = sortByDate(filteredArticles);
+  const sortedArticles = sortByDate(filteredArticles as TArticle[]);
 
   return (
     <main>
