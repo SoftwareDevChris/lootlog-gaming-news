@@ -13,7 +13,7 @@ export const LatestSectionItem: React.FC<{
 }> = ({ isSpotlight, noFlex, article }) => {
   return (
     <article
-      className={`article-section-item relative aspect-16/9 ${
+      className={`article-section-item relative aspect-16/9 h-full ${
         noFlex ? "flex-none" : "flex-initial"
       } overflow-hidden`}
     >

@@ -38,3 +38,4 @@ next-env.d.ts
 
 # Docker Compose files
 /docker
+.env*.local
