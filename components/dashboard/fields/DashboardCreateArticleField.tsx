@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 // Components
-import { DashboardFieldContainer } from "../containers/DashboardFieldContainer";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/Button";
 import { LoadingSpinner } from "@/components/ui/loading";
 
 type Props = {
@@ -20,25 +19,26 @@ export const DashboardCreateArticleField: React.FC<Props> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div>
-      <div className="flex flex-col border-b border-neutral-400 py-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <span className="font-medium text-neutral-900">{title}</span>
-          <p className="pt-2 text-sm text-neutral-500">{description}</p>
-        </div>
-        <div className="mt-4 md:mt-0">
-          <Button
-            disabled={isLoading}
-            onClick={() => setIsLoading(true)}
-            className="border border-neutral-300 bg-neutral-100 text-neutral-900 hover:bg-neutral-100"
-          >
-            {isLoading ? (
-              <LoadingSpinner theme="orange" />
-            ) : (
-              <Link href="/dashboard/articles/create-article">Open editor</Link>
-            )}
-          </Button>
-        </div>
+    <div className="dashboard-field">
+      <div>
+        <span className="dashboard-field-label">{title}</span>
+        <p className="dashboard-field-description">{description}</p>
+      </div>
+
+      <div className="">
+        <Button
+          disabled={isLoading}
+          onClick={() => setIsLoading(true)}
+          className="btn-outlined"
+        >
+          {isLoading ? (
+            <LoadingSpinner theme="orange" />
+          ) : (
+            <Link href="/dashboard/articles/create-article" className="text-xs">
+              Open editor
+            </Link>
+          )}
+        </Button>
       </div>
     </div>
   );

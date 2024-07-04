@@ -10,23 +10,37 @@ import {
 
 type Props = {
   title: string;
+  href: string;
   icon: React.ReactNode;
+  isExpanded: boolean;
 };
 
-export const DashboardNavigationItem: React.FC<Props> = ({ title, icon }) => {
+export const DashboardNavigationItem: React.FC<Props> = ({
+  title,
+  href,
+  icon,
+  isExpanded,
+}) => {
   return (
-    <li className="flex cursor-pointer items-center overflow-hidden hover:text-blue-600 hover:underline">
-      <Link href={`/dashboard/${title.toLowerCase()}`} className="flex">
-        <TooltipProvider delayDuration={300}>
-          <Tooltip>
-            <TooltipTrigger>{icon}</TooltipTrigger>
-            <TooltipContent className="" side="bottom">
-              <p>{title}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+    <li>
+      <Link href={`/dashboard${href}`}>
+        {isExpanded && (
+          <>
+            {icon}
+            <span>{title}</span>
+          </>
+        )}
 
-        <span className="ml-1 hidden md:block">{title}</span>
+        {!isExpanded && (
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger>{icon}</TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>{title}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </Link>
     </li>
   );

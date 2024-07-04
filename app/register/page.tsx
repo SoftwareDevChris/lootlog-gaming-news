@@ -148,7 +148,7 @@ const Register: React.FC = () => {
 
         // Create user in the database
         const createNewUser = await createUser({
-          id: completeSignUp.createdUserId,
+          clerkId: completeSignUp.createdUserId,
           email: registerForm.getValues("email"),
           firstName: registerForm.getValues("firstName"),
           lastName: registerForm.getValues("lastName"),

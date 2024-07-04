@@ -8,39 +8,36 @@ datasource db {
 }
 
 model User {
-  id           String    @id @unique @default(uuid())
-  email        String    @unique
-  bio          String?
-  is_active    Boolean   @default(true)
-  role         Role      @default(USER)
-  firstName    String?
-  image_url    String?
-  lastName     String?
-  linkedin_url String?
-  twitter_url  String?
-  github_url   String?
-  articles     Article[]
+  id        Int       @id @unique @default(autoincrement())
+  clerkId   String    @unique
+  email     String    @unique
+  role      Role      @default(USER)
+  firstName String
+  lastName  String
+  articles  Article[]
 }
 
 model Article {
-  id           String   @id @unique @default(uuid())
-  created_at   DateTime @default(now())
-  title        String
-  content      String
-  categoryId   Int
-  authorId     String
-  is_published Boolean  @default(false)
-  is_featured  Boolean  @default(false)
-  author       User     @relation(fields: [authorId], references: [id])
-  category     Category @relation(fields: [categoryId], references: [id])
-  image        Image[]
+  id         Int      @id @unique @default(autoincrement())
+  createdAt  DateTime @default(now())
+  title      String
+  subtitle   String
+  body       String
+  isPublic   Boolean  @default(false)
+  isFeatured Boolean  @default(false)
+  categoryId Int
+  authorId   Int
+  imageId    Int
+  author     User     @relation(fields: [authorId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+  image      Image?
 }
 
 model Image {
   id        Int     @id @unique @default(autoincrement())
   name      String
   url       String
-  articleId String
+  articleId Int     @unique
   article   Article @relation(fields: [articleId], references: [id])
 }
 
@@ -48,11 +45,6 @@ model Category {
   id       Int       @id @default(autoincrement())
   name     String
   articles Article[]
-}
-
-model Tags {
-  id   Int    @id @default(autoincrement())
-  name String
 }
 
 enum Role {

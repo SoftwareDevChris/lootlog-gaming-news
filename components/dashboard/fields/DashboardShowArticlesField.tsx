@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 // Components
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/Button";
 import { LoadingSpinner } from "@/components/ui/loading";
 import {
   getArticlesByUser,
@@ -16,7 +16,6 @@ import { TArticle } from "@/types/types";
 
 // Toast
 import toast from "react-hot-toast";
-import { get } from "http";
 
 type Props = {
   title: string;
@@ -80,28 +79,28 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <div className="flex flex-col border-b border-neutral-400 py-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <span className="font-medium text-neutral-900">{title}</span>
-          <p className="pt-2 text-sm text-neutral-500">{description}</p>
-        </div>
-        <div className="mt-4 md:mt-0">
-          <Button
-            disabled={isLoading}
-            onClick={getUserArticles}
-            className="border border-neutral-300 bg-neutral-100 text-neutral-900 hover:bg-neutral-100"
-          >
-            {isLoading ? (
-              <LoadingSpinner theme="orange" />
-            ) : articles && articles.length > 0 ? (
-              "Refresh"
-            ) : (
-              "Show articles"
-            )}
-          </Button>
-        </div>
+    <div className="dashboard-field">
+      <div>
+        <span className="dashboard-field-label">{title}</span>
+        <p className="dashboard-field-description">{description}</p>
       </div>
+
+      <div>
+        <Button
+          disabled={isLoading}
+          onClick={getUserArticles}
+          className="btn-outlined"
+        >
+          {isLoading ? (
+            <LoadingSpinner theme="orange" />
+          ) : articles && articles.length > 0 ? (
+            <span>Refresh</span>
+          ) : (
+            <span>Show articles</span>
+          )}
+        </Button>
+      </div>
+
       {articles === null ? <p>You have no articles.</p> : null}
       {articles && articles.length > 0 ? (
         <div className="mt-4">
@@ -119,7 +118,7 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
                 <tr className=" odd:bg-neutral-300" key={article.id}>
                   <td className="p-1">{article.title}</td>
                   <td className="p-1 capitalize">{article.category?.name}</td>
-                  <td className="p-1">{article.is_published ? "Yes" : "No"}</td>
+                  <td className="p-1">{article.isPublic ? "Yes" : "No"}</td>
                   <td className="space-x-2 p-1">
                     {/* Edit */}
                     <Link
@@ -129,12 +128,12 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
                     </Link>
 
                     {/* Set public status */}
-                    {article.is_published ? (
+                    {article.isPublic ? (
                       <Button
                         onClick={() =>
                           handleArticlePublicStatus(
-                            article.id!,
-                            article.is_published,
+                            article.id.toString(),
+                            article.isPublic,
                           )
                         }
                         className="bg-blue-700 text-neutral-100 hover:bg-blue-800"
@@ -145,8 +144,8 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
                       <Button
                         onClick={() =>
                           handleArticlePublicStatus(
-                            article.id!,
-                            article.is_published,
+                            article.id.toString(),
+                            article.isPublic,
                           )
                         }
                         className="bg-green-700 text-neutral-100 hover:bg-green-800"
@@ -156,12 +155,12 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
                     )}
 
                     {/* Set feature status */}
-                    {article.is_featured ? (
+                    {article.isFeatured ? (
                       <Button
                         onClick={() =>
                           handleArticleFeatureStatus(
-                            article.id!,
-                            article.is_featured,
+                            article.id.toString(),
+                            article.isFeatured,
                           )
                         }
                         className="bg-blue-700 text-neutral-100 hover:bg-blue-800"
@@ -172,8 +171,8 @@ export const DashboardShowArticlesField: React.FC<Props> = ({
                       <Button
                         onClick={() =>
                           handleArticleFeatureStatus(
-                            article.id!,
-                            article.is_featured,
+                            article.id.toString(),
+                            article.isFeatured,
                           )
                         }
                         className="bg-green-700 text-neutral-100 hover:bg-green-800"

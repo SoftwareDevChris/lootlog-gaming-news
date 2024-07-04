@@ -2,11 +2,12 @@
 import { useState } from "react";
 
 // Components
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/Button";
 
 // Queries
 import { getAllUsers } from "@/lib/queries";
 import { TUser } from "@/types/types";
+import { DashboardShowUsersField } from "@/components/dashboard/fields/DashboardShowUsersField";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<TUser[]>([]);
@@ -24,20 +25,10 @@ export default function UsersPage() {
 
   return (
     <>
-      <div className="flex flex-col border-b border-neutral-400 py-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <span className="font-medium text-neutral-900">Get users</span>
-          <p className="pt-2 text-sm text-neutral-500">
-            Gets every user that has an account on the website
-          </p>
-        </div>
-        <Button
-          onClick={fetchUsers}
-          className="mt-2 w-fit border border-neutral-300 bg-neutral-100 text-neutral-900 hover:bg-neutral-100 md:mt-0"
-        >
-          Get users
-        </Button>
-      </div>
+      <DashboardShowUsersField
+        title="Get users"
+        description="Gets all registered users"
+      />
 
       {/* Display users */}
       {users.length > 0 && (

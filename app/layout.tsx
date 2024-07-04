@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+
+import "./layout.scss";
 
 // Clerk Auth
 import { ClerkProvider } from "@clerk/nextjs";
@@ -9,9 +9,6 @@ import { Toaster } from "react-hot-toast";
 
 // Components
 import { Header } from "@/components/header/Header";
-import { Footer } from "@/components/Footer";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Loot Log - Gaming News and Reviews",
@@ -27,13 +24,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.className} relative bg-neutral-900`}>
+        <body className={`relative`}>
           <Header />
           <Toaster />
-          <div className="relative flex min-h-[calc(100svh-540px-64px)] flex-col md:min-h-[calc(100vh-240px-64px)]">
+          <div className="relative flex min-h-[calc(100svh-64px)] flex-col md:min-h-[calc(100vh-64px)]">
             {children}
           </div>
-          <Footer />
         </body>
       </html>
     </ClerkProvider>

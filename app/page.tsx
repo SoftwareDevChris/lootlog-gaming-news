@@ -13,6 +13,7 @@ import { sortByDate } from "@/lib/sort-by-date";
 
 // Types
 import { TArticle } from "@/types/types";
+import { Footer } from "@/components/Footer";
 
 export default async function Home() {
   const publicArticles = unstable_cache(
@@ -58,23 +59,31 @@ export default async function Home() {
     .slice(0, 6);
 
   return (
-    <main>
-      <SectionContainer>
-        <Slideshow articles={slideshowArticles} />
-      </SectionContainer>
+    <>
+      <main>
+        <SectionContainer>
+          <Slideshow articles={slideshowArticles} />
+        </SectionContainer>
 
-      <SectionContainer>
-        <LatestSection title="Latest" articles={latestArticles} />
-      </SectionContainer>
+        <SectionContainer>
+          <LatestSection title="Latest" articles={latestArticles} />
+        </SectionContainer>
 
-      <SectionContainer>
-        <ScrollableSection title="News" route="/news" articles={newsArticles} />
-        <ScrollableSection
-          title="Reviews"
-          route="/reviews"
-          articles={reviewArticles}
-        />
-      </SectionContainer>
-    </main>
+        <SectionContainer>
+          <ScrollableSection
+            title="News"
+            route="/news"
+            articles={newsArticles}
+          />
+          <ScrollableSection
+            title="Reviews"
+            route="/reviews"
+            articles={reviewArticles}
+          />
+        </SectionContainer>
+      </main>
+
+      <Footer />
+    </>
   );
 }

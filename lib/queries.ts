@@ -37,11 +37,11 @@ const articleSchema = z.object({
 // ----------------------
 // Get a user by their ID
 // ----------------------
-export async function getUserById(userId: string) {
+export async function getUserByClerkId(clerkId: string) {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirstOrThrow({
       where: {
-        id: userId,
+        clerkId: clerkId,
       },
     });
 
@@ -83,9 +83,9 @@ export async function getArticleCategories() {
 // ---------------------
 // Get one article by ID
 // ---------------------
-export async function getArticleById(id: string) {
+export async function getArticleById(id: number) {
   try {
-    const article = await prisma.article.findUnique({
+    const article = await prisma.article.findUniqueOrThrow({
       where: {
         id: id,
       },
@@ -205,10 +205,12 @@ export async function getAllArticles() {
 export async function getAllPublicArticles() {
   try {
     const articles = await prisma.article.findMany({
-      where: {
-        is_published: true,
+      take: 10,
+      orderBy: {
+        createdAt: "desc",
       },
       include: {
+        author: true,
         image: true,
         category: true,
       },
@@ -224,11 +226,17 @@ export async function getAllPublicArticles() {
 // --------------------------
 // Get all articles by userID
 // --------------------------
-export async function getArticlesByUser(userId: string) {
+export async function getArticlesByUser(clerkId: string) {
   try {
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        clerkId: clerkId,
+      },
+    });
+
     const articles = await prisma.article.findMany({
       where: {
-        authorId: userId,
+        authorId: user.id,
       },
       include: {
         image: true,

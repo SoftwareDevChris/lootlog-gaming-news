@@ -1,53 +1,39 @@
-import { Dashboard2StepVerificationField } from "@/components/dashboard/fields/Dashboard2StepVerificationField";
-import { DashboardBioField } from "@/components/dashboard/fields/DashboardBioField";
 import { DashboardDeleteAccountField } from "@/components/dashboard/fields/DashboardDeleteAccountField";
-import { DashboardInfoField } from "@/components/dashboard/fields/DashboardInfoField";
-import { getUserById } from "@/lib/queries";
+import { DashboardField } from "@/components/dashboard/fields/DashboardField";
+import { getUserByClerkId } from "@/lib/queries";
 import { currentUser } from "@clerk/nextjs";
 
 export default async function AccountPage() {
-  const user = await currentUser();
-  const userDetails = await getUserById(user!.id);
+  const clerkUser = await currentUser();
+  const userDetails = await getUserByClerkId(clerkUser?.id ?? "");
 
   return (
-    <>
-      <DashboardInfoField
-        title="Name"
+    <div className="account-page">
+      <h1>Account details</h1>
+
+      <DashboardField
+        label="Name"
         description="Your full name."
-        value={`${userDetails.user?.firstName!} ${userDetails.user?.lastName!}`}
+        value={`${userDetails.user?.firstName} ${userDetails.user?.lastName}`}
       />
-      <DashboardInfoField
-        title="Email"
+      <DashboardField
+        label="Email"
         description="The email address associated with your account."
-        value={userDetails.user!.email}
+        value={userDetails.user?.email ?? "N/A"}
       />
-
-      {/* BIOGRAPHY - ONLY FOR AUTHORS */}
-      {userDetails.user!.role === "AUTHOR" && (
-        <DashboardBioField
-          title="Biography"
-          description="The 'About me' text displayed on your author profile page."
-        />
-      )}
-
-      <DashboardInfoField
-        title="Account status"
-        description="The current status of your account."
-        value={userDetails.user!.is_active ? "Active" : "Inactive"}
-      />
-      <Dashboard2StepVerificationField
-        title="Two-Step Verification"
+      {/* <Dashboard2StepVerificationField
+        label="Two-Step Verification"
         description="Adds an extra layer of security to your account."
-      />
-      <DashboardInfoField
-        title="Role"
+      /> */}
+      <DashboardField
+        label="Role"
         description="Your role on the website."
-        value={userDetails.user!.role}
+        value={userDetails.user?.role ?? "N/A"}
       />
       <DashboardDeleteAccountField
-        title="Delete Account"
+        label="Delete Account"
         description="This will permanently delete your account."
       />
-    </>
+    </div>
   );
 }

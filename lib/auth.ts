@@ -13,17 +13,14 @@ import { TUser } from "@/types/types";
 // Create User
 // ---------------------------------------------------------
 export async function createUser(user: TUser) {
-  if (!user.id) {
-    return { status: 400, message: "User ID is required" };
-  }
-
   try {
     await prisma.user.create({
       data: {
-        id: user.id,
+        clerkId: user.clerkId,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        role: "USER",
       },
     });
 

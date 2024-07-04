@@ -49,8 +49,8 @@ export const CreateArticleForm: React.FC<Props> = ({
     // If the article is being edited, set the content of the editor
     if (existingArticle) {
       setTitle(existingArticle.title);
-      setImage(existingArticle.image[0].url ?? null);
-      setContent(existingArticle.content);
+      setImage(existingArticle.image.url ?? null);
+      setContent(existingArticle.body);
     }
   }, [existingArticle]);
 
@@ -76,7 +76,7 @@ export const CreateArticleForm: React.FC<Props> = ({
         const res = await updateExistingArticle(
           formData,
           existingArticle.image,
-          existingArticle.id!,
+          existingArticle.id?.toString(),
         );
 
         if ((res.status = 200)) {
@@ -119,11 +119,11 @@ export const CreateArticleForm: React.FC<Props> = ({
   return (
     <div className="h-full">
       {/* Form */}
-      <h1 className="mb-4 text-2xl font-bold">Create a new article</h1>
+      <h1 className="mb-4 text-xl font-bold">Create a new article</h1>
       <form action={onSubmit}>
         {/* Title */}
         <div className="space-y-1 pb-2">
-          <label htmlFor="title" className="text-sm">
+          <label htmlFor="title" className="text-xs">
             Title
           </label>
           <Input
@@ -138,7 +138,7 @@ export const CreateArticleForm: React.FC<Props> = ({
 
         {/* Category */}
         <div className="space-y-1 pb-2">
-          <label htmlFor="category" className="text-sm">
+          <label htmlFor="category" className="text-xs">
             Category
           </label>
           <Select required name="category">
@@ -157,7 +157,7 @@ export const CreateArticleForm: React.FC<Props> = ({
 
         {/* Image */}
         <div className="space-y-1 pb-2">
-          <label htmlFor="image" className="text-sm">
+          <label htmlFor="image" className="text-xs">
             {"Select image (1300x732 or above)"}
           </label>
           {!image ? (
@@ -184,11 +184,11 @@ export const CreateArticleForm: React.FC<Props> = ({
         </div>
 
         {/* Content */}
-        <span className="bg-transparent text-sm">Content</span>
+        <span className="bg-transparent text-xs">Article body</span>
         <div className="mt-1 overflow-hidden rounded-md border border-neutral-200 bg-neutral-100">
           <ArticleEditor
             onChange={(text) => setContent(text)}
-            articleBody={existingArticle ? existingArticle.content : ""}
+            articleBody={existingArticle ? existingArticle.body : ""}
           />
         </div>
 
