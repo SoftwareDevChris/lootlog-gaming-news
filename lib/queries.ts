@@ -22,9 +22,10 @@ import { TArticle, TImage } from "@/types/types";
 
 // Article validation schema
 const articleSchema = z.object({
-  title: z.string().min(3).max(120),
+  title: z.string().min(3).max(100),
   content: z.string().min(10).max(10000),
-  category: z.number(),
+  subtitle: z.string().min(3).max(100),
+  categoryId: z.number(),
   image: z
     .object({
       name: z.string(),
@@ -66,10 +67,10 @@ export async function getAllUsers() {
   }
 }
 
-// --------------------------
-// Get all article categories
-// --------------------------
-export async function getArticleCategories() {
+// ------------------
+// Get all categories
+// ------------------
+export async function getAllCategories() {
   try {
     const categories = await prisma.category.findMany();
 
@@ -77,6 +78,48 @@ export async function getArticleCategories() {
   } catch (e) {
     console.error(e);
     return { status: 500, categories: null, error: "An error occurred" };
+  }
+}
+
+// --------------------------------
+// Get all categories with articles
+// --------------------------------
+export async function getAllCategoriesWithArticles() {
+  try {
+    const categories = await prisma.category.findMany({
+      include: {
+        articles: true,
+      },
+    });
+
+    return { status: 200, categories: categories, error: null };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, categories: null, error: "An error occurred" };
+  }
+}
+
+// ---------------------
+// Create a new category
+// ---------------------
+export async function createNewCategory(data: FormData) {
+  const name = data.get("name") as string;
+
+  if (!name) {
+    return { status: 400, statusText: "Bad Request" };
+  }
+
+  try {
+    await prisma.category.create({
+      data: {
+        name: name,
+      },
+    });
+
+    return { status: 201, statusText: "Created" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, statusText: "Internal Server Error" };
   }
 }
 
@@ -107,19 +150,28 @@ export async function getArticleById(id: number) {
 // Delete article image by ID
 // --------------------------
 export const deleteArticleImage = async (article: TArticle) => {
-  const imageRef = ref(storage, `images/${article.image[0].name}`);
-  const imageId = article.image[0].id;
+  const imageRef = ref(storage, `images/${article.image!.name}`);
 
   try {
     await deleteObject(imageRef);
     console.log("Deleted image from storage");
 
-    await prisma.image.delete({
+    return { status: 200, statusText: "OK" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, statusText: "Internal Server Error" };
+  }
+};
+
+export const deleteArticle = async (article: TArticle) => {
+  try {
+    await deleteArticleImage(article);
+
+    await prisma.article.delete({
       where: {
-        id: imageId,
+        id: article.id,
       },
     });
-    console.log("Deleted image database");
 
     return { status: 200, statusText: "OK" };
   } catch (e) {
@@ -132,7 +184,7 @@ export const deleteArticleImage = async (article: TArticle) => {
 // Toggle article public status by ID
 // ----------------------------------
 export async function toggleArticlePublicStatusById(
-  articleId: string,
+  articleId: number,
   isPublished: boolean,
 ) {
   const shouldPublish = !isPublished;
@@ -143,7 +195,7 @@ export async function toggleArticlePublicStatusById(
         id: articleId,
       },
       data: {
-        is_published: shouldPublish,
+        isPublic: shouldPublish,
       },
     });
 
@@ -158,7 +210,7 @@ export async function toggleArticlePublicStatusById(
 // Toggle article feature status by ID
 // -----------------------------------
 export async function toggleArticleFeatureStatusById(
-  articleId: string,
+  articleId: number,
   isFeatured: boolean,
 ) {
   const shouldFeature = !isFeatured;
@@ -169,7 +221,7 @@ export async function toggleArticleFeatureStatusById(
         id: articleId,
       },
       data: {
-        is_featured: shouldFeature,
+        isFeatured: shouldFeature,
       },
     });
 
@@ -255,17 +307,17 @@ export async function getArticlesByUser(clerkId: string) {
 // --------------------
 // Create a new article
 // --------------------
-
-export async function createArticle(content: string, data: FormData) {
+export async function createArticle(
+  bound: { content: string; categoryId: number },
+  data: FormData,
+) {
   const validatedFields = articleSchema.safeParse({
     title: data.get("title"),
-    category: parseInt(data.get("category") as string),
+    subtitle: data.get("subtitle"),
+    categoryId: bound.categoryId,
     image: data.get("image"),
-    content: content,
+    content: bound.content,
   });
-
-  console.log("content:", content);
-  console.log("data:", data);
 
   if (!validatedFields.success) {
     console.error(validatedFields.error);
@@ -286,23 +338,25 @@ export async function createArticle(content: string, data: FormData) {
       return url;
     });
 
-    const user = await currentUser();
+    const clerkUser = await currentUser();
+
     // Create the article in the database
     await prisma.article.create({
       data: {
         // id
         // created_at:
         title: data.get("title") as string,
-        content: content,
+        subtitle: data.get("subtitle") as string,
+        body: bound.content,
         // @ts-ignore
         category: {
           connect: {
-            id: parseInt(data.get("category") as string),
+            id: bound.categoryId,
           },
         },
         author: {
           connect: {
-            id: user?.id,
+            clerkId: clerkUser?.id,
           },
         },
         image: {
@@ -321,6 +375,7 @@ export async function createArticle(content: string, data: FormData) {
   }
 }
 
+// FIX FIX FIX FIX FIX FIX
 // -----------------------
 // Update an article by ID
 // -----------------------
@@ -328,11 +383,12 @@ export async function updateArticle(
   newArticleBody: string,
   newArticleFields: FormData,
   previousImage?: TImage,
-  previousArticleId?: string,
+  previousArticleId?: number,
 ) {
   const validatedFields = articleSchema.safeParse({
     title: newArticleFields.get("title") as string,
-    category: parseInt(newArticleFields.get("category") as string),
+    subtitle: newArticleFields.get("subtitle") as string,
+    category: parseInt(newArticleFields.get("category") as string), // FIX
     image: newArticleFields.get("image"),
     content: newArticleBody,
   });
@@ -352,12 +408,12 @@ export async function updateArticle(
       newImage &&
       previousImage &&
       previousArticleId &&
-      previousImage[0].name !== newImage.name
+      previousImage.name !== newImage.name
     ) {
       console.log("Different image chosen");
 
       // Delete the existing image from storage
-      const imageRef = ref(storage, `images/${previousImage[0].name}`);
+      const imageRef = ref(storage, `images/${previousImage.name}`);
       await deleteObject(imageRef);
 
       // Upload the new image to storage
@@ -378,7 +434,7 @@ export async function updateArticle(
         },
         data: {
           title: newArticleFields.get("title") as string,
-          content: newArticleBody,
+          body: newArticleBody,
           category: {
             connect: {
               id: parseInt(newArticleFields.get("category") as string),
@@ -386,7 +442,7 @@ export async function updateArticle(
           },
           image: {
             delete: {
-              id: previousImage[0].id!, // Delete the previous image
+              id: previousImage.id!, // Delete the previous image
             },
             create: {
               name: newImage.name,
@@ -409,7 +465,7 @@ export async function updateArticle(
         },
         data: {
           title: newArticleFields.get("title") as string,
-          content: newArticleBody,
+          body: newArticleBody,
           category: {
             connect: {
               id: parseInt(newArticleFields.get("category") as string),

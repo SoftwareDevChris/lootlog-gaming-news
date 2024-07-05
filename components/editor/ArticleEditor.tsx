@@ -1,6 +1,6 @@
 "use client";
 
-import "./Editor.css";
+import "./ArticleEditor.scss";
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -50,7 +50,7 @@ export const ArticleEditor: React.FC<Props> = ({ onChange, articleBody }) => {
   });
 
   return (
-    <div id="editor" className="bg-neutral-100">
+    <div id="editor">
       <ArticleEditorToolbar editor={editor} />
       <EditorContent editor={editor} />
     </div>

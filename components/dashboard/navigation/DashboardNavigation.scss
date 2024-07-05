@@ -42,6 +42,7 @@
 
         svg {
           fill: $dark-400;
+          stroke: $dark-400 !important;
         }
       }
 
@@ -51,6 +52,10 @@
 
         &:hover {
           background-color: $dark-600;
+        }
+
+        .tooltip-text {
+          color: $dark-700;
         }
 
         > a {
@@ -68,7 +73,8 @@
           }
 
           svg {
-            fill: $dark-400;
+            fill: transparent;
+            stroke: $dark-400;
           }
         }
       }

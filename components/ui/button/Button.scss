@@ -16,6 +16,33 @@
   }
 }
 
+.btn-primary {
+  background-color: $orange-700;
+
+  &:hover {
+    background-color: $orange-600;
+  }
+
+  > span,
+  a {
+    color: $dark-700;
+  }
+}
+
+.btn-basic {
+  background-color: $dark-600;
+  border: 1px solid $dark-600;
+
+  &:hover {
+    border: 1px solid $dark-500;
+  }
+
+  > span,
+  a {
+    color: $dark-100;
+  }
+}
+
 .btn-outlined {
   background-color: transparent;
   border: 1px solid $dark-400;
@@ -27,6 +54,7 @@
 
 .btn-delete {
   background-color: $red-400;
+  border: 1px solid $red-400;
 
   &:hover {
     background-color: $red-600;

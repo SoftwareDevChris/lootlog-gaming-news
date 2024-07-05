@@ -9,9 +9,6 @@ import { TArticle } from "@/types/types";
 // Components
 import { Slide } from "./Slide";
 
-// Dummy Data
-import { DUMMY_ARTICLES } from "@/utils/dummyData";
-
 type Props = {
   articles: TArticle[];
 };
@@ -19,9 +16,7 @@ type Props = {
 export const Slideshow: React.FC<Props> = ({ articles }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const slideshowArticles = articles
-    ? articles.slice(0, 5)
-    : DUMMY_ARTICLES.slice(0, 5);
+  const slideshowArticles = articles.slice(0, 5);
 
   const slideAnimationClasses = {
     initial: "transform transition duration-500 ease-in-out",

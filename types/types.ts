@@ -5,7 +5,7 @@ export type TUser = {
   role?: "USER" | "AUTHOR" | "ADMIN";
   firstName: string;
   lastName: string;
-  articles?: string[] | null;
+  articles?: TArticle[] | null;
 };
 
 export type TArticle = {
@@ -19,9 +19,9 @@ export type TArticle = {
   isFeatured: boolean;
 
   categoryId: number;
-  authorId: string;
+  authorId: number;
 
-  image: TImage;
+  image: TImage | null;
   author: TUser;
   category: TCategory;
 };
@@ -30,7 +30,7 @@ export type TImage = {
   id: number;
   name: string;
   url: string;
-  articleId: string;
+  articleId: number;
 };
 
 export type TCategory = {

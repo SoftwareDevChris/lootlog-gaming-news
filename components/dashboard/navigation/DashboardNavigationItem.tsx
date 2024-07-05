@@ -36,7 +36,7 @@ export const DashboardNavigationItem: React.FC<Props> = ({
             <Tooltip>
               <TooltipTrigger>{icon}</TooltipTrigger>
               <TooltipContent side="bottom">
-                <p>{title}</p>
+                <p className="tooltip-text">{title}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -11,16 +11,17 @@ import { DashboardNavigationItem } from "./DashboardNavigationItem";
 
 // Icons
 import {
-  FaUser,
-  FaGear,
-  FaNewspaper,
-  FaArrowRight,
-  FaArrowLeft,
-  FaHeart,
-  FaUsers,
-} from "react-icons/fa6";
-
-import { FaBox } from "react-icons/fa";
+  FiArrowLeft,
+  FiArrowRight,
+  FiBox,
+  FiEdit,
+  FiFolder,
+  FiHeart,
+  FiInbox,
+  FiSettings,
+  FiUser,
+  FiUsers,
+} from "react-icons/fi";
 
 type Props = {
   user: TUser | null;
@@ -41,30 +42,49 @@ export const DashboardNavigation: React.FC<Props> = ({ user }) => {
       <ul>
         <button onClick={() => setIsExpanded(!isExpanded)}>
           {isExpanded ? (
-            <FaArrowLeft size={iconSize} />
+            <FiArrowLeft size={iconSize} />
           ) : (
-            <FaArrowRight size={iconSize} />
+            <FiArrowRight size={iconSize} />
           )}
         </button>
 
         <DashboardNavigationItem
           title="My account"
-          href="/account"
-          icon={<FaUser size={iconSize} />}
+          href="/user"
+          icon={<FiUser size={iconSize} />}
           isExpanded={isExpanded}
         />
 
+        {/* Authors & Admins */}
+        {userRole === "AUTHOR" ||
+          (userRole === "ADMIN" && (
+            <>
+              <DashboardNavigationItem
+                title="New article"
+                href="/author/new-article"
+                icon={<FiEdit size={iconSize} />}
+                isExpanded={isExpanded}
+              />
+              <DashboardNavigationItem
+                title="My articles"
+                href="/author/my-articles"
+                icon={<FiFolder size={iconSize} />}
+                isExpanded={isExpanded}
+              />
+            </>
+          ))}
+
         <DashboardNavigationItem
           title="Likes"
-          href="/account/likes"
-          icon={<FaHeart size={iconSize} />}
+          href="/user/likes"
+          icon={<FiHeart size={iconSize} />}
           isExpanded={isExpanded}
         />
 
         <DashboardNavigationItem
           title="Settings"
-          href="/account/settings"
-          icon={<FaGear size={iconSize} />}
+          href="/user/settings"
+          icon={<FiSettings size={iconSize} />}
           isExpanded={isExpanded}
         />
 
@@ -75,23 +95,23 @@ export const DashboardNavigation: React.FC<Props> = ({ user }) => {
             <div className="dashboard-nav-divider"></div>
 
             <DashboardNavigationItem
-              title="Users"
-              href="/admin/users"
-              icon={<FaUsers size={iconSize} />}
-              isExpanded={isExpanded}
-            />
-
-            <DashboardNavigationItem
               title="Articles"
               href="/admin/articles"
-              icon={<FaNewspaper size={iconSize} />}
+              icon={<FiInbox size={iconSize} />}
               isExpanded={isExpanded}
             />
 
             <DashboardNavigationItem
               title="Categories"
-              href="/articles/categories"
-              icon={<FaBox size={iconSize} />}
+              href="/admin/categories"
+              icon={<FiBox size={iconSize} />}
+              isExpanded={isExpanded}
+            />
+
+            <DashboardNavigationItem
+              title="Users"
+              href="/admin/users"
+              icon={<FiUsers size={iconSize} />}
               isExpanded={isExpanded}
             />
           </>

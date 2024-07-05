@@ -1,0 +1,31 @@
+@import "./variables";
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid $dark-400;
+  font-size: 0.9rem;
+
+  tr {
+    background-color: $dark-500;
+
+    &:nth-child(odd) {
+      background-color: $dark-600;
+    }
+  }
+
+  th {
+    background-color: $orange-900;
+    padding: 1rem;
+    text-align: left;
+  }
+
+  td {
+    padding: 1rem;
+
+    &.td-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}

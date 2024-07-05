@@ -9,41 +9,40 @@ import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
 import { getAllPublicArticles } from "@/lib/queries";
-import { sortByDate } from "@/lib/sort-by-date";
 
 // Types
 import { TArticle } from "@/types/types";
 import { Footer } from "@/components/Footer";
 
 export default async function Home() {
-  const publicArticles = unstable_cache(
+  const getArticles = unstable_cache(
     getAllPublicArticles,
     ["get-all-public-articles"],
     {
-      revalidate: 60 * 60,
+      revalidate: 60 * 30,
     },
   );
 
+  const articles = await getArticles();
+
   // If there is an error getting the articles, display an error overlay
-  if ((await publicArticles()).status !== 200) {
+  if (articles.articles && articles.articles.length < 5) {
     return (
       <OverlayError message="The website is under maintenance. Please come back later." />
     );
   }
 
   // Sort the articles by date
-  const sortedArticles = sortByDate(
-    (await publicArticles()).articles as TArticle[],
-  );
+  const sortedArticles = articles.articles as TArticle[];
 
   // Get the first 5 featured articles for the slideshow
   const slideshowArticles = sortedArticles
-    .filter((article) => article.is_featured)
+    .filter((article) => article.isFeatured)
     .slice(0, 5);
 
   // Get the latest articles that are not featured
   const notFeaturedArticles = sortedArticles.filter(
-    (article) => !article.is_featured,
+    (article) => !article.isFeatured,
   );
 
   // Get the first 5 articles that are not featured

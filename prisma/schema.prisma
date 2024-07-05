@@ -27,9 +27,8 @@ model Article {
   isFeatured Boolean  @default(false)
   categoryId Int
   authorId   Int
-  imageId    Int
-  author     User     @relation(fields: [authorId], references: [id])
-  category   Category @relation(fields: [categoryId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   image      Image?
 }
 
@@ -38,7 +37,7 @@ model Image {
   name      String
   url       String
   articleId Int     @unique
-  article   Article @relation(fields: [articleId], references: [id])
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 }
 
 model Category {

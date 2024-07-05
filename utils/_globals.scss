@@ -4,13 +4,21 @@
 //      HEADINGS        //
 // -------------------- //
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  color: $dark-100;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   font-weight: 600;
   color: $dark-100;
 }

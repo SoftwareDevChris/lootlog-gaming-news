@@ -5,16 +5,11 @@ type Props = {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button: React.FC<Props> = ({
-  children,
-  onClick,
-  disabled,
-  className,
-}) => {
+export const Button: React.FC<Props> = ({ children, ...props }) => {
   return (
-    <button className={`button ${className}`} onClick={onClick}>
+    <button {...props} className={`button ${props.className}`}>
       {children}
     </button>
   );
