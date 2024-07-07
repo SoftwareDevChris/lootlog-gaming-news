@@ -1,7 +1,7 @@
 "use client";
 
 // Auth functions
-import { deleteUser } from "@/lib/auth";
+import { deleteUser } from "@/lib/authService";
 
 // Toast
 import toast from "react-hot-toast";

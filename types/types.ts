@@ -40,3 +40,12 @@ export type TCategory = {
 };
 
 export type TRole = "AUTHOR" | "ADMIN" | "USER";
+
+export type TAuthCookie = {
+  user: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: TRole;
+  };
+};

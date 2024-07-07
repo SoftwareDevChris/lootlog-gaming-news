@@ -1,11 +1,16 @@
+import { redirect } from "next/navigation";
+
+import { getSession } from "@/lib/sessionService";
+
 import { DashboardDeleteAccountField } from "@/components/dashboard/fields/DashboardDeleteAccountField";
 import { DashboardField } from "@/components/dashboard/fields/DashboardField";
-import { getUserByClerkId } from "@/lib/queries";
-import { currentUser } from "@clerk/nextjs";
 
 export default async function AccountPage() {
-  const clerkUser = await currentUser();
-  const userDetails = await getUserByClerkId(clerkUser?.id ?? "");
+  const session = await getSession();
+
+  if (!session?.user) {
+    redirect("/");
+  }
 
   return (
     <div className="account-page">
@@ -14,21 +19,18 @@ export default async function AccountPage() {
       <DashboardField
         label="Name"
         description="Your full name."
-        value={`${userDetails.user?.firstName} ${userDetails.user?.lastName}`}
+        value={`${session?.user.firstName} ${session?.user.lastName}`}
       />
       <DashboardField
         label="Email"
         description="The email address associated with your account."
-        value={userDetails.user?.email ?? "N/A"}
+        value={session?.user.email}
       />
-      {/* <Dashboard2StepVerificationField
-        label="Two-Step Verification"
-        description="Adds an extra layer of security to your account."
-      /> */}
+
       <DashboardField
         label="Role"
         description="Your role on the website."
-        value={userDetails.user?.role ?? "N/A"}
+        value={session?.user.role}
       />
       <DashboardDeleteAccountField
         label="Delete Account"

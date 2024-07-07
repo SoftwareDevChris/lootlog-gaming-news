@@ -5,27 +5,23 @@ import { useState } from "react";
 // Next
 import Link from "next/link";
 
-// Icons
+import { TAuthCookie } from "@/types/types";
+
 import { FaUserCircle } from "react-icons/fa";
 
-// Clerk Auth
-import { useUser, useClerk } from "@clerk/nextjs";
 import toast from "react-hot-toast";
+import { signOut } from "@/lib/authService";
 
-export const UserMenu: React.FC = () => {
+type Props = {
+  session: TAuthCookie | null;
+};
+
+export const UserMenu: React.FC<Props> = ({ session }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const { isSignedIn, isLoaded } = useUser();
-  const { signOut } = useClerk();
-
-  const logoutHandler = () => {
-    signOut();
-    toast.success("You have been logged out.");
+  const logoutHandler = async () => {
+    await signOut();
   };
-
-  if (!isLoaded) {
-    return null;
-  }
 
   return (
     <div className="col-start-4 col-end-5 row-start-1 row-end-2 w-fit items-center justify-self-end">
@@ -37,7 +33,7 @@ export const UserMenu: React.FC = () => {
 
       {isUserMenuOpen && (
         <ul className="absolute right-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md">
-          {isSignedIn ? (
+          {session?.user ? (
             <>
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
                 <Link
@@ -48,20 +44,18 @@ export const UserMenu: React.FC = () => {
                 </Link>
               </li>
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link href="/" onClick={logoutHandler}>
-                  Logout
-                </Link>
+                <button onClick={logoutHandler}>Logout</button>
               </li>
             </>
           ) : (
             <>
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link href="/login" onClick={() => setIsUserMenuOpen(false)}>
+                <Link href="/sign-in" onClick={() => setIsUserMenuOpen(false)}>
                   Sign in
                 </Link>
               </li>
               <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link href="/register" onClick={() => setIsUserMenuOpen(false)}>
+                <Link href="/sign-up" onClick={() => setIsUserMenuOpen(false)}>
                   Register
                 </Link>
               </li>

@@ -1,7 +1,7 @@
 import "./MyArticlesPage.scss";
 
 import { Suspense } from "react";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 
 import { getArticlesByUser } from "@/lib/queries";
 import { ArticleTable } from "@/components/tables/ArticleTable";

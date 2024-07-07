@@ -20,7 +20,7 @@ import { Label } from "../../ui/label/Label";
 // Queries
 import { createArticle, updateArticle } from "@/lib/queries";
 import { resizeImage } from "@/lib/resize-image";
-import { LoadingSpinner } from "../../ui/loading";
+import { LoadingSpinner } from "../../ui/loading/LoadingSpinner";
 
 // Toast
 import toast from "react-hot-toast";

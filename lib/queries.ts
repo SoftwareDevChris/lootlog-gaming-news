@@ -15,7 +15,7 @@ import { storage } from "../firebase/init";
 import { prisma } from "./db";
 
 // Clerk
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 
 // Types
 import { TArticle, TImage } from "@/types/types";
@@ -34,38 +34,6 @@ const articleSchema = z.object({
     })
     .nullable(),
 });
-
-// ----------------------
-// Get a user by their ID
-// ----------------------
-export async function getUserByClerkId(clerkId: string) {
-  try {
-    const user = await prisma.user.findFirstOrThrow({
-      where: {
-        clerkId: clerkId,
-      },
-    });
-
-    return { status: 200, user: user, error: null };
-  } catch (e) {
-    console.error(e);
-    return { status: 500, user: null, error: "An error occurred" };
-  }
-}
-
-// --------------------------
-// Get all users (ADMIN ONLY)
-// --------------------------
-export async function getAllUsers() {
-  try {
-    const user = await prisma.user.findMany();
-
-    return { status: 200, users: user, error: null };
-  } catch (e) {
-    console.error(e);
-    return { status: 500, users: null, error: "An error occurred" };
-  }
-}
 
 // ------------------
 // Get all categories
