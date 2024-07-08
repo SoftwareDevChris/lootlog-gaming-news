@@ -11,14 +11,24 @@
     grid-column: 1 / 2;
     grid-row: 1 / 2;
 
+    width: 60px;
     height: 100%;
     padding: 0.5rem;
     overflow: hidden;
 
     border-right: 0.5px solid $dark-400;
 
-    transition: width 300ms ease-out;
+    transition: width 250ms ease-out;
 
+    &:hover {
+      width: 200px;
+
+      ul li a span {
+        display: block;
+      }
+    }
+
+    // Navigation list
     > ul {
       display: flex;
       flex-direction: column;
@@ -30,22 +40,7 @@
         background-color: $dark-500;
       }
 
-      > button {
-        margin-bottom: 4px;
-        padding: 0.75rem;
-        border-radius: 0.25rem;
-        cursor: pointer;
-
-        &:hover {
-          background-color: $dark-600;
-        }
-
-        svg {
-          fill: $dark-400;
-          stroke: $dark-400 !important;
-        }
-      }
-
+      // Navigation item
       > li {
         position: relative;
         border-radius: 0.25rem;
@@ -54,16 +49,13 @@
           background-color: $dark-600;
         }
 
-        .tooltip-text {
-          color: $dark-700;
-        }
-
         > a {
           display: flex;
           align-items: center;
           padding: 0.75rem;
 
           span {
+            display: none;
             position: absolute;
             margin-left: 2rem;
             text-wrap: nowrap;
@@ -73,6 +65,8 @@
           }
 
           svg {
+            height: 19px;
+            width: 19px;
             fill: transparent;
             stroke: $dark-400;
           }

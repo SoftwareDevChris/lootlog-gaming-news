@@ -21,11 +21,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`relative`}>
-          <Header />
-          <Toaster />
-          <div className="relative flex min-h-[calc(100svh-64px)] flex-col md:min-h-[calc(100vh-64px)]">
-            {children}
+        <body>
+          <div id="app">
+            <Header />
+            <Toaster />
+            <div id="app-portal">{children}</div>
           </div>
         </body>
       </html>

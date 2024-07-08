@@ -1,6 +1,5 @@
 export type TUser = {
   id?: number;
-  clerkId: string;
   email: string;
   role?: "USER" | "AUTHOR" | "ADMIN";
   firstName: string;
@@ -43,6 +42,7 @@ export type TRole = "AUTHOR" | "ADMIN" | "USER";
 
 export type TAuthCookie = {
   user: {
+    id: number;
     email: string;
     firstName: string;
     lastName: string;

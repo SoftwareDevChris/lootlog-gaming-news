@@ -10,15 +10,15 @@ import "./CreateArticleForm.scss";
 import { TArticle, TCategory } from "@/types/types";
 
 // Components
-import { Button } from "@/components/ui/button/Button";
-import { Input } from "@/components/ui/input/Input";
-import { ArticleEditor } from "@/components/editor/ArticleEditor";
-import { Select } from "@/components/ui/select/Select";
-import { OverlayLoading } from "@/components/overlays/OverlayLoading";
 import { Label } from "../../ui/label/Label";
+import { Input } from "@/components/ui/input/Input";
+import { Button } from "@/components/ui/button/Button";
+import { Select } from "@/components/ui/select/Select";
+import { ArticleEditor } from "@/components/editor/ArticleEditor";
+import { OverlayLoading } from "@/components/overlays/OverlayLoading";
 
 // Queries
-import { createArticle, updateArticle } from "@/lib/queries";
+import { createArticle, updateArticle } from "@/lib/articleService";
 import { resizeImage } from "@/lib/resize-image";
 import { LoadingSpinner } from "../../ui/loading/LoadingSpinner";
 
@@ -27,82 +27,77 @@ import toast from "react-hot-toast";
 
 type Props = {
   categories: TCategory[] | null;
-  existingArticle?: TArticle | null;
+  article?: TArticle | null;
 };
 
-export const CreateArticleForm: React.FC<Props> = ({
-  categories,
-  existingArticle,
-}) => {
+export const CreateArticleForm: React.FC<Props> = ({ categories, article }) => {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [image, setImage] = useState<string | null>(null);
-  const [content, setContent] = useState("");
+  const [body, setBody] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
 
   useEffect(() => {
     // If the article is being edited, set the content of the editor
-    if (existingArticle) {
-      setTitle(existingArticle.title);
-      setImage(existingArticle.image!.url ?? null);
-      setContent(existingArticle.body);
+    if (article) {
+      setTitle(article.title);
+      setImage(article.image!.url ?? null);
+      setBody(article.body);
     }
-  }, [existingArticle]);
+  }, [article]);
 
-  const onSubmit = async (formData: FormData) => {
-    toast.dismiss();
+  const onSubmit = (formData: FormData) => {
+    if (article) handleUpdateArticle(formData);
+    else handleCreateNewArticle(formData);
+  };
+
+  const handleCreateNewArticle = async (formData: FormData) => {
+    setErrorMessage("");
     setIsLoading(true);
 
-    // If the user is not editing an existing article,
-    // resize the image before sending it to the server
-    if (!existingArticle) {
-      const resize = await resizeImage(formData.get("image") as File);
-      resize.image && formData.set("image", resize.image);
-    }
+    const createNewArticle = createArticle.bind(null, {
+      body: body,
+      categoryId: categoryId!,
+    });
+    const res = await createNewArticle(formData);
 
-    try {
-      // If the user is editing an existing article
-      if (existingArticle) {
-        const updateExistingArticle = updateArticle.bind(null, content);
-        const res = await updateExistingArticle(
-          formData,
-          existingArticle.image!,
-          existingArticle.id,
-        );
-
-        if ((res.status = 200)) {
-          toast.success("Article updated successfully", {
-            icon: "🎉",
-            duration: 4000,
-          });
-          router.push("/dashboard/articles");
-        }
-      }
-      // If the user is creating a new article
-      else {
-        const createNewArticle = createArticle.bind(null, {
-          content: content,
-          categoryId: categoryId ?? 0,
-        });
-        const res = await createNewArticle(formData);
-
-        if ((res.status = 201)) {
-          toast.success("Article has been created", {
-            icon: "🎉",
-            duration: 4000,
-          });
-          router.push("/dashboard/author/my-articles");
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      toast("Failed to create article", { icon: "❌" });
-    } finally {
+    if (res.status === 201) {
+      toast.success("Article has been created", {
+        icon: "🎉",
+        duration: 4000,
+      });
+      router.push("/dashboard/author/my-articles");
+    } else {
       setIsLoading(false);
+      setErrorMessage(res.message);
+    }
+  };
+
+  const handleUpdateArticle = async (formData: FormData) => {
+    setErrorMessage("");
+    setIsLoading(true);
+
+    const updatearticle = updateArticle.bind(null, {
+      body: body,
+      categoryId: categoryId!,
+      previousImage: article?.image!,
+    });
+    const res = await updatearticle(formData);
+
+    if (res.status === 200) {
+      toast.success("Article updated successfully", {
+        icon: "🎉",
+        duration: 4000,
+      });
+      router.push("/dashboard/author/my-articles");
+    } else {
+      setIsLoading(false);
+      setErrorMessage(res.message);
     }
   };
 
@@ -112,9 +107,10 @@ export const CreateArticleForm: React.FC<Props> = ({
   }
 
   return (
-    <div>
+    <div className="form-wrapper">
       {/* Form */}
       <h1>Create article</h1>
+      {errorMessage && <p className="form-error-message">{errorMessage}</p>}
       <form action={onSubmit} className="create-article-form">
         {/* Title */}
         <div className="input-group">
@@ -122,7 +118,6 @@ export const CreateArticleForm: React.FC<Props> = ({
           <Input
             required
             name="title"
-            placeholder="Catchy title goes here"
             onChange={(e) => setTitle(e.target.value)}
             value={title}
           />
@@ -133,7 +128,6 @@ export const CreateArticleForm: React.FC<Props> = ({
           <Input
             required
             name="subtitle"
-            placeholder="Catchy title goes here"
             onChange={(e) => setSubtitle(e.target.value)}
             value={subtitle}
           />
@@ -172,8 +166,8 @@ export const CreateArticleForm: React.FC<Props> = ({
         <div className="input-group">
           <Label>Article body</Label>
           <ArticleEditor
-            onChange={(text) => setContent(text)}
-            articleBody={existingArticle ? existingArticle.body : ""}
+            onChange={(text) => setBody(text)}
+            articleBody={article ? article.body : ""}
           />
         </div>
 
@@ -182,14 +176,14 @@ export const CreateArticleForm: React.FC<Props> = ({
           aria-disabled={isLoading}
           disabled={isLoading}
           type="submit"
-          className="mt-4 bg-blue-950"
+          className="button btn-primary"
         >
           {isLoading ? (
-            <LoadingSpinner theme="orange" />
-          ) : existingArticle ? (
-            "Update"
+            <LoadingSpinner size="small" theme="orange" />
+          ) : article ? (
+            <span>Update</span>
           ) : (
-            "Create"
+            <span>Create</span>
           )}
         </Button>
       </form>

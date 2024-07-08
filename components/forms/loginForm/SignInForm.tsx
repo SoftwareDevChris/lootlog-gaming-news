@@ -32,7 +32,7 @@ export const SignInForm = () => {
   };
 
   return (
-    <div className="auth-form-wrapper">
+    <div className="form-wrapper auth-form">
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form action={handleSignIn}>
         {/* Email */}

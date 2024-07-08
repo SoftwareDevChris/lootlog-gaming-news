@@ -12,6 +12,15 @@
   color: $dark-100;
 }
 
+body {
+  background-color: $dark-700;
+}
+
+#app {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
 h1,
 h2,
 h3,
@@ -39,10 +48,7 @@ h4 {
   font-size: 0.9rem;
 }
 
-h5 {
-  font-size: 0.75rem;
-}
-
+h5,
 h6 {
   font-size: 0.75rem;
 }

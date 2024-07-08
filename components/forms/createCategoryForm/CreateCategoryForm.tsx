@@ -24,11 +24,7 @@ export const CreateCategoryForm = () => {
 
       if (newCategory.status === 201) {
         toast.success("Category created successfully!");
-
-        setTimeout(() => {
-          toast.dismiss("toast-success");
-          router.push("/dashboard/admin/categories");
-        }, 3000);
+        router.push("/dashboard/admin/categories");
       }
 
       // Backend error message

@@ -1,0 +1,145 @@
+@import "/utils/variables";
+
+header {
+  position: static;
+  top: 0;
+  height: 64px;
+  padding: 0 1rem;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  justify-content: center;
+  align-items: center;
+
+  border-bottom: 1px solid $orange-700;
+
+  .logo-wrapper {
+    grid-column: 2 /4;
+    grid-row: 1 / 2;
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (min-width: 768px) {
+      grid-column: 1 / 2;
+      justify-content: flex-start;
+    }
+
+    > a > h1 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      font-family: "Press Start 2P", system-ui;
+      margin: 0;
+
+      > span {
+        color: $orange-700;
+      }
+    }
+  }
+
+  > .header-navigation {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    width: 100%;
+
+    @media screen and (min-width: 768px) {
+      grid-column: 2 / 4;
+    }
+
+    .mobile-menu-wrapper {
+      display: flex;
+
+      @media screen and (min-width: 768px) {
+        display: none;
+      }
+
+      > svg {
+        cursor: pointer;
+      }
+
+      .mobile-nav-list {
+        position: absolute;
+        left: 0;
+        top: 64px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        z-index: 50;
+
+        background-color: $dark-600;
+        border-bottom-left-radius: 0.33rem;
+        border-bottom-right-radius: 0.33rem;
+
+        @media screen and (min-width: 768px) {
+          display: none;
+        }
+
+        > li {
+          border-radius: 0.33rem;
+          cursor: pointer;
+
+          > a:hover {
+            text-decoration: underline;
+          }
+
+          @media screen and (min-width: 768px) {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    .desktop-nav-list {
+      display: none;
+      justify-content: space-evenly;
+
+      @media screen and (min-width: 768px) {
+        display: flex;
+      }
+
+      li > a:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .user-menu-wrapper {
+    grid-column: 4 / 5;
+    grid-row: 1 / 2;
+
+    width: 28px;
+    align-items: center;
+    justify-self: flex-end;
+    z-index: 50;
+
+    .user-nav-list {
+      position: absolute;
+      right: 0;
+      top: 64px;
+      z-index: 50;
+      width: 10rem;
+      padding: 0.5rem;
+
+      background-color: $dark-600;
+      border-bottom-left-radius: 0.33rem;
+      border-bottom-right-radius: 0.33rem;
+    }
+
+    li {
+      padding: 0.5rem;
+      border-radius: 0.33rem;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $dark-500;
+      }
+    }
+  }
+}

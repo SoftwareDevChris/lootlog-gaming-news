@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "./db";
+import { prisma } from "./prismaClient";
 
 // Types
 import { comparePassword, hashPassword } from "./hashService";
@@ -33,6 +33,7 @@ export async function signIn(data: FormData) {
         const expires = new Date(Date.now() + 60 * 60 * 1000);
         const session = await encrypt({
           user: {
+            id: user.id,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,

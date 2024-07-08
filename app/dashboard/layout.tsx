@@ -2,8 +2,6 @@ import "./DashboardLayout.scss";
 
 // Clerk
 import { DashboardNavigation } from "@/components/dashboard/navigation/DashboardNavigation";
-import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 type Props = {
   children: React.ReactNode;
@@ -12,7 +10,7 @@ type Props = {
 const DashboardLayout: React.FC<Props> = async ({ children }) => {
   return (
     <div className="dashboard-grid flex-grow">
-      {/* <DashboardNavigation user={userDetails.user} /> */}
+      <DashboardNavigation />
       <div className="dashboard-page">{children}</div>
     </div>
   );

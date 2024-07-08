@@ -30,7 +30,7 @@ export const SignUpForm = () => {
   };
 
   return (
-    <div className="auth-form-wrapper">
+    <div className="form-wrapper auth-form">
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form action={handleSignUp}>
         {/* Firstname */}

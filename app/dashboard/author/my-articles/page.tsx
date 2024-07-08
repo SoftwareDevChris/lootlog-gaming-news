@@ -1,32 +1,33 @@
 import "./MyArticlesPage.scss";
 
-import { Suspense } from "react";
-import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-import { getArticlesByUser } from "@/lib/queries";
+import { getSession } from "@/lib/sessionService";
+import { getAllArticlesByUser } from "@/lib/articleService";
+
 import { ArticleTable } from "@/components/tables/ArticleTable";
 
 export default async function MyArticlesPage() {
-  const clerkUser = await currentUser();
+  const session = await getSession();
 
-  const userArticles = await getArticlesByUser(clerkUser!.id);
+  if (!session) redirect("/");
+
+  const userArticles = await getAllArticlesByUser(session?.user.id);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="my-articles-page">
-        <h1>My articles</h1>
+    <div className="my-articles-page">
+      <h1>My articles</h1>
 
-        <div>
-          {!userArticles.articles ||
-            (userArticles.articles.length < 1 && (
-              <p>{"You haven't written any articles yet."}</p>
-            ))}
+      <div>
+        {!userArticles.articles ||
+          (userArticles.articles.length < 1 && (
+            <p>{"You haven't written any articles yet."}</p>
+          ))}
 
-          {userArticles.articles && userArticles.articles.length > 0 ? (
-            <ArticleTable articles={userArticles.articles} />
-          ) : null}
-        </div>
+        {userArticles.articles && userArticles.articles.length > 0 ? (
+          <ArticleTable articles={userArticles.articles} />
+        ) : null}
       </div>
-    </Suspense>
+    </div>
   );
 }

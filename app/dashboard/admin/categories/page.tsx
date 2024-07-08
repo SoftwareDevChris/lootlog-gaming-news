@@ -1,11 +1,17 @@
 import "./CategoriesPage.scss";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import { getAllCategoriesWithArticles } from "@/lib/queries";
+import { getSession } from "@/lib/sessionService";
 
 import { Button } from "@/components/ui/button/Button";
 
-import { getAllCategoriesWithArticles } from "@/lib/queries";
-import Link from "next/link";
-
 export default async function CategoriesPage() {
+  const session = await getSession();
+
+  if (!session) redirect("/");
+
   const categories = await getAllCategoriesWithArticles();
 
   return (

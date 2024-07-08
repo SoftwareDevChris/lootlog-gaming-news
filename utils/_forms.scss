@@ -1,11 +1,13 @@
 @import "/utils/variables";
 
-.auth-form-wrapper {
-  min-width: 300px;
-  max-width: 500px;
-  margin: 2rem auto 0 auto;
+.form-wrapper {
+  &.auth-form {
+    min-width: 300px;
+    max-width: 500px;
+    margin: 2rem auto 0 auto;
+  }
 
-  .error-message {
+  .form-error-message {
     color: $red-300;
     text-align: center;
     margin-bottom: 1rem;
