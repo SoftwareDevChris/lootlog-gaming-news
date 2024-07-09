@@ -1,8 +1,8 @@
+// SCSS imports
 @import "./variables";
 
-// -------------------- //
-//      HEADINGS        //
-// -------------------- //
+// Fonts
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 * {
   margin: 0;
@@ -16,11 +16,9 @@ body {
   background-color: $dark-700;
 }
 
-#app {
-  max-width: 1300px;
-  margin: 0 auto;
-}
-
+// -------------------- //
+//      HEADINGS        //
+// -------------------- //
 h1,
 h2,
 h3,
@@ -33,22 +31,19 @@ h6 {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 h2 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 h3 {
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
-h4 {
-  font-size: 0.9rem;
-}
-
+h4,
 h5,
 h6 {
-  font-size: 0.75rem;
+  font-size: 1rem;
 }

@@ -1,17 +1,15 @@
-import { DashboardCreateArticleField } from "@/components/dashboard/fields/DashboardCreateArticleField";
-import { DashboardShowArticlesField } from "@/components/dashboard/fields/DashboardShowArticlesField";
+import { redirect } from "next/navigation";
 
-export default function ArticlesPage() {
+import { getSession } from "@/lib/sessionService";
+
+export default async function ArticlesPage() {
+  const session = await getSession();
+
+  if (session?.user.role !== "ADMIN") redirect("/");
+
   return (
     <>
-      <DashboardCreateArticleField
-        title="Create Article"
-        description="Start writing a new article."
-      />
-      <DashboardShowArticlesField
-        title="Your Articles"
-        description="Here are all the articles you've written."
-      />
+      <div></div>
     </>
   );
 }

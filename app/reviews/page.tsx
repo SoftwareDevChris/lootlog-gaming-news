@@ -1,18 +1,14 @@
+import { Suspense } from "react";
 import { unstable_cache } from "next/cache";
+
+import { getAllPublicArticles } from "@/lib/articleService";
 
 // Components
 import { PageTitle } from "@/components/PageTitle";
 import { SectionContainer } from "@/components/containers/SectionContainer";
 import { PaginationGrid } from "@/components/articles/sections/pagination-grid/PaginationGrid";
 import { ArticleSectionTitle } from "@/components/articles/sections/ArticleSectionTitle";
-import { OverlayError } from "@/components/overlays/OverlayError";
-
-// Lib
-import { getAllPublicArticles } from "@/lib/queries";
-import { sortByDate } from "@/lib/sort-by-date";
-
-// Types
-import { TArticle } from "@/types/types";
+import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 
 export default async function Reviews() {
   const allArticles = unstable_cache(
@@ -23,16 +19,7 @@ export default async function Reviews() {
     },
   );
 
-  // If there is an error getting the articles, display an error overlay
-  if ((await allArticles()).status !== 200) {
-    return <OverlayError message="There was an error getting the articles" />;
-  }
-
-  // If there's no error, filter by category and sort the articles by date
-  const filteredArticles = (await allArticles()).articles!.filter(
-    (article) => article.categoryId === 2,
-  );
-  const sortedArticles = sortByDate(filteredArticles as TArticle[]);
+  const filteredArticles = (await allArticles()).articles;
 
   return (
     <main>
@@ -47,7 +34,9 @@ export default async function Reviews() {
         <div className="mx-auto max-w-1300">
           <ArticleSectionTitle title="Reviews" />
         </div>
-        <PaginationGrid articles={sortedArticles} />
+        <Suspense fallback={<LoadingScreen />}>
+          {filteredArticles && <PaginationGrid articles={filteredArticles} />}
+        </Suspense>
       </SectionContainer>
     </main>
   );

@@ -1,5 +1,5 @@
 import { OverlayRoot } from "./OverlayRoot";
-import { LoadingSpinner } from "../ui/loading/LoadingSpinner";
+import { LoadingSpinner } from "../ui/loading/spinner/LoadingSpinner";
 
 type Props = {
   message?: string;

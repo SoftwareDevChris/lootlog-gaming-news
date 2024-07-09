@@ -1,6 +1,6 @@
-import "./MyArticlesPage.scss";
-
 import { redirect } from "next/navigation";
+
+import "./MyArticlesPage.scss";
 
 import { getSession } from "@/lib/sessionService";
 import { getAllArticlesByUser } from "@/lib/articleService";
@@ -10,7 +10,9 @@ import { ArticleTable } from "@/components/tables/ArticleTable";
 export default async function MyArticlesPage() {
   const session = await getSession();
 
-  if (!session) redirect("/");
+  if (session?.user.role !== "AUTHOR") {
+    if (session?.user.role !== "ADMIN") redirect("/");
+  }
 
   const userArticles = await getAllArticlesByUser(session?.user.id);
 

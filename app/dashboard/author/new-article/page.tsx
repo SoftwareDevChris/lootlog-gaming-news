@@ -6,11 +6,15 @@ import { CreateArticleForm } from "@/components/forms/createArticleForm/CreateAr
 import { OverlayLoading } from "@/components/overlays/OverlayLoading";
 import { getSession } from "@/lib/sessionService";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 
 export default async function CreateArticlePage() {
   const session = await getSession();
 
-  if (!session) redirect("/");
+  if (session?.user.role !== "AUTHOR") {
+    if (session?.user.role !== "ADMIN") redirect("/");
+  }
 
   const categories = await getAllCategories();
 
@@ -19,8 +23,8 @@ export default async function CreateArticlePage() {
   }
 
   return (
-    <>
-      <CreateArticleForm categories={categories.categories} article={null} />
-    </>
+    <Suspense fallback={<LoadingScreen />}>
+      <CreateArticleForm categories={categories.categories} />
+    </Suspense>
   );
 }

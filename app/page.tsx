@@ -8,11 +8,12 @@ import { SectionContainer } from "@/components/containers/SectionContainer";
 import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
-import { getAllPublicArticles } from "@/lib/queries";
+import { getAllPublicArticles } from "@/lib/articleService";
 
 // Types
 import { TArticle } from "@/types/types";
 import { Footer } from "@/components/Footer";
+import { HighlightSection } from "@/components/articles/sections/highligt-section/HighlightSection";
 
 export default async function Home() {
   const getArticles = unstable_cache(
@@ -26,45 +27,20 @@ export default async function Home() {
   const articles = await getArticles();
 
   // If there is an error getting the articles, display an error overlay
-  if (articles.articles && articles.articles.length < 5) {
+  if (!articles.articles || articles.articles.length < 5) {
     return (
       <OverlayError message="The website is under maintenance. Please come back later." />
     );
   }
 
-  // Sort the articles by date
-  const sortedArticles = articles.articles as TArticle[];
-
-  // Get the first 5 featured articles for the slideshow
-  const slideshowArticles = sortedArticles
-    .filter((article) => article.isFeatured)
-    .slice(0, 5);
-
-  // Get the latest articles that are not featured
-  const notFeaturedArticles = sortedArticles.filter(
-    (article) => !article.isFeatured,
-  );
-
-  // Get the first 5 articles that are not featured
-  const latestArticles = notFeaturedArticles.slice(0, 5);
-
-  // Get the first 6 articles for each category that are not featured
-  const newsArticles = sortedArticles
-    .filter((article) => article.category?.name === "article")
-    .slice(0, 6);
-
-  const reviewArticles = sortedArticles
-    .filter((article) => article.category?.name === "review")
-    .slice(0, 6);
-
   return (
     <>
       <main>
         <SectionContainer>
-          <Slideshow articles={slideshowArticles} />
+          <HighlightSection articles={articles.articles.slice(0, 5)} />
         </SectionContainer>
 
-        <SectionContainer>
+        {/* <SectionContainer>
           <LatestSection title="Latest" articles={latestArticles} />
         </SectionContainer>
 
@@ -79,10 +55,8 @@ export default async function Home() {
             route="/reviews"
             articles={reviewArticles}
           />
-        </SectionContainer>
+        </SectionContainer> */}
       </main>
-
-      <Footer />
     </>
   );
 }

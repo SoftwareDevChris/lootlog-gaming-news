@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { TArticle } from "@/types/types";
-import { shortenTitle } from "@/lib/title-shortener";
 import { convertDate } from "@/lib/date-converter";
 
 type Props = {
@@ -9,8 +8,7 @@ type Props = {
 };
 
 export const PaginationGridItem: React.FC<Props> = ({ article }) => {
-  const articleTitle = shortenTitle(article.title, 70);
-  const articleDate = convertDate(article.created_at);
+  const articleDate = convertDate(article.createdAt);
 
   return (
     <article
@@ -21,9 +19,7 @@ export const PaginationGridItem: React.FC<Props> = ({ article }) => {
           <Image
             className="object-cover object-center"
             alt=""
-            src={
-              article.image ? article.image[0].url : "/images/placeholder.jpg"
-            }
+            src={article.image?.url ?? "/images/placeholder.jpg"}
             fill
             sizes="1000px"
           />
@@ -35,7 +31,7 @@ export const PaginationGridItem: React.FC<Props> = ({ article }) => {
         </div>
 
         <div className="article-section-item-title flex flex-grow border-t border-t-neutral-50 p-2 text-sm font-light text-neutral-100">
-          <h6>{articleTitle}</h6>
+          <h6>{article.title}</h6>
         </div>
       </Link>
     </article>

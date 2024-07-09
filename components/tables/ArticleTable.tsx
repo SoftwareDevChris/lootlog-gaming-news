@@ -7,12 +7,15 @@ import toast from "react-hot-toast";
 
 import { Button } from "../ui/button/Button";
 import { deleteArticle } from "@/lib/articleService";
+import { useRouter } from "next/navigation";
 
 type Props = {
   articles: TArticle[];
 };
 
 export const ArticleTable: FC<Props> = ({ articles }) => {
+  const router = useRouter();
+
   const handleDeleteArticle = async (article: TArticle) => {
     try {
       const del = await deleteArticle(article);
@@ -54,7 +57,12 @@ export const ArticleTable: FC<Props> = ({ articles }) => {
             <td>{article.category.name}</td>
             <td>{article.createdAt.toDateString()}</td>
             <td className="td-actions">
-              <Button className="button btn-outlined">
+              <Button
+                className="button btn-outlined"
+                onClick={() =>
+                  router.push(`/dashboard/author/edit-article/${article.id}`)
+                }
+              >
                 <span>Edit</span>
               </Button>
               <Button

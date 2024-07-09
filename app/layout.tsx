@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 
 import { Header } from "@/components/header/Header";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Loot Log - Gaming News and Reviews",
@@ -26,6 +27,7 @@ export default function RootLayout({
             <Header />
             <Toaster />
             <div id="app-portal">{children}</div>
+            <Footer />
           </div>
         </body>
       </html>

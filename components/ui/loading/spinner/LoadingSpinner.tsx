@@ -2,7 +2,7 @@ import "./LoadingSpinner.scss";
 
 type Props = {
   theme: "orange" | "white";
-  size: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large";
 };
 
 export const LoadingSpinner: React.FC<Props> = ({ theme, size }) => {
@@ -15,7 +15,9 @@ export const LoadingSpinner: React.FC<Props> = ({ theme, size }) => {
         : "spinner-large";
 
   return (
-    <div className={`loading-spinner-wrapper ${spinnerSize}`}>
+    <div
+      className={`loading-spinner-wrapper ${spinnerSize ?? "spinner-initial"}`}
+    >
       <svg
         aria-hidden="true"
         className={`${fill}`}

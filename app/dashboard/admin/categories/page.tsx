@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button/Button";
 export default async function CategoriesPage() {
   const session = await getSession();
 
-  if (!session) redirect("/");
+  if (session?.user.role !== "ADMIN") redirect("/");
 
   const categories = await getAllCategoriesWithArticles();
 

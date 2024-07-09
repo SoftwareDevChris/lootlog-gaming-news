@@ -20,9 +20,9 @@ export type TArticle = {
   categoryId: number;
   authorId: number;
 
-  image: TImage | null;
-  author: TUser;
-  category: TCategory;
+  image?: TImage | null;
+  author?: TUser;
+  category?: TCategory;
 };
 
 export type TImage = {
@@ -39,6 +39,14 @@ export type TCategory = {
 };
 
 export type TRole = "AUTHOR" | "ADMIN" | "USER";
+
+export type TNewArticle = {
+  id?: number;
+  title: string;
+  subtitle: string;
+  image: TImage | File | null;
+  body: string;
+};
 
 export type TAuthCookie = {
   user: {

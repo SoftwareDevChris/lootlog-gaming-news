@@ -1,5 +1,5 @@
 "use client";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import "./Select.scss";
 
@@ -15,13 +15,13 @@ export const Select: FC<Props> = ({ categories, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
 
-  if (!categories) return null;
-
   const handleSelect = (category: TCategory) => {
     setSelected(category.name);
     setIsOpen(false);
     onSelect(category);
   };
+
+  if (!categories) return null;
 
   return (
     <div className="select-wrapper">
