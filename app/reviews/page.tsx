@@ -5,9 +5,8 @@ import { getAllPublicArticles } from "@/lib/articleService";
 
 // Components
 import { PageTitle } from "@/components/PageTitle";
-import { SectionContainer } from "@/components/containers/SectionContainer";
-import { PaginationGrid } from "@/components/articles/sections/pagination-grid/PaginationGrid";
-import { ArticleSectionTitle } from "@/components/articles/sections/ArticleSectionTitle";
+import { PaginationGrid } from "@/components/sections/pagination-grid/PaginationGrid";
+import { ArticleSectionTitle } from "@/components/sections/ArticleSectionTitle";
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 
 export default async function Reviews() {
@@ -23,21 +22,17 @@ export default async function Reviews() {
 
   return (
     <main>
-      <SectionContainer>
-        <PageTitle
-          title="Reviews"
-          paragraph="Read our honest, detailed, and informative reviews of the best games in the market. Loot Log's reviews section is your guide to gaming."
-        />
-      </SectionContainer>
+      <PageTitle
+        title="Reviews"
+        paragraph="Read our honest, detailed, and informative reviews of the best games in the market. Loot Log's reviews section is your guide to gaming."
+      />
 
-      <SectionContainer>
-        <div className="mx-auto max-w-1300">
-          <ArticleSectionTitle title="Reviews" />
-        </div>
-        <Suspense fallback={<LoadingScreen />}>
-          {filteredArticles && <PaginationGrid articles={filteredArticles} />}
-        </Suspense>
-      </SectionContainer>
+      <div className="mx-auto max-w-1300">
+        <ArticleSectionTitle title="Reviews" />
+      </div>
+      <Suspense fallback={<LoadingScreen />}>
+        {filteredArticles && <PaginationGrid articles={filteredArticles} />}
+      </Suspense>
     </main>
   );
 }

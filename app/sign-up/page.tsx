@@ -4,7 +4,9 @@ import React from "react";
 export default async function SignUpPage({}) {
   return (
     <>
-      <SignUpForm />
+      <main>
+        <SignUpForm />
+      </main>
     </>
   );
 }

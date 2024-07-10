@@ -1,18 +1,19 @@
 import { FC } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import "./HighlightSection.scss";
 
 import { TArticle } from "@/types/types";
+
 import { HighlightedListItem } from "./HighlightedListItem";
-import Link from "next/link";
 
 type Props = {
   articles: TArticle[];
 };
 
 export const HighlightSection: FC<Props> = ({ articles }) => {
-  const listArticles = articles.slice(1, 5);
+  const listArticles = articles.slice(1, 4);
 
   return (
     <div className="highlight-section">

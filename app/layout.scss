@@ -2,10 +2,6 @@
 @import "../utils/variables";
 @import "../utils/globals";
 
-/* CSS */
-@import "../components/articles/sections/scrollable-section/ScrollableSection.css";
-@import "../app/article/[id]/article.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

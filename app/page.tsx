@@ -1,19 +1,12 @@
 import { unstable_cache } from "next/cache";
 
 // Components
-import { LatestSection } from "@/components/articles/sections/latest-section/LatestSection";
-import { ScrollableSection } from "@/components/articles/sections/scrollable-section/ScrollableSection";
-import { Slideshow } from "@/components/articles/sections/slideshow/Slideshow";
-import { SectionContainer } from "@/components/containers/SectionContainer";
+import { HighlightSection } from "@/components/sections/highligt-section/HighlightSection";
+import { FourSection } from "@/components/sections/four-section/FourSection";
 import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
 import { getAllPublicArticles } from "@/lib/articleService";
-
-// Types
-import { TArticle } from "@/types/types";
-import { Footer } from "@/components/Footer";
-import { HighlightSection } from "@/components/articles/sections/highligt-section/HighlightSection";
 
 export default async function Home() {
   const getArticles = unstable_cache(
@@ -36,26 +29,9 @@ export default async function Home() {
   return (
     <>
       <main>
-        <SectionContainer>
-          <HighlightSection articles={articles.articles.slice(0, 5)} />
-        </SectionContainer>
+        <HighlightSection articles={articles.articles.slice(0, 5)} />
 
-        {/* <SectionContainer>
-          <LatestSection title="Latest" articles={latestArticles} />
-        </SectionContainer>
-
-        <SectionContainer>
-          <ScrollableSection
-            title="News"
-            route="/news"
-            articles={newsArticles}
-          />
-          <ScrollableSection
-            title="Reviews"
-            route="/reviews"
-            articles={reviewArticles}
-          />
-        </SectionContainer> */}
+        <FourSection articles={articles.articles.slice(1, 5)} />
       </main>
     </>
   );

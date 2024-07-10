@@ -11,7 +11,9 @@ const DashboardLayout: React.FC<Props> = async ({ children }) => {
   return (
     <div className="dashboard-grid flex-grow">
       <DashboardNavigation />
-      <div className="dashboard-page">{children}</div>
+      <div className="dashboard-page">
+        <main>{children}</main>
+      </div>
     </div>
   );
 };

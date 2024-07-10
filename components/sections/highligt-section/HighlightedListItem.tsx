@@ -19,6 +19,7 @@ export const HighlightedListItem: FC<Props> = ({ article, withBorder }) => {
       >
         <div className="title-area">
           <h2>{article.title}</h2>
+          <p>{article.category?.name}</p>
         </div>
         <div className="image-area">
           <Image
