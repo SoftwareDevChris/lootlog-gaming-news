@@ -50,12 +50,43 @@ export async function getAllArticles() {
         image: true,
       },
     });
-    console.log("Fetched all articles");
 
     return { status: 200, articles: articles, message: "OK" };
   } catch (e) {
     console.error(e);
-    return { status: 500, articles: null, message: "Internal Server Error" };
+    return { status: 500, articles: null, message: "internal server error" };
+  }
+}
+
+// --------------------------
+// Get articles from category
+// --------------------------
+export async function getArticlesByCategory(
+  categoryName: string,
+  amount?: number,
+  skip?: number,
+) {
+  try {
+    const articles = await prisma.article.findMany({
+      where: {
+        category: {
+          name: categoryName.toLowerCase(),
+        },
+      },
+      take: amount,
+      skip: skip,
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        image: true,
+      },
+    });
+
+    return { status: 200, articles: articles, message: "OK" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, articles: null, message: "internal server error" };
   }
 }
 
@@ -93,6 +124,8 @@ export async function getAllArticlesByUser(userId: number) {
       },
     });
 
+    if (!user) return { status: 400, message: "bad request" };
+
     const articles = await prisma.article.findMany({
       where: {
         authorId: user.id,
@@ -107,7 +140,7 @@ export async function getAllArticlesByUser(userId: number) {
     return { status: 200, articles: articles, error: null };
   } catch (e) {
     console.error(e);
-    return { status: 500, articles: null, error: "An error occurred" };
+    return { status: 500, articles: null, error: "internal server error" };
   }
 }
 

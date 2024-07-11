@@ -1,6 +1,6 @@
 @import "/utils/variables";
 
-.articles-four-section {
+.pagination-grid {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
@@ -14,10 +14,11 @@
     grid-template-columns: repeat(4, 1fr);
   }
 
-  > article {
-    background-color: $dark-600;
+  .pagination-grid-item {
+    position: relative;
     border-radius: 0.33rem;
     overflow: hidden;
+    background-color: $dark-600;
 
     &:hover {
       background-color: $dark-500;
@@ -26,7 +27,6 @@
     .image-area {
       position: relative;
       aspect-ratio: 16 / 9;
-      width: 100%;
 
       > img {
         object-fit: cover;
@@ -34,27 +34,28 @@
       }
     }
 
-    .text-area {
-      padding: 1rem;
-      border-top: 1px solid $orange-700;
-
-      @media screen and (min-width: $bp-lg) {
-        > p {
-          font-size: 1rem;
-          font-weight: 600;
-        }
-      }
-
-      > p {
-        font-size: 1.1rem;
-        font-weight: 900;
-        margin-bottom: 1rem;
-      }
+    .date-overlay {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
 
       > span {
-        text-transform: capitalize;
-        color: $dark-300;
+        padding: 0.25rem 0.5rem;
         font-size: 0.75rem;
+        color: $dark-200;
+
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 0.33rem;
+      }
+    }
+
+    .text-area {
+      padding: 0.5rem;
+      border-top: 1px solid $orange-700;
+
+      > h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
       }
     }
   }

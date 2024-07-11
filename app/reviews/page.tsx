@@ -1,24 +1,21 @@
 import { Suspense } from "react";
 import { unstable_cache } from "next/cache";
 
-import { getAllPublicArticles } from "@/lib/articleService";
+import {
+  getAllPublicArticles,
+  getArticlesByCategory,
+} from "@/lib/articleService";
 
 // Components
 import { PageTitle } from "@/components/PageTitle";
 import { PaginationGrid } from "@/components/sections/pagination-grid/PaginationGrid";
-import { ArticleSectionTitle } from "@/components/sections/ArticleSectionTitle";
+import { SectionTitle } from "@/components/sections/SectionTitle";
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 
 export default async function Reviews() {
-  const allArticles = unstable_cache(
-    getAllPublicArticles,
-    ["get-all-public-articles"],
-    {
-      revalidate: 60 * 60,
-    },
-  );
+  const articles = await getArticlesByCategory("review");
 
-  const filteredArticles = (await allArticles()).articles;
+  if (!articles.articles) return <LoadingScreen />;
 
   return (
     <main>
@@ -27,11 +24,10 @@ export default async function Reviews() {
         paragraph="Read our honest, detailed, and informative reviews of the best games in the market. Loot Log's reviews section is your guide to gaming."
       />
 
-      <div className="mx-auto max-w-1300">
-        <ArticleSectionTitle title="Reviews" />
-      </div>
+      <SectionTitle title="Reviews" />
+
       <Suspense fallback={<LoadingScreen />}>
-        {filteredArticles && <PaginationGrid articles={filteredArticles} />}
+        <PaginationGrid articles={articles.articles} />
       </Suspense>
     </main>
   );

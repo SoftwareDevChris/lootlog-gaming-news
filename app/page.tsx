@@ -1,38 +1,33 @@
+import { Suspense } from "react";
 import { unstable_cache } from "next/cache";
 
 // Components
 import { HighlightSection } from "@/components/sections/highligt-section/HighlightSection";
 import { FourSection } from "@/components/sections/four-section/FourSection";
-import { OverlayError } from "@/components/overlays/OverlayError";
 
 // Lib
-import { getAllPublicArticles } from "@/lib/articleService";
+import {
+  getAllPublicArticles,
+  getArticlesByCategory,
+} from "@/lib/articleService";
+import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
+import { ErrorStatus } from "@/components/status/ErrorStatus";
+import { ReviewSection } from "@/components/sections/review-section/ReviewSection";
 
 export default async function Home() {
-  const getArticles = unstable_cache(
-    getAllPublicArticles,
-    ["get-all-public-articles"],
-    {
-      revalidate: 60 * 30,
-    },
-  );
+  const newsArticles = await getArticlesByCategory("news article", 8);
 
-  const articles = await getArticles();
-
-  // If there is an error getting the articles, display an error overlay
-  if (!articles.articles || articles.articles.length < 5) {
-    return (
-      <OverlayError message="The website is under maintenance. Please come back later." />
-    );
-  }
+  if (!newsArticles.articles) return;
 
   return (
-    <>
-      <main>
-        <HighlightSection articles={articles.articles.slice(0, 5)} />
+    <main>
+      <Suspense fallback={<LoadingScreen />}>
+        <HighlightSection articles={newsArticles.articles.slice(0, 4)} />
 
-        <FourSection articles={articles.articles.slice(1, 5)} />
-      </main>
-    </>
+        <FourSection articles={newsArticles.articles.slice(4, 8)} />
+
+        <ReviewSection />
+      </Suspense>
+    </main>
   );
 }

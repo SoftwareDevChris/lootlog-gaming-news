@@ -19,7 +19,7 @@ export async function signIn(data: FormData) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email: credentials.email,
+        email: credentials.email.toLowerCase(),
       },
     });
 
@@ -88,7 +88,7 @@ export async function signUp(data: FormData) {
   try {
     await prisma.user.create({
       data: {
-        email: credentials.email,
+        email: credentials.email.toLowerCase(),
         password: encryptedPassword,
         firstName: credentials.firstName,
         lastName: credentials.lastName,

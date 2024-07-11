@@ -1,43 +1,33 @@
 import { Suspense } from "react";
 import { unstable_cache } from "next/cache";
 
-import { getAllPublicArticles } from "@/lib/articleService";
+import {
+  getAllPublicArticles,
+  getArticlesByCategory,
+} from "@/lib/articleService";
 
 // Components
 import { PageTitle } from "@/components/PageTitle";
-import { SectionContainer } from "@/components/containers/SectionContainer";
 import { PaginationGrid } from "@/components/sections/pagination-grid/PaginationGrid";
-import { ArticleSectionTitle } from "@/components/sections/ArticleSectionTitle";
+import { SectionTitle } from "@/components/sections/SectionTitle";
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 
 export default async function News() {
-  const allArticles = unstable_cache(
-    getAllPublicArticles,
-    ["get-all-public-articles"],
-    {
-      revalidate: 60 * 60,
-    },
-  );
+  const articles = await getArticlesByCategory("news article");
 
-  const filteredArticles = (await allArticles()).articles;
+  if (!articles.articles) return <LoadingScreen />;
 
   return (
     <main>
-      <SectionContainer>
-        <PageTitle
-          title="News"
-          paragraph="Stay updated with the latest happenings in the gaming world. Loot Log's news section is your one-stop shop for all things gaming."
-        />
-      </SectionContainer>
+      <PageTitle
+        title="News"
+        paragraph="Stay updated with the latest happenings in the gaming world. Loot Log's news section is your one-stop shop for all things gaming."
+      />
 
-      <SectionContainer>
-        <div className="mx-auto max-w-1300">
-          <ArticleSectionTitle title="News" />
-        </div>
-        <Suspense fallback={<LoadingScreen />}>
-          {filteredArticles && <PaginationGrid articles={filteredArticles} />}
-        </Suspense>
-      </SectionContainer>
+      <SectionTitle title="News" />
+      <Suspense fallback={<LoadingScreen />}>
+        <PaginationGrid articles={articles.articles} />
+      </Suspense>
     </main>
   );
 }

@@ -9,11 +9,9 @@ type Props = {
 
 const DashboardLayout: React.FC<Props> = async ({ children }) => {
   return (
-    <div className="dashboard-grid flex-grow">
+    <div className="dashboard-page">
       <DashboardNavigation />
-      <div className="dashboard-page">
-        <main>{children}</main>
-      </div>
+      <main className="dashboard-content">{children}</main>
     </div>
   );
 };

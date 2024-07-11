@@ -20,6 +20,7 @@ export const HighlightSection: FC<Props> = ({ articles }) => {
       <Link href={`/article/${articles[0].id}`} className="highlighted-article">
         <Image
           fill
+          fetchPriority="high"
           src={articles[0].image?.url ?? "/public/images/placeholder.webp"}
           alt={articles[0].title}
         />
