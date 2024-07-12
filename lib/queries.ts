@@ -14,9 +14,6 @@ import { storage } from "./firebase";
 // Prisma
 import { prisma } from "./prismaClient";
 
-// Clerk
-import { currentUser } from "@clerk/nextjs/server";
-
 // Types
 import { TArticle, TImage } from "@/types/types";
 

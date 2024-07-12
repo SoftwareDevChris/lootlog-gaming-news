@@ -1,6 +1,6 @@
 import "./NewCategoryPage.scss";
 
-import { CreateCategoryForm } from "@/components/forms/createCategoryForm/CreateCategoryForm";
+import { CreateCategoryForm } from "@/components/forms/articleForms/createCategoryForm/CreateCategoryForm";
 
 export default function NewCategoryPage() {
   return (

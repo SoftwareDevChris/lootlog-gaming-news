@@ -18,4 +18,9 @@ form {
   .input-group {
     margin-bottom: 1rem;
   }
+
+  .input-error {
+    color: $red-300;
+    margin: 0.5rem 0;
+  }
 }

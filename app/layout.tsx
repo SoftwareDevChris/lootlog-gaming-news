@@ -1,7 +1,6 @@
 import "./layout.scss";
 
 import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
 
 import { Toaster } from "react-hot-toast";
 
@@ -20,17 +19,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body>
-          <div id="app">
-            <Header />
-            <Toaster />
-            <div id="app-portal">{children}</div>
-            <Footer />
-          </div>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body>
+        <div id="app">
+          <Header />
+          <Toaster />
+          <div id="app-portal">{children}</div>
+          <Footer />
+        </div>
+      </body>
+    </html>
   );
 }

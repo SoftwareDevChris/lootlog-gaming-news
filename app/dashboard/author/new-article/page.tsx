@@ -2,11 +2,12 @@
 import { getAllCategories } from "@/lib/queries";
 
 // Components
-import { CreateArticleForm } from "@/components/forms/createArticleForm/CreateArticleForm";
+import { CreateArticleForm } from "@/components/forms/articleForms/createArticleForm/CreateArticleForm";
 import { getSession } from "@/lib/sessionService";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
+import { ArticleFormSelect } from "@/components/forms/articleForms/ArticleFormSelect";
 
 export default async function CreateArticlePage() {
   const session = await getSession();
@@ -23,7 +24,7 @@ export default async function CreateArticlePage() {
 
   return (
     <Suspense fallback={<LoadingScreen />}>
-      <CreateArticleForm categories={categories.categories} />
+      <ArticleFormSelect categories={categories.categories} />
     </Suspense>
   );
 }

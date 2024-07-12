@@ -30,6 +30,7 @@ model Article {
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   image      Image?
+  videoUrl   String?
 }
 
 model Image {

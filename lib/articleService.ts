@@ -2,8 +2,6 @@
 
 import { prisma } from "./prismaClient";
 
-import { z } from "zod";
-
 import { TArticle } from "@/types/types";
 
 import {
@@ -14,31 +12,11 @@ import {
 } from "firebase/storage";
 import { storage } from "./firebase";
 import { getSession } from "./sessionService";
-
-// --------------------------
-// Schema: create new article
-// --------------------------
-const MAX_FILE_SIZE = 5000000;
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpg",
-  "image/jpeg",
-  "image/webp",
-  "image/png",
-];
-
-const articleSchema = z.object({
-  title: z.string().min(3).max(100),
-  subtitle: z.string().min(20).max(200),
-  body: z.string().min(10).max(10000),
-  categoryId: z.number(),
-  image: z
-    .any()
-    .refine((file) => file?.size <= MAX_FILE_SIZE, "max image size is 5MB")
-    .refine(
-      (file) => ALLOWED_IMAGE_TYPES.includes(file?.type),
-      "only jpg, jpeg, webp and png image types are supported",
-    ),
-});
+import {
+  TInitialNewsArticleState,
+  TInitialVideoArticleState,
+  videoArticleSchema,
+} from "./schemas";
 
 // ----------------
 // Get all articles
@@ -166,30 +144,40 @@ export async function getArticleById(id: number) {
     return { status: 500, article: null, message: "internal server error" };
   }
 }
-
-// --------------------
-// Create a new article
-// --------------------
-export async function createArticle(
+// -------------------------
+// Create a new news article
+// -------------------------
+export async function createNewsArticle(
+  bound: { body: string; categoryId: number },
+  state: TInitialNewsArticleState,
   data: FormData,
-  other: { body: string; categoryId: number },
 ) {
-  const validatedFields = articleSchema.safeParse({
+  console.log("Bound:", bound);
+  console.log("State:", state);
+  console.log("Data:", data);
+
+  const validatedFields = videoArticleSchema.safeParse({
     title: data.get("title"),
     subtitle: data.get("subtitle"),
-    categoryId: other.categoryId,
+    categoryId: bound.categoryId,
     image: data.get("image"),
-    body: other.body,
+    body: bound.body,
   });
 
   if (!validatedFields.success) {
-    console.error(validatedFields.error);
-    return { status: 400, message: `${validatedFields.error.message}` };
+    console.log(validatedFields.error.flatten());
+    return {
+      status: 400,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "bad request",
+    };
   }
+
+  return { status: 400, message: "bad request", errors: null };
 
   const session = await getSession();
 
-  if (!session) return { status: 400, message: "not allowed" };
+  if (!session) return { status: 400, message: "not allowed", errors: null };
 
   try {
     const image: File = data.get("image") as File;
@@ -199,7 +187,7 @@ export async function createArticle(
     const isImageUploaded = await uploadBytes(storageRef, image);
 
     if (!isImageUploaded)
-      return { status: 500, message: "image upload failed" };
+      return { status: 500, message: "image upload failed", errors: null };
 
     // Get the URL of the image and return it
     const imageUrl = await getDownloadURL(
@@ -208,7 +196,8 @@ export async function createArticle(
       return url;
     });
 
-    if (!imageUrl) return { status: 500, message: "failed to get image link" };
+    if (!imageUrl)
+      return { status: 500, message: "failed to get image link", errors: null };
 
     // Create the article in the database
     await prisma.article.create({
@@ -217,11 +206,11 @@ export async function createArticle(
         // created_at:
         title: data.get("title") as string,
         subtitle: data.get("subtitle") as string,
-        body: other.body,
+        body: bound.body,
         // @ts-ignore
         category: {
           connect: {
-            id: other.categoryId,
+            id: bound.categoryId,
           },
         },
         author: {
@@ -238,10 +227,100 @@ export async function createArticle(
       },
     });
 
-    return { status: 201, message: "created" };
+    return { status: 201, message: "created", errors: null };
   } catch (e) {
     console.error(e);
-    return { status: 500, message: "internal server error" };
+    return { status: 500, message: "internal server error", errors: null };
+  }
+}
+
+// --------------------------
+// Create a new video article
+// --------------------------
+export async function createVideoArticle(
+  bound: { body: string; categoryId: number },
+  state: TInitialVideoArticleState,
+  data: FormData,
+) {
+  console.log("Bound:", bound);
+  console.log("State:", state);
+  console.log("Data:", data);
+
+  const validatedFields = videoArticleSchema.safeParse({
+    title: data.get("title"),
+    subtitle: data.get("subtitle"),
+    categoryId: bound.categoryId,
+    videoLink: data.get("videoLink"),
+    body: bound.body,
+  });
+
+  if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten());
+    return {
+      status: 400,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "bad request",
+    };
+  }
+
+  return { status: 400, message: "bad request", errors: null };
+
+  const session = await getSession();
+
+  if (!session) return { status: 400, message: "not allowed", errors: null };
+
+  try {
+    const image: File = data.get("image") as File;
+    const storageRef = ref(storage, `images/${image.name}`);
+
+    // Upload image file
+    const isImageUploaded = await uploadBytes(storageRef, image);
+
+    if (!isImageUploaded)
+      return { status: 500, message: "image upload failed", errors: null };
+
+    // Get the URL of the image and return it
+    const imageUrl = await getDownloadURL(
+      ref(storage, `images/${image.name}`),
+    ).then((url) => {
+      return url;
+    });
+
+    if (!imageUrl)
+      return { status: 500, message: "failed to get image link", errors: null };
+
+    // Create the article in the database
+    await prisma.article.create({
+      data: {
+        // id
+        // created_at:
+        title: data.get("title") as string,
+        subtitle: data.get("subtitle") as string,
+        body: bound.body,
+        // @ts-ignore
+        category: {
+          connect: {
+            id: bound.categoryId,
+          },
+        },
+        author: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        image: {
+          create: {
+            name: image.name,
+            url: imageUrl,
+          },
+        },
+      },
+    });
+
+    return { status: 201, message: "created", errors: null };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, message: "internal server error", errors: null };
   }
 }
 

@@ -52,7 +52,7 @@ export const ArticleEditor: React.FC<Props> = ({ onChange, articleBody }) => {
   return (
     <div id="editor">
       <ArticleEditorToolbar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent name="body" editor={editor} />
     </div>
   );
 };
