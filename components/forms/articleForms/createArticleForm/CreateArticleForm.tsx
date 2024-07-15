@@ -1,34 +1,35 @@
 "use client";
 
 import { useState } from "react";
+import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 
 import "./CreateArticleForm.scss";
 
-// Types
 import { TCategory } from "@/types/types";
+
+// Lib
+import { resizeImage } from "@/lib/resize-image";
+import { TInitialNewsArticleState } from "@/lib/schemas";
 
 // Components
 import { Label } from "@/components/ui/label/Label";
 import { Input } from "@/components/ui/input/Input";
 import { Button } from "@/components/ui/button/Button";
 import { ArticleEditor } from "@/components/editor/ArticleEditor";
+import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 
-// Queries
+// Services
 import { createNewsArticle } from "@/lib/articleService";
 
 // Toast
 import toast from "react-hot-toast";
-import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
-import { resizeImage } from "@/lib/resize-image";
-import { TInitialNewsArticleState } from "@/lib/schemas";
-import { useFormState } from "react-dom";
 
 type Props = {
-  categoryId: number;
+  category: TCategory;
 };
 
-export const CreateArticleForm: React.FC<Props> = ({ categoryId }) => {
+export const CreateArticleForm: React.FC<Props> = ({ category }) => {
   const router = useRouter();
 
   const handleSubmit = async (
@@ -41,7 +42,7 @@ export const CreateArticleForm: React.FC<Props> = ({ categoryId }) => {
 
     const withBind = createNewsArticle.bind(null, {
       body: body,
-      categoryId: categoryId,
+      categoryId: category.id,
     });
 
     const res = await withBind(state, formData);
@@ -68,7 +69,7 @@ export const CreateArticleForm: React.FC<Props> = ({ categoryId }) => {
     initialState,
   );
 
-  // If the editor is not loaded yet, show a loading overlay
+  // If the editor is not loaded yet
   if (ArticleEditor === undefined) {
     return <LoadingScreen />;
   }

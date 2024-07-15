@@ -14,21 +14,23 @@ export const Header: React.FC = async () => {
 
   return (
     <header>
-      {/* Logo and title */}
-      <div className="logo-wrapper">
-        <Link href="/">
-          <h1>
-            Loot
-            <span>Log</span>
-          </h1>
-        </Link>
+      <div className="header-content">
+        {/* Logo and title */}
+        <div className="logo-wrapper">
+          <Link href="/">
+            <h1>
+              Loot
+              <span>Log</span>
+            </h1>
+          </Link>
+        </div>
+
+        {/* Navigation */}
+        <Navigation />
+
+        {/* User Menu */}
+        <UserMenu session={session} />
       </div>
-
-      {/* Navigation */}
-      <Navigation />
-
-      {/* User Menu */}
-      <UserMenu session={session} />
     </header>
   );
 };

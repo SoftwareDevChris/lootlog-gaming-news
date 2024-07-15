@@ -6,11 +6,6 @@
 @tailwind components;
 @tailwind utilities;
 
-#app {
-  max-width: 1300px;
-  margin: 0 auto;
-}
-
 #app-portal {
   position: relative;
   display: flex;
@@ -20,12 +15,4 @@
   @media screen and (min-width: 768px) {
     min-height: calc(100vh - 64px);
   }
-}
-
-.article-section-item .article-section-item-title {
-  background-color: rgb(38 38 38);
-}
-
-.article-section-item:hover .article-section-item-title {
-  background-color: rgb(20 184 166);
 }

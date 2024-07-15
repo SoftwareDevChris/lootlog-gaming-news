@@ -11,7 +11,7 @@ const DashboardLayout: React.FC<Props> = async ({ children }) => {
   return (
     <div className="dashboard-page">
       <DashboardNavigation />
-      <main className="dashboard-content">{children}</main>
+      <div className="dashboard-content">{children}</div>
     </div>
   );
 };

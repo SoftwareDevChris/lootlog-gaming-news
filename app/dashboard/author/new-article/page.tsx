@@ -1,11 +1,9 @@
-// Queries
-import { getAllCategories } from "@/lib/queries";
-
-// Components
-import { CreateArticleForm } from "@/components/forms/articleForms/createArticleForm/CreateArticleForm";
-import { getSession } from "@/lib/sessionService";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
+
+import { getAllCategories } from "@/lib/queries";
+import { getSession } from "@/lib/sessionService";
+
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 import { ArticleFormSelect } from "@/components/forms/articleForms/ArticleFormSelect";
 

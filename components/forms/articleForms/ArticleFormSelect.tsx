@@ -5,6 +5,7 @@ import { TCategory } from "@/types/types";
 
 import { Select } from "@/components/ui/select/Select";
 import { CreateVideoArticleForm } from "./createVideoArticleForm/CreateVideoArticleForm";
+import { CreateArticleForm } from "./createArticleForm/CreateArticleForm";
 
 type Props = {
   categories: TCategory[];
@@ -24,6 +25,10 @@ export const ArticleFormSelect: FC<Props> = ({ categories }) => {
 
       {selectedCategory?.name === "video" && (
         <CreateVideoArticleForm category={selectedCategory} />
+      )}
+
+      {selectedCategory?.name && selectedCategory.name !== "video" && (
+        <CreateArticleForm category={selectedCategory} />
       )}
     </>
   );

@@ -13,6 +13,7 @@ import {
 import { storage } from "./firebase";
 import { getSession } from "./sessionService";
 import {
+  newsArticleSchema,
   TInitialNewsArticleState,
   TInitialVideoArticleState,
   videoArticleSchema,
@@ -152,11 +153,7 @@ export async function createNewsArticle(
   state: TInitialNewsArticleState,
   data: FormData,
 ) {
-  console.log("Bound:", bound);
-  console.log("State:", state);
-  console.log("Data:", data);
-
-  const validatedFields = videoArticleSchema.safeParse({
+  const validatedFields = newsArticleSchema.safeParse({
     title: data.get("title"),
     subtitle: data.get("subtitle"),
     categoryId: bound.categoryId,
@@ -173,17 +170,18 @@ export async function createNewsArticle(
     };
   }
 
-  return { status: 400, message: "bad request", errors: null };
-
   const session = await getSession();
 
-  if (!session) return { status: 400, message: "not allowed", errors: null };
+  if (session?.user.role !== "AUTHOR") {
+    if (session?.user.role !== "ADMIN")
+      return { status: 400, message: "not allowed", errors: null };
+  }
 
   try {
     const image: File = data.get("image") as File;
     const storageRef = ref(storage, `images/${image.name}`);
 
-    // Upload image file
+    // Upload image blob
     const isImageUploaded = await uploadBytes(storageRef, image);
 
     if (!isImageUploaded)
@@ -242,15 +240,11 @@ export async function createVideoArticle(
   state: TInitialVideoArticleState,
   data: FormData,
 ) {
-  console.log("Bound:", bound);
-  console.log("State:", state);
-  console.log("Data:", data);
-
   const validatedFields = videoArticleSchema.safeParse({
     title: data.get("title"),
     subtitle: data.get("subtitle"),
     categoryId: bound.categoryId,
-    videoLink: data.get("videoLink"),
+    youtubeVideoId: data.get("youtubeVideoId"),
     body: bound.body,
   });
 
@@ -263,41 +257,19 @@ export async function createVideoArticle(
     };
   }
 
-  return { status: 400, message: "bad request", errors: null };
-
   const session = await getSession();
 
-  if (!session) return { status: 400, message: "not allowed", errors: null };
+  if (session?.user.role !== "AUTHOR") {
+    if (session?.user.role !== "ADMIN")
+      return { status: 400, message: "not allowed", errors: null };
+  }
 
   try {
-    const image: File = data.get("image") as File;
-    const storageRef = ref(storage, `images/${image.name}`);
-
-    // Upload image file
-    const isImageUploaded = await uploadBytes(storageRef, image);
-
-    if (!isImageUploaded)
-      return { status: 500, message: "image upload failed", errors: null };
-
-    // Get the URL of the image and return it
-    const imageUrl = await getDownloadURL(
-      ref(storage, `images/${image.name}`),
-    ).then((url) => {
-      return url;
-    });
-
-    if (!imageUrl)
-      return { status: 500, message: "failed to get image link", errors: null };
-
-    // Create the article in the database
     await prisma.article.create({
       data: {
-        // id
-        // created_at:
         title: data.get("title") as string,
         subtitle: data.get("subtitle") as string,
         body: bound.body,
-        // @ts-ignore
         category: {
           connect: {
             id: bound.categoryId,
@@ -308,12 +280,7 @@ export async function createVideoArticle(
             id: session.user.id,
           },
         },
-        image: {
-          create: {
-            name: image.name,
-            url: imageUrl,
-          },
-        },
+        youtubeVideoId: data.get("youtubeVideoId") as string,
       },
     });
 

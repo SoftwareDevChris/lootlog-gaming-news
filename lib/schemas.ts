@@ -5,7 +5,7 @@ export type TInitialVideoArticleState = {
   errors: {
     title?: string[];
     subtitle?: string[];
-    videoLink?: string[];
+    youtubeVideoId?: string[];
     body?: string[];
   } | null;
   message: string;
@@ -44,7 +44,7 @@ export const videoArticleSchema = z.object({
     .min(100, { message: "Must have minimum 100 characters" })
     .max(1000, { message: "No more than 1.000 characters are allowed" }),
   categoryId: z.number(),
-  videoLink: z.string(),
+  youtubeVideoId: z.string(),
 });
 
 export const newsArticleSchema = z.object({
@@ -55,7 +55,7 @@ export const newsArticleSchema = z.object({
   subtitle: z
     .string()
     .min(20, { message: "Must be at least 20 characters long" })
-    .max(200, { message: "No more than 200 characters are allowed" }),
+    .max(250, { message: "No more than 250 characters are allowed" }),
   body: z
     .string()
     .min(100, { message: "Must have minimum 100 characters" })

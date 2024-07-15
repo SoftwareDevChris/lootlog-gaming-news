@@ -4,14 +4,14 @@ import { FourSection } from "../four-section/FourSection";
 import { SectionTitle } from "../SectionTitle";
 import { LoadingSpinner } from "@/components/ui/loading/spinner/LoadingSpinner";
 
-export const ReviewSection = async () => {
-  const articles = await getArticlesByCategory("review", 4);
+export const GuideSection = async () => {
+  const articles = await getArticlesByCategory("guide", 4);
 
   if (!articles.articles) return <LoadingSpinner theme="orange" />;
 
   return (
     <>
-      <SectionTitle title="Reviews" route="/reviews" />
+      <SectionTitle title="Guides" route="/guides" />
       <FourSection articles={articles.articles} />
     </>
   );

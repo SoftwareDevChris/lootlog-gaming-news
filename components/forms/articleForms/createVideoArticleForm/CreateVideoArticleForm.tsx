@@ -5,15 +5,18 @@ import { useRouter } from "next/navigation";
 
 import "./CreateVideoArticleForm.scss";
 
+import toast from "react-hot-toast";
+
 import { TCategory } from "@/types/types";
 
 import { createVideoArticle } from "@/lib/articleService";
+import { TInitialVideoArticleState } from "@/lib/schemas";
 
+// Components
 import { Input } from "@/components/ui/input/Input";
 import { Label } from "@/components/ui/label/Label";
 import { Button } from "@/components/ui/button/Button";
 import { ArticleEditor } from "@/components/editor/ArticleEditor";
-import { TInitialVideoArticleState } from "@/lib/schemas";
 
 const initialState: TInitialVideoArticleState = {
   status: 0,
@@ -38,7 +41,13 @@ export const CreateVideoArticleForm: FC<Props> = ({ category }) => {
     });
     const res = await withBound(state, data);
 
-    console.log("State errors:", res.errors?.title);
+    if (res.status === 201) {
+      toast.success("Article has been created", {
+        icon: "🎉",
+        duration: 4000,
+      });
+      router.push("/dashboard/author/my-articles");
+    }
 
     return res;
   };
@@ -64,10 +73,10 @@ export const CreateVideoArticleForm: FC<Props> = ({ category }) => {
       </div>
 
       <div className="input-group">
-        <Label>Video link</Label>
-        <Input type="text" name="videoLink" />
+        <Label>YouTube Video ID</Label>
+        <Input type="text" name="youtubeVideoId" />
         <div>
-          {state.errors?.videoLink?.map((err, i) => {
+          {state.errors?.youtubeVideoId?.map((err, i) => {
             return (
               <p className="input-error" key={i}>
                 {err}
