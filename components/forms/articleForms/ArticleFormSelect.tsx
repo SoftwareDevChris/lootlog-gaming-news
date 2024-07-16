@@ -1,6 +1,5 @@
 "use client";
 import { FC, useState } from "react";
-import dynamic from "next/dynamic";
 
 import { TCategory } from "@/types/types";
 

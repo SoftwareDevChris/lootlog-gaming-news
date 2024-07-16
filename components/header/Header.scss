@@ -39,10 +39,11 @@ header {
       > a > h1 {
         font-size: 1.2rem;
         text-transform: uppercase;
-        font-family: "Press Start 2P", system-ui;
+        font-family: $font-pressStart;
         margin: 0;
 
         > span {
+          font-family: $font-pressStart;
           color: $orange-700;
         }
       }

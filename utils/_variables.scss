@@ -8,10 +8,14 @@ $bp-xl: 1280px;
 $bp-xl: 1536px;
 
 // **********
+// FONTS
+// **********
+$font-pressStart: var(--font-press-start);
+$font-lato: var(--font-lato);
+
+// **********
 // COLORS
 // **********
-
-// ORANGE //
 $orange-900: #b36b00;
 $orange-800: #d97d00;
 $orange-700: #ec8600;
@@ -19,7 +23,6 @@ $orange-600: #ff9d00;
 $orange-500: #ffb400;
 $orange-400: #ffcb00;
 
-// DARK //
 $dark-700: #1c1c1c;
 $dark-600: #222222;
 $dark-500: #3e3e3e;
@@ -28,7 +31,6 @@ $dark-300: #b0b0b0;
 $dark-200: #d0d0d0;
 $dark-100: #f0f0f0;
 
-// RED //
 $red-700: #291415;
 $red-600: #541c15;
 $red-500: #7f2315;

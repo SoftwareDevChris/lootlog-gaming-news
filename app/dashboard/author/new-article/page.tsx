@@ -6,7 +6,6 @@ import { getAllCategories } from "@/lib/queries";
 import { getSession } from "@/lib/sessionService";
 
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
-import { ArticleFormSelect } from "@/components/forms/articleForms/ArticleFormSelect";
 
 const DynamicFormSelect = dynamic(() =>
   import("../../../../components/forms/articleForms/ArticleFormSelect").then(

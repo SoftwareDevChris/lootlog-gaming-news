@@ -1,7 +1,6 @@
 import { getArticlesByCategory } from "@/lib/articleService";
 
 import { FourSection } from "../four-section/FourSection";
-import { SectionTitle } from "../SectionTitle";
 import { LoadingSpinner } from "@/components/ui/loading/spinner/LoadingSpinner";
 import { HighlightSection } from "../highligt-section/HighlightSection";
 

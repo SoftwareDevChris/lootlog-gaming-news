@@ -26,6 +26,7 @@ export const HighlightedListItem: FC<Props> = ({ article, withBorder }) => {
           <Image
             fill
             loading="lazy"
+            sizes="370px 208px"
             src={article.image?.url ?? "/public/images/placeholder.webp"}
             alt={article.title}
           />
