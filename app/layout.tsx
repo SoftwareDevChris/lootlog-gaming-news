@@ -8,9 +8,9 @@ import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Loot Log - Gaming News and Reviews",
+  title: "Loot Log - Gaming News and more",
   description:
-    "Loot Log is your source for the lastest gaming news and reviews.",
+    "Loot Log is your source for the lastest news in the gaming world",
 };
 
 export default function RootLayout({

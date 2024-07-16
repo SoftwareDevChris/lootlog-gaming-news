@@ -1,4 +1,4 @@
-export const GuidesPage = () => {
+export default function GuidesPage() {
   return (
     <>
       <main>
@@ -6,4 +6,4 @@ export const GuidesPage = () => {
       </main>
     </>
   );
-};
+}

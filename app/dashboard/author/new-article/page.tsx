@@ -1,11 +1,18 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import { getAllCategories } from "@/lib/queries";
 import { getSession } from "@/lib/sessionService";
 
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 import { ArticleFormSelect } from "@/components/forms/articleForms/ArticleFormSelect";
+
+const DynamicFormSelect = dynamic(() =>
+  import("../../../../components/forms/articleForms/ArticleFormSelect").then(
+    (mod) => mod.ArticleFormSelect
+  )
+);
 
 export default async function CreateArticlePage() {
   const session = await getSession();
@@ -22,7 +29,8 @@ export default async function CreateArticlePage() {
 
   return (
     <Suspense fallback={<LoadingScreen />}>
-      <ArticleFormSelect categories={categories.categories} />
+      {/* <ArticleFormSelect categories={categories.categories} /> */}
+      <DynamicFormSelect categories={categories.categories} />
     </Suspense>
   );
 }

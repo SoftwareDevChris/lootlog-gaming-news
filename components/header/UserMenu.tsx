@@ -1,17 +1,14 @@
 "use client";
-
 import { useState } from "react";
-
-// Next
 import Link from "next/link";
+
+import OutsideClickHandler from "react-outside-click-handler";
 
 import { TAuthCookie } from "@/types/types";
 
-import { FaUserCircle } from "react-icons/fa";
-import OutsideClickHandler from "react-outside-click-handler";
-
-import toast from "react-hot-toast";
 import { signOut } from "@/lib/authService";
+
+import { FaUserCircle } from "react-icons/fa";
 
 type Props = {
   session: TAuthCookie | null;
@@ -44,6 +41,7 @@ export const UserMenu: React.FC<Props> = ({ session }) => {
                 <>
                   <li>
                     <Link
+                      prefetch={false}
                       href="/dashboard/user"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
@@ -58,6 +56,7 @@ export const UserMenu: React.FC<Props> = ({ session }) => {
                 <>
                   <li>
                     <Link
+                      prefetch={false}
                       href="/sign-in"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
@@ -66,6 +65,7 @@ export const UserMenu: React.FC<Props> = ({ session }) => {
                   </li>
                   <li>
                     <Link
+                      prefetch={false}
                       href="/sign-up"
                       onClick={() => setIsUserMenuOpen(false)}
                     >

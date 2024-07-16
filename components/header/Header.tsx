@@ -17,7 +17,7 @@ export const Header: React.FC = async () => {
       <div className="header-content">
         {/* Logo and title */}
         <div className="logo-wrapper">
-          <Link href="/">
+          <Link prefetch={false} href="/">
             <h1>
               Loot
               <span>Log</span>

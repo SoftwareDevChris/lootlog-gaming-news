@@ -14,6 +14,7 @@ export const HighlightedListItem: FC<Props> = ({ article, withBorder }) => {
   return (
     <>
       <Link
+        prefetch={false}
         href={`/article/${article.id}`}
         className={`highlighted-list-item ${withBorder && "with-border"}`}
       >
@@ -24,6 +25,7 @@ export const HighlightedListItem: FC<Props> = ({ article, withBorder }) => {
         <div className="image-area">
           <Image
             fill
+            loading="lazy"
             src={article.image?.url ?? "/public/images/placeholder.webp"}
             alt={article.title}
           />

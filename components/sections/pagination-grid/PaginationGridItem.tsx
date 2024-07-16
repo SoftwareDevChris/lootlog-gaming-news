@@ -12,7 +12,7 @@ export const PaginationGridItem: React.FC<Props> = ({ article }) => {
 
   return (
     <article className={`pagination-grid-item`}>
-      <Link href={`/article/${article.id}`}>
+      <Link prefetch={false} href={`/article/${article.id}`}>
         <div className="image-area">
           <Image
             alt={article.title}

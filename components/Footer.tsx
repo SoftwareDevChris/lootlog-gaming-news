@@ -31,7 +31,11 @@ export const Footer: React.FC = () => {
             <ul className="py-4 text-center text-sm md:text-start">
               {ROUTES.map((route) => (
                 <li key={route.name}>
-                  <Link href={route.path} className="hover:text-gray-400">
+                  <Link
+                    prefetch={false}
+                    href={route.path}
+                    className="hover:text-gray-400"
+                  >
                     {route.name}
                   </Link>
                 </li>
@@ -44,13 +48,13 @@ export const Footer: React.FC = () => {
         <div className="mx-auto flex flex-col sm:items-center md:mx-0">
           <h6 className="text-lg uppercase">Social Media</h6>
           <div className="space-x-4 py-4">
-            <Link href="">
+            <Link prefetch={false} href="">
               <FaFacebook size={20} className="mx-2 inline-block" />
             </Link>
-            <Link href="">
+            <Link prefetch={false} href="">
               <FaYoutube size={20} className="mx-2 inline-block" />
             </Link>
-            <Link href="">
+            <Link prefetch={false} href="">
               <FaTwitter size={20} className="mx-2 inline-block" />
             </Link>
           </div>

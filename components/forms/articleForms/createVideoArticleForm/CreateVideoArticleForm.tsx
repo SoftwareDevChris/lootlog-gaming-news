@@ -2,6 +2,7 @@
 import { FC, useState } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import "./CreateVideoArticleForm.scss";
 
@@ -16,7 +17,14 @@ import { TInitialVideoArticleState } from "@/lib/schemas";
 import { Input } from "@/components/ui/input/Input";
 import { Label } from "@/components/ui/label/Label";
 import { Button } from "@/components/ui/button/Button";
-import { ArticleEditor } from "@/components/editor/ArticleEditor";
+
+const DynamicArticleEditor = dynamic(
+  () =>
+    import("../../../editor/ArticleEditor").then((mod) => mod.ArticleEditor),
+  {
+    ssr: false,
+  }
+);
 
 const initialState: TInitialVideoArticleState = {
   status: 0,
@@ -33,7 +41,7 @@ export const CreateVideoArticleForm: FC<Props> = ({ category }) => {
 
   const handleSubmit = async (
     state: TInitialVideoArticleState,
-    data: FormData,
+    data: FormData
   ) => {
     const withBound = createVideoArticle.bind(null, {
       body: body ?? "",
@@ -55,7 +63,7 @@ export const CreateVideoArticleForm: FC<Props> = ({ category }) => {
   const [body, setBody] = useState<string | undefined>("");
   const [state, action] = useFormState<TInitialVideoArticleState, FormData>(
     handleSubmit,
-    initialState,
+    initialState
   );
 
   return (
@@ -88,7 +96,7 @@ export const CreateVideoArticleForm: FC<Props> = ({ category }) => {
 
       <div className="input-group">
         <Label>Short body</Label>
-        <ArticleEditor onChange={(txt) => setBody(txt)} />
+        <DynamicArticleEditor onChange={(txt) => setBody(txt)} />
         <p className="input-error">{state.errors?.body}</p>
       </div>
 

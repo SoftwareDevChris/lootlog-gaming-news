@@ -1,9 +1,7 @@
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
-import { getAllArticles, getArticleById } from "@/lib/articleService";
 import { getSession } from "@/lib/sessionService";
-import { TArticle } from "@/types/types";
 import { redirect, useParams } from "next/navigation";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense } from "react";
 
 export default async function EditArticlePage() {
   const session = await getSession();

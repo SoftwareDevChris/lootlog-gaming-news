@@ -16,14 +16,22 @@ import { TInitialNewsArticleState } from "@/lib/schemas";
 import { Label } from "@/components/ui/label/Label";
 import { Input } from "@/components/ui/input/Input";
 import { Button } from "@/components/ui/button/Button";
-import { ArticleEditor } from "@/components/editor/ArticleEditor";
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
+
+const DynamicArticleEditor = dynamic(
+  () =>
+    import("../../../editor/ArticleEditor").then((mod) => mod.ArticleEditor),
+  {
+    ssr: false,
+  }
+);
 
 // Services
 import { createNewsArticle } from "@/lib/articleService";
 
 // Toast
 import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 
 type Props = {
   category: TCategory;
@@ -34,7 +42,7 @@ export const CreateArticleForm: React.FC<Props> = ({ category }) => {
 
   const handleSubmit = async (
     state: TInitialNewsArticleState,
-    formData: FormData,
+    formData: FormData
   ) => {
     // Resize the image and put in back into the formData
     const resizedImage = await resizeImage(formData.get("image") as File);
@@ -66,13 +74,8 @@ export const CreateArticleForm: React.FC<Props> = ({ category }) => {
   const [body, setBody] = useState("");
   const [state, action] = useFormState<TInitialNewsArticleState, FormData>(
     handleSubmit,
-    initialState,
+    initialState
   );
-
-  // If the editor is not loaded yet
-  if (ArticleEditor === undefined) {
-    return <LoadingScreen />;
-  }
 
   return (
     <div className="form-wrapper">
@@ -101,7 +104,7 @@ export const CreateArticleForm: React.FC<Props> = ({ category }) => {
         {/* Content */}
         <div className="input-group">
           <Label>Article body</Label>
-          <ArticleEditor onChange={(text) => setBody(text)} />
+          <DynamicArticleEditor onChange={(text) => setBody(text)} />
           <p className="input-error">{state.errors?.body}</p>
         </div>
 

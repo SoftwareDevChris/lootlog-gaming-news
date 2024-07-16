@@ -33,6 +33,7 @@ export default async function AccountPage() {
         value={session?.user.role}
       />
       <DashboardDeleteAccountField
+        userId={session.user.id}
         label="Delete Account"
         description="This will permanently delete your account."
       />

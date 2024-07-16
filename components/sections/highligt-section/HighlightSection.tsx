@@ -17,10 +17,16 @@ export const HighlightSection: FC<Props> = ({ articles }) => {
 
   return (
     <div className="highlight-section">
-      <Link href={`/article/${articles[0].id}`} className="highlighted-article">
+      <Link
+        prefetch={false}
+        href={`/article/${articles[0].id}`}
+        className="highlighted-article"
+      >
         <Image
           fill
-          fetchPriority="high"
+          priority={true}
+          loading="eager"
+          sizes="976px 549px"
           src={articles[0].image?.url ?? "/public/images/placeholder.webp"}
           alt={articles[0].title}
         />

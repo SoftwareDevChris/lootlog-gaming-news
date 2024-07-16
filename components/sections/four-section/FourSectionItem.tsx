@@ -11,10 +11,11 @@ type Props = {
 export const FourSectionItem: React.FC<Props> = ({ article }) => {
   return (
     <article className="four-section-item">
-      <Link href={`/article/${article.id}`}>
+      <Link prefetch={false} href={`/article/${article.id}`}>
         <div className="image-area">
           <Image
             fill={true}
+            loading="lazy"
             src={article.image?.url ?? "/public/images/placeholder.webp"}
             alt={article.title}
           />

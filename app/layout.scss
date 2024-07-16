@@ -2,10 +2,6 @@
 @import "../utils/variables";
 @import "../utils/globals";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 #app-portal {
   position: relative;
   display: flex;

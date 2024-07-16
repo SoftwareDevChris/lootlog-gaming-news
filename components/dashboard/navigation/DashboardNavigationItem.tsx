@@ -13,7 +13,7 @@ export const DashboardNavigationItem: React.FC<Props> = ({
 }) => {
   return (
     <li>
-      <Link href={`/dashboard${href}`}>
+      <Link prefetch={false} href={`/dashboard${href}`}>
         <>
           {icon}
           <span>{title}</span>

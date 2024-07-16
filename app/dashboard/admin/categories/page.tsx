@@ -19,7 +19,9 @@ export default async function CategoriesPage() {
       <div>
         <h1>Categories</h1>
         <Button className="button btn-primary">
-          <Link href="categories/new-category">Create category</Link>
+          <Link prefetch={false} href="categories/new-category">
+            Create category
+          </Link>
         </Button>
       </div>
 

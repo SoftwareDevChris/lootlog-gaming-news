@@ -54,7 +54,7 @@ export const ArticleTable: FC<Props> = ({ articles }) => {
             <td>{article.title}</td>
             <td>{article.isPublic ? "Yes" : "No"}</td>
             <td>{article.isFeatured ? "Yes" : "No"}</td>
-            <td>{article.category.name}</td>
+            <td>{article.category?.name}</td>
             <td>{article.createdAt.toDateString()}</td>
             <td className="td-actions">
               <Button

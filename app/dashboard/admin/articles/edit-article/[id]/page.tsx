@@ -1,9 +1,8 @@
-// Queries
-import { getArticleById, getArticleCategories } from "@/lib/queries";
+import { getArticleById } from "@/lib/articleService";
 
 // Components
-import { CreateArticleForm } from "@/components/forms/CreateArticleForm";
-import { TArticle, TImage } from "@/types/types";
+import { CreateArticleForm } from "@/components/forms/articleForms/createArticleForm/CreateArticleForm";
+import { TCategory } from "@/types/types";
 
 export default async function EditArticlePage({
   params,
@@ -17,22 +16,15 @@ export default async function EditArticlePage({
   }
 
   // Get the article to edit
-  const articleToEdit = await getArticleById(articleId);
+  const articleToEdit = await getArticleById(parseInt(params.id));
   if (articleToEdit.status !== 200) {
-    return null;
-  }
-
-  // Get the categories to display in the form
-  const categories = await getArticleCategories();
-  if (categories.status !== 200) {
     return null;
   }
 
   return (
     <div className="h-full w-full pl-2 md:pl-8">
       <CreateArticleForm
-        categories={categories.categories}
-        existingArticle={articleToEdit.article as TArticle}
+        category={articleToEdit.article?.category as TCategory}
       />
     </div>
   );

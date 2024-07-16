@@ -34,7 +34,9 @@ export const Navigation: React.FC = () => {
             <ul className="mobile-nav-list">
               {ROUTES.map((route) => (
                 <li onClick={() => setIsMenuOpen(false)} key={route.name}>
-                  <Link href={route.path}>{route.name}</Link>
+                  <Link prefetch={false} href={route.path}>
+                    {route.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -46,7 +48,9 @@ export const Navigation: React.FC = () => {
       <ul className="desktop-nav-list">
         {ROUTES.map((item) => (
           <li key={item.name}>
-            <Link href={item.path}>{item.name}</Link>
+            <Link prefetch={false} href={item.path}>
+              {item.name}
+            </Link>
           </li>
         ))}
       </ul>

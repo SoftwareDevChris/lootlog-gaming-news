@@ -12,7 +12,11 @@ export const SectionTitle: React.FC<{
         <h3>{title}</h3>
         <div />
       </div>
-      {route && <Link href={route}>See all</Link>}
+      {route && (
+        <Link prefetch={false} href={route}>
+          See all
+        </Link>
+      )}
     </div>
   );
 };

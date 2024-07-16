@@ -1,6 +1,5 @@
 import "./DashboardLayout.scss";
 
-// Clerk
 import { DashboardNavigation } from "@/components/dashboard/navigation/DashboardNavigation";
 
 type Props = {
