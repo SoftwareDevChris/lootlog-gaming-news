@@ -1,5 +1,6 @@
 "use client";
 import { FC } from "react";
+import { useRouter } from "next/navigation";
 
 import { TArticle } from "@/types/types";
 
@@ -7,7 +8,6 @@ import toast from "react-hot-toast";
 
 import { Button } from "../ui/button/Button";
 import { deleteArticle } from "@/lib/articleService";
-import { useRouter } from "next/navigation";
 
 type Props = {
   articles: TArticle[];

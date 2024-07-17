@@ -30,7 +30,7 @@ export async function getAllArticles() {
       },
     });
 
-    return { status: 200, articles: articles, message: "OK" };
+    return { status: 200, articles: articles as TArticle[], message: "OK" };
   } catch (e) {
     console.error(e);
     return { status: 500, articles: null, message: "internal server error" };
@@ -43,7 +43,7 @@ export async function getAllArticles() {
 export async function getArticlesByCategory(
   categoryName: string,
   amount?: number,
-  skip?: number,
+  skip?: number
 ) {
   try {
     const articles = await prisma.article.findMany({
@@ -62,7 +62,7 @@ export async function getArticlesByCategory(
       },
     });
 
-    return { status: 200, articles: articles, message: "OK" };
+    return { status: 200, articles: articles as TArticle[], message: "OK" };
   } catch (e) {
     console.error(e);
     return { status: 500, articles: null, message: "internal server error" };
@@ -85,7 +85,7 @@ export async function getAllPublicArticles() {
       },
     });
 
-    return { status: 200, articles: articles, message: "OK" };
+    return { status: 200, articles: articles as TArticle[], message: "OK" };
   } catch (e) {
     console.error(e);
     return { status: 500, articles: null, message: "internal server error" };
@@ -116,7 +116,7 @@ export async function getAllArticlesByUser(userId: number) {
       },
     });
 
-    return { status: 200, articles: articles, error: null };
+    return { status: 200, articles: articles as TArticle[], error: null };
   } catch (e) {
     console.error(e);
     return { status: 500, articles: null, error: "internal server error" };
@@ -139,7 +139,7 @@ export async function getArticleById(id: number) {
       },
     });
 
-    return { status: 200, article: article, message: "OK" };
+    return { status: 200, article: article as TArticle, message: "OK" };
   } catch (e) {
     console.error(e);
     return { status: 500, article: null, message: "internal server error" };
@@ -151,7 +151,7 @@ export async function getArticleById(id: number) {
 export async function createNewsArticle(
   bound: { body: string; categoryId: number },
   state: TInitialNewsArticleState,
-  data: FormData,
+  data: FormData
 ) {
   const validatedFields = newsArticleSchema.safeParse({
     title: data.get("title"),
@@ -189,7 +189,7 @@ export async function createNewsArticle(
 
     // Get the URL of the image and return it
     const imageUrl = await getDownloadURL(
-      ref(storage, `images/${image.name}`),
+      ref(storage, `images/${image.name}`)
     ).then((url) => {
       return url;
     });
@@ -238,7 +238,7 @@ export async function createNewsArticle(
 export async function createVideoArticle(
   bound: { body: string; categoryId: number },
   state: TInitialVideoArticleState,
-  data: FormData,
+  data: FormData
 ) {
   const validatedFields = videoArticleSchema.safeParse({
     title: data.get("title"),

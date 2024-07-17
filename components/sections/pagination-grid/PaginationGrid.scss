@@ -24,13 +24,24 @@
       background-color: $dark-500;
     }
 
-    .image-area {
+    .media-area {
       position: relative;
       aspect-ratio: 16 / 9;
 
       > img {
         object-fit: cover;
         object-position: center;
+      }
+    }
+
+    .video-area {
+      position: relative;
+      aspect-ratio: 16 / 9;
+
+      > iframe {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 16 / 9;
       }
     }
 
@@ -56,6 +67,10 @@
       > h3 {
         font-size: 1.2rem;
         font-weight: 600;
+      }
+
+      > .video-subtitle {
+        font-size: 0.9rem;
       }
     }
   }

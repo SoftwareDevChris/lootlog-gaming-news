@@ -1,18 +1,21 @@
-import { getArticlesByCategory } from "@/lib/articleService";
+import { TArticle } from "@/types/types";
 
 import { FourSection } from "../four-section/FourSection";
 import { SectionTitle } from "../SectionTitle";
-import { LoadingSpinner } from "@/components/ui/loading/spinner/LoadingSpinner";
 
-export const GuideSection = async () => {
-  const articles = await getArticlesByCategory("guide", 4);
+type Props = {
+  articles: TArticle[] | null;
+};
 
-  if (!articles.articles) return <LoadingSpinner theme="orange" />;
+export const GuideSection = async ({ articles }: Props) => {
+  // const articles = await getArticlesByCategory("guide", 4);
+
+  if (!articles) return null;
 
   return (
     <>
       <SectionTitle title="Guides" route="/guides" />
-      <FourSection articles={articles.articles} />
+      <FourSection articles={articles} />
     </>
   );
 };

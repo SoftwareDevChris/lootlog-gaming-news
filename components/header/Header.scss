@@ -142,13 +142,29 @@ header {
       }
 
       li {
+        width: 100%;
         padding: 0.5rem;
         border-radius: 0.33rem;
         margin-bottom: 0.25rem;
-        cursor: pointer;
 
-        &:hover {
-          background-color: $dark-500;
+        a {
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        > button {
+          color: $dark-100;
+          background-color: transparent;
+          border: none;
+          font-size: 1rem;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }

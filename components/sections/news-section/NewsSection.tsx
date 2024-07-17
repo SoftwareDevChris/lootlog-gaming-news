@@ -1,18 +1,21 @@
-import { getArticlesByCategory } from "@/lib/articleService";
+import { TArticle } from "@/types/types";
 
 import { FourSection } from "../four-section/FourSection";
-import { LoadingSpinner } from "@/components/ui/loading/spinner/LoadingSpinner";
 import { HighlightSection } from "../highligt-section/HighlightSection";
 
-export const NewsSection = async () => {
-  const newsArticles = await getArticlesByCategory("news article", 8);
+type Props = {
+  articles: TArticle[] | null;
+};
 
-  if (!newsArticles.articles) return <LoadingSpinner theme="orange" />;
+export const NewsSection = async ({ articles }: Props) => {
+  // const newsArticles = await getArticlesByCategory("news article", 8);
+
+  if (!articles) return null;
 
   return (
     <>
-      <HighlightSection articles={newsArticles.articles.slice(0, 4)} />
-      <FourSection articles={newsArticles.articles.slice(4, 8)} />
+      <HighlightSection articles={articles.slice(0, 4)} />
+      <FourSection articles={articles.slice(4, 8)} />
     </>
   );
 };

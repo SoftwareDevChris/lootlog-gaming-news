@@ -1,17 +1,15 @@
 // Components
-import { PaginationGridItem } from "./PaginationGridItem";
+import { TArticle } from "@/types/types";
 
 import "./PaginationGrid.scss";
 
-// Types
-import { TArticle } from "@/types/types";
+import { PaginationGridItem } from "./PaginationGridItem";
 
 type Props = {
   articles: TArticle[];
 };
 
 // TODO: Implement pagination
-
 export const PaginationGrid: React.FC<Props> = ({ articles }) => {
   return (
     <div className="pagination-grid">

@@ -23,6 +23,7 @@ export type TArticle = {
   image?: TImage | null;
   author?: TUser;
   category?: TCategory;
+  youtubeVideoId?: string;
 };
 
 export type TImage = {

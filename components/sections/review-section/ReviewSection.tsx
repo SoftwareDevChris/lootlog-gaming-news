@@ -1,18 +1,21 @@
-import { getArticlesByCategory } from "@/lib/articleService";
+import { TArticle } from "@/types/types";
 
 import { FourSection } from "../four-section/FourSection";
 import { SectionTitle } from "../SectionTitle";
-import { LoadingSpinner } from "@/components/ui/loading/spinner/LoadingSpinner";
 
-export const ReviewSection = async () => {
-  const articles = await getArticlesByCategory("review", 4);
+type Props = {
+  articles: TArticle[] | null;
+};
 
-  if (!articles.articles) return <LoadingSpinner theme="orange" />;
+export const ReviewSection = async ({ articles }: Props) => {
+  // const articles = await getArticlesByCategory("review", 4);
+
+  if (!articles) return null;
 
   return (
     <>
       <SectionTitle title="Reviews" route="/reviews" />
-      <FourSection articles={articles.articles} />
+      <FourSection articles={articles} />
     </>
   );
 };

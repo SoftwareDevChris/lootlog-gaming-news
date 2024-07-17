@@ -26,7 +26,7 @@ export const HighlightSection: FC<Props> = ({ articles }) => {
           fill
           priority={true}
           loading="eager"
-          sizes="976px 549px"
+          fetchPriority="high"
           src={articles[0].image?.url ?? "/public/images/placeholder.webp"}
           alt={articles[0].title}
         />

@@ -6,6 +6,7 @@ import { getSession } from "@/lib/sessionService";
 import { getAllArticlesByUser } from "@/lib/articleService";
 
 import { ArticleTable } from "@/components/tables/ArticleTable";
+import { TArticle } from "@/types/types";
 
 export default async function MyArticlesPage() {
   const session = await getSession();
