@@ -1,78 +1,80 @@
 "use client";
+import { FC } from "react";
+import { useRouter } from "next/navigation";
 
 import { TArticle } from "@/types/types";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 
-export const ArticleTable: React.FC<{
-  data: TArticle[];
-  columns: ColumnDef<TArticle>[];
-}> = ({ data, columns }) => {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+import toast from "react-hot-toast";
+
+import { Button } from "../ui/button/Button";
+import { deleteArticle } from "@/lib/articleService";
+
+type Props = {
+  articles: TArticle[];
+};
+
+export const ArticleTable: FC<Props> = ({ articles }) => {
+  const router = useRouter();
+
+  const handleDeleteArticle = async (article: TArticle) => {
+    try {
+      const del = await deleteArticle(article);
+
+      if (del.status === 200) {
+        toast.success("Article deleted successfully");
+        articles.filter((a) => a.id !== article.id);
+      } else if (del.status !== 200 && del.message) {
+        toast.error(`Error: ${del.message}`);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(`Error: ${error}`);
+      return;
+    }
+  };
 
   return (
-    <div className="pb-4">
-      <table className="w-full table-auto">
-        {/* Table Header */}
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr
-              key={headerGroup.id}
-              className="w-full border-b-2 text-neutral-100"
-            >
-              {headerGroup.headers.map((header) => {
-                return (
-                  <th
-                    key={header.id}
-                    className="border-neutral-100 p-4 text-start"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </th>
-                );
-              })}
-            </tr>
-          ))}
-        </thead>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Published</th>
+          <th>Featured</th>
+          <th>Category</th>
+          <th>Created at</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-        {/* Table Body */}
-        <tbody className="">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="hover:bg-neutral-600">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="border-b border-neutral-500 p-4 text-neutral-100"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td>No results</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+      <tbody>
+        {articles.map((article) => (
+          <tr key={article.id}>
+            <td>{article.id}</td>
+            <td>{article.title}</td>
+            <td>{article.isPublic ? "Yes" : "No"}</td>
+            <td>{article.isFeatured ? "Yes" : "No"}</td>
+            <td>{article.category?.name}</td>
+            <td>{article.createdAt.toDateString()}</td>
+            <td className="td-actions">
+              <Button
+                className="button btn-outlined"
+                onClick={() =>
+                  router.push(`/dashboard/author/edit-article/${article.id}`)
+                }
+              >
+                <span>Edit</span>
+              </Button>
+              <Button
+                className="button btn-delete"
+                onClick={() => handleDeleteArticle(article)}
+              >
+                <span>Delete</span>
+              </Button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };

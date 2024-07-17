@@ -14,11 +14,15 @@ export const ROUTES: TRoute[] = [
     path: "/news",
   },
   {
+    name: "Videos",
+    path: "/videos",
+  },
+  {
     name: "Reviews",
     path: "/reviews",
   },
   {
-    name: "About",
-    path: "/about",
+    name: "Guides",
+    path: "/guides",
   },
 ];

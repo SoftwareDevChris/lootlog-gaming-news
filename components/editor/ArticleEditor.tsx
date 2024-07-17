@@ -1,8 +1,13 @@
 "use client";
+import dynamic from "next/dynamic";
 
-import "./Editor.css";
+import "./ArticleEditor.scss";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+const EditorContent = dynamic(() =>
+  import("@tiptap/react").then((mod) => mod.EditorContent)
+);
+
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 
@@ -50,9 +55,9 @@ export const ArticleEditor: React.FC<Props> = ({ onChange, articleBody }) => {
   });
 
   return (
-    <div id="editor" className="bg-neutral-100">
+    <div id="editor">
       <ArticleEditorToolbar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent name="body" editor={editor} />
     </div>
   );
 };

@@ -1,54 +1,26 @@
-import { unstable_cache } from "next/cache";
+import { Suspense } from "react";
 
-// Components
-import { PageTitle } from "@/components/PageTitle";
-import { SectionContainer } from "@/components/containers/SectionContainer";
-import { PaginationGrid } from "@/components/articles/sections/pagination-grid/PaginationGrid";
-import { ArticleSectionTitle } from "@/components/articles/sections/ArticleSectionTitle";
-import { OverlayError } from "@/components/overlays/OverlayError";
+import { getArticlesByCategory } from "@/lib/articleService";
 
-// Lib
-import { getAllPublicArticles } from "@/lib/queries";
-import { sortByDate } from "@/lib/sort-by-date";
+import { PageTitle } from "@/components/page-title/PageTitle";
+import { PaginationGrid } from "@/components/sections/pagination-grid/PaginationGrid";
+import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 
-// Types
-import { TArticle } from "@/types/types";
+export default async function NewsPage() {
+  const articles = await getArticlesByCategory("news article");
 
-export default async function News() {
-  const allArticles = unstable_cache(
-    getAllPublicArticles,
-    ["get-all-public-articles"],
-    {
-      revalidate: 60 * 60,
-    },
-  );
-
-  // If there is an error getting the articles, display an error overlay
-  if ((await allArticles()).status !== 200) {
-    return <OverlayError message="There was an error getting the articles" />;
-  }
-
-  // Sort the articles by date
-  const filteredArticles = (await allArticles()).articles?.filter(
-    (article) => article.categoryId === 1,
-  );
-  const sortedArticles = sortByDate(filteredArticles as TArticle[]);
+  if (!articles.articles) return <LoadingScreen />;
 
   return (
     <main>
-      <SectionContainer>
-        <PageTitle
-          title="News"
-          paragraph="Stay updated with the latest happenings in the gaming world. Loot Log's news section is your one-stop shop for all things gaming."
-        />
-      </SectionContainer>
+      <PageTitle
+        title="News"
+        subtitle="Stay updated with the latest happenings in the world of gaming."
+      />
 
-      <SectionContainer>
-        <div className="mx-auto max-w-1300">
-          <ArticleSectionTitle title="News" />
-        </div>
-        <PaginationGrid articles={sortedArticles} />
-      </SectionContainer>
+      <Suspense fallback={<LoadingScreen />}>
+        <PaginationGrid articles={articles.articles} />
+      </Suspense>
     </main>
   );
 }

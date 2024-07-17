@@ -1,40 +1,37 @@
 export type TUser = {
-  id?: string;
+  id?: number;
   email: string;
-  bio?: string | null;
-  is_active?: boolean;
   role?: "USER" | "AUTHOR" | "ADMIN";
-  firstName?: string | null;
-  image_url?: string | null;
-  lastName?: string | null;
-  linkedin_url?: string | null;
-  twitter_url?: string | null;
-  github_url?: string | null;
-  articles?: string[] | null;
+  firstName: string;
+  lastName: string;
+  articles?: TArticle[] | null;
 };
 
 export type TArticle = {
-  created_at: Date;
+  id: number;
+  createdAt: Date;
   title: string;
-  content: string;
+  subtitle: string;
+  body: string;
+
+  isPublic: boolean;
+  isFeatured: boolean;
+
   categoryId: number;
-  authorId: string;
-  image: TImage;
-  is_published: boolean;
-  is_featured: boolean;
-  id?: string;
+  authorId: number;
+
+  image?: TImage | null;
   author?: TUser;
   category?: TCategory;
+  youtubeVideoId?: string;
 };
 
-export type TImage = [
-  {
-    id?: number;
-    name: string;
-    url: string;
-    articleId: string;
-  },
-];
+export type TImage = {
+  id: number;
+  name: string;
+  url: string;
+  articleId: number;
+};
 
 export type TCategory = {
   id: number;
@@ -42,9 +39,22 @@ export type TCategory = {
   articles?: TArticle[] | null;
 };
 
-export type TTag = {
-  id: string;
-  name: string;
+export type TRole = "AUTHOR" | "ADMIN" | "USER";
+
+export type TNewArticle = {
+  id?: number;
+  title: string;
+  subtitle: string;
+  image: TImage | File | null;
+  body: string;
 };
 
-export type TRole = "AUTHOR" | "ADMIN" | "USER";
+export type TAuthCookie = {
+  user: {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: TRole;
+  };
+};

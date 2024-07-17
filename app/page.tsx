@@ -1,80 +1,44 @@
-import { unstable_cache } from "next/cache";
+import dynamic from "next/dynamic";
 
-// Components
-import { LatestSection } from "@/components/articles/sections/latest-section/LatestSection";
-import { ScrollableSection } from "@/components/articles/sections/scrollable-section/ScrollableSection";
-import { Slideshow } from "@/components/articles/sections/slideshow/Slideshow";
-import { SectionContainer } from "@/components/containers/SectionContainer";
-import { OverlayError } from "@/components/overlays/OverlayError";
+import { getArticlesByCategory } from "@/lib/articleService";
 
-// Lib
-import { getAllPublicArticles } from "@/lib/queries";
-import { sortByDate } from "@/lib/sort-by-date";
+import { NewsSection } from "@/components/sections/news-section/NewsSection";
 
-// Types
-import { TArticle } from "@/types/types";
+const DynamicVideoSection = dynamic(() =>
+  import("../components/sections/video-section/VideoSection").then(
+    (mod) => mod.VideoSection
+  )
+);
+const DynamicReviewSection = dynamic(() =>
+  import("../components/sections/review-section/ReviewSection").then(
+    (mod) => mod.ReviewSection
+  )
+);
+const DynamicGuideSection = dynamic(() =>
+  import("../components/sections/guide-section/GuideSection").then(
+    (mod) => mod.GuideSection
+  )
+);
 
 export default async function Home() {
-  const publicArticles = unstable_cache(
-    getAllPublicArticles,
-    ["get-all-public-articles"],
-    {
-      revalidate: 60 * 60,
-    },
-  );
+  const getNewsArticles = await getArticlesByCategory("news article", 8);
+  const getVideoArticles = await getArticlesByCategory("video", 1);
+  const getReviewArticles = await getArticlesByCategory("review", 4);
+  const getGuideArticles = await getArticlesByCategory("guide", 4);
 
-  // If there is an error getting the articles, display an error overlay
-  if ((await publicArticles()).status !== 200) {
-    return (
-      <OverlayError message="The website is under maintenance. Please come back later." />
-    );
-  }
-
-  // Sort the articles by date
-  const sortedArticles = sortByDate(
-    (await publicArticles()).articles as TArticle[],
-  );
-
-  // Get the first 5 featured articles for the slideshow
-  const slideshowArticles = sortedArticles
-    .filter((article) => article.is_featured)
-    .slice(0, 5);
-
-  // Get the latest articles that are not featured
-  const notFeaturedArticles = sortedArticles.filter(
-    (article) => !article.is_featured,
-  );
-
-  // Get the first 5 articles that are not featured
-  const latestArticles = notFeaturedArticles.slice(0, 5);
-
-  // Get the first 6 articles for each category that are not featured
-  const newsArticles = sortedArticles
-    .filter((article) => article.category?.name === "article")
-    .slice(0, 6);
-
-  const reviewArticles = sortedArticles
-    .filter((article) => article.category?.name === "review")
-    .slice(0, 6);
+  const [news, videos, reviews, guides] = await Promise.all([
+    getNewsArticles,
+    getVideoArticles,
+    getReviewArticles,
+    getGuideArticles,
+  ]);
 
   return (
     <main>
-      <SectionContainer>
-        <Slideshow articles={slideshowArticles} />
-      </SectionContainer>
-
-      <SectionContainer>
-        <LatestSection title="Latest" articles={latestArticles} />
-      </SectionContainer>
-
-      <SectionContainer>
-        <ScrollableSection title="News" route="/news" articles={newsArticles} />
-        <ScrollableSection
-          title="Reviews"
-          route="/reviews"
-          articles={reviewArticles}
-        />
-      </SectionContainer>
+      <NewsSection articles={news.articles} />
+      <DynamicVideoSection articles={videos.articles} />
+      <DynamicReviewSection articles={reviews.articles} />
+      <DynamicGuideSection articles={guides.articles} />
     </main>
   );
 }

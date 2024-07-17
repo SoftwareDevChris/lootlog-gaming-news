@@ -1,28 +1,36 @@
+import "./Header.scss";
+
 // Next
 import Link from "next/link";
+
+import { getSession } from "@/lib/sessionService";
 
 // Components
 import { UserMenu } from "./UserMenu";
 import { Navigation } from "./Navigation";
 
-export const Header: React.FC = () => {
+export const Header: React.FC = async () => {
+  const session = await getSession();
+
   return (
-    <header className="sticky top-0 z-50 grid h-16 grid-cols-4 grid-rows-1 items-center justify-between bg-neutral-900/90 p-4 text-white">
-      {/* Logo and title */}
-      <div className="col-start-2 col-end-4 row-start-1 row-end-2 flex w-fit items-center place-self-center pt-1 md:col-start-1 md:col-end-2 md:place-self-start">
-        <Link href="/">
-          <h1 className="text-center font-PressStart text-lg font-normal uppercase">
-            Loot
-            <span className="text-custom-amber-800">Log</span>
-          </h1>
-        </Link>
+    <header>
+      <div className="header-content">
+        {/* Logo and title */}
+        <div className="logo-wrapper">
+          <Link prefetch={false} href="/">
+            <h1>
+              Loot
+              <span>Log</span>
+            </h1>
+          </Link>
+        </div>
+
+        {/* Navigation */}
+        <Navigation />
+
+        {/* User Menu */}
+        <UserMenu session={session} />
       </div>
-
-      {/* Navigation */}
-      <Navigation />
-
-      {/* User Menu */}
-      <UserMenu />
     </header>
   );
 };

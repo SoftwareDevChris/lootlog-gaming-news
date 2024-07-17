@@ -1,0 +1,61 @@
+@import "/utils/variables";
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+
+  width: 100%;
+  max-width: 12rem;
+
+  .select-button {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+
+    background-color: $dark-600;
+    border: 1px solid $dark-600;
+    text-transform: capitalize;
+
+    &:hover {
+      border: 1px solid $dark-500;
+    }
+
+    &--open {
+      border: 1px solid $dark-500;
+    }
+
+    > span {
+      color: $dark-100;
+    }
+  }
+}
+
+.select-options {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  top: 3rem;
+  z-index: 50;
+
+  width: 100%;
+  max-width: 12rem;
+
+  background-color: $dark-600;
+  border: 1px solid $dark-500;
+  border-radius: 0.33rem;
+
+  > .select-option {
+    padding: 0.5rem;
+    text-align: start;
+    text-transform: capitalize;
+
+    &:hover {
+      background-color: $dark-500;
+    }
+  }
+}

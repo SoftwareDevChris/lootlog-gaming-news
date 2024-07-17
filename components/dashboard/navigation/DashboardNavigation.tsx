@@ -1,3 +1,7 @@
+import "./DashboardNavigation.scss";
+
+import { useState } from "react";
+
 // Types
 import { TUser } from "@/types/types";
 
@@ -5,51 +9,89 @@ import { TUser } from "@/types/types";
 import { DashboardNavigationItem } from "./DashboardNavigationItem";
 
 // Icons
-import { HiOutlineUser } from "react-icons/hi";
-import { IoSettingsOutline, IoDocumentsOutline } from "react-icons/io5";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { FiUsers } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiArrowRight,
+  FiBox,
+  FiEdit,
+  FiFolder,
+  FiHeart,
+  FiInbox,
+  FiSettings,
+  FiUser,
+  FiUsers,
+} from "react-icons/fi";
+import { getSession } from "@/lib/sessionService";
 
-type Props = {
-  user: TUser | null;
-};
+export const DashboardNavigation: React.FC = async () => {
+  const session = await getSession();
 
-export const DashboardNavigation: React.FC<Props> = ({ user }) => {
-  const userRole = user?.role;
-  const iconSize = 20;
+  const userRole = session?.user.role;
 
   return (
-    <div
-      className={`flex h-full w-full items-center justify-center overflow-hidden bg-neutral-100 px-2`}
-    >
+    <div className="sidebar">
       {/* Navigation */}
-      <ul className={`mt-4 flex space-x-4 lg:my-4`}>
-        {/* ALL USERS */}
+      <ul>
         <DashboardNavigationItem
-          title="Account"
-          icon={<HiOutlineUser size={iconSize} />}
+          title="My account"
+          href="/user"
+          icon={<FiUser />}
         />
 
-        {/* ADMIN ONLY */}
-        {userRole === "ADMIN" ? (
-          <DashboardNavigationItem
-            title="Users"
-            icon={<FiUsers size={iconSize} />}
-          />
-        ) : null}
+        {/* Authors & Admins */}
+        {userRole === "AUTHOR" ||
+          (userRole === "ADMIN" && (
+            <>
+              <DashboardNavigationItem
+                title="New article"
+                href="/author/new-article"
+                icon={<FiEdit />}
+              />
+              <DashboardNavigationItem
+                title="My articles"
+                href="/author/my-articles"
+                icon={<FiFolder />}
+              />
+            </>
+          ))}
 
-        {/* ADMIN AND AUTHORS ONLY */}
-        {userRole === "ADMIN" || userRole === "AUTHOR" ? (
-          <DashboardNavigationItem
-            title="Articles"
-            icon={<IoDocumentsOutline size={iconSize} />}
-          />
-        ) : null}
+        <DashboardNavigationItem
+          title="Likes"
+          href="/user/likes"
+          icon={<FiHeart />}
+        />
 
         <DashboardNavigationItem
           title="Settings"
-          icon={<IoSettingsOutline size={iconSize} />}
+          href="/user/settings"
+          icon={<FiSettings />}
         />
+
+        {/* Admin */}
+        {userRole === "ADMIN" && (
+          <>
+            {/* Divider */}
+            <div className="dashboard-nav-divider"></div>
+
+            <DashboardNavigationItem
+              title="Articles"
+              href="/admin/articles"
+              icon={<FiInbox />}
+            />
+
+            <DashboardNavigationItem
+              title="Categories"
+              href="/admin/categories"
+              icon={<FiBox />}
+            />
+
+            <DashboardNavigationItem
+              title="Users"
+              href="/admin/users"
+              icon={<FiUsers />}
+            />
+          </>
+        )}
       </ul>
     </div>
   );

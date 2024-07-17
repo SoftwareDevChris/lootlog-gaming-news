@@ -1,0 +1,14 @@
+/* SCSS */
+@import "../utils/variables";
+@import "../utils/globals";
+
+#app-portal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 64px);
+
+  @media screen and (min-width: 768px) {
+    min-height: calc(100vh - 64px);
+  }
+}

@@ -1,6 +1,8 @@
 "use client";
 import { useCallback, useState } from "react";
 
+import "./ArticleEditor.scss";
+
 import { Toggle } from "@radix-ui/react-toggle";
 import { type Editor } from "@tiptap/react";
 import {
@@ -49,8 +51,8 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
   if (!editor) return null;
 
   return (
-    <div className="flex w-full space-x-6 border-b border-neutral-200 bg-neutral-100 p-2">
-      <div className="flex space-x-2">
+    <div className="editor-toolbar">
+      <div className="editor-toolbar-group">
         {/* Heading 2 */}
         <Toggle
           className={
@@ -77,7 +79,7 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
         </Toggle>
       </div>
 
-      <div className="flex space-x-2">
+      <div className="editor-toolbar-group">
         {/* Bold */}
         <Toggle
           className={editor.isActive("bold") ? "text-blue-500" : ""}
@@ -114,7 +116,7 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
         </Toggle>
       </div>
       {/* Link & unlink */}
-      <div className="flex space-x-2">
+      <div className="editor-toolbar-group">
         <Toggle
           onClick={setLink}
           className={editor.isActive("link") ? "text-blue-500" : ""}
@@ -140,7 +142,7 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
       {/* ----- */}
       {/* Lists */}
       {/* ----- */}
-      <div className="flex space-x-2">
+      <div className="editor-toolbar-group">
         <Toggle
           className={editor.isActive("list") ? "text-blue-500" : ""}
           pressed={editor.isActive("list")}

@@ -1,0 +1,32 @@
+@import "/utils/variables";
+
+.dashboard-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $dark-600;
+
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+
+  border: 0.5px solid $dark-400;
+  border-radius: 0.33rem;
+
+  .dashboard-field-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $dark-100;
+  }
+
+  .dashboard-field-description {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: $dark-400;
+  }
+
+  .dashboard-field-value {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: $dark-100;
+  }
+}

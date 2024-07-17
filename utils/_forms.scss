@@ -1,0 +1,26 @@
+@import "/utils/variables";
+
+.form-wrapper {
+  &.auth-form {
+    min-width: 300px;
+    max-width: 500px;
+    margin: 2rem auto 0 auto;
+  }
+
+  .form-error-message {
+    color: $red-300;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}
+
+form {
+  .input-group {
+    margin-bottom: 1rem;
+  }
+
+  .input-error {
+    color: $red-300;
+    margin: 0.5rem 0;
+  }
+}

@@ -1,74 +1,83 @@
 "use client";
-
 import { useState } from "react";
-
-// Next
 import Link from "next/link";
 
-// Icons
+import OutsideClickHandler from "react-outside-click-handler";
+
+import { TAuthCookie } from "@/types/types";
+
+import { signOut } from "@/lib/authService";
+
 import { FaUserCircle } from "react-icons/fa";
 
-// Clerk Auth
-import { useUser, useClerk } from "@clerk/nextjs";
-import toast from "react-hot-toast";
+type Props = {
+  session: TAuthCookie | null;
+};
 
-export const UserMenu: React.FC = () => {
+export const UserMenu: React.FC<Props> = ({ session }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const { isSignedIn, isLoaded } = useUser();
-  const { signOut } = useClerk();
-
-  const logoutHandler = () => {
-    signOut();
-    toast.success("You have been logged out.");
+  const logoutHandler = async () => {
+    await signOut();
   };
 
-  if (!isLoaded) {
-    return null;
-  }
-
   return (
-    <div className="col-start-4 col-end-5 row-start-1 row-end-2 w-fit items-center justify-self-end">
-      <FaUserCircle
-        size={28}
-        className="cursor-pointer"
-        onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-      />
+    <>
+      <div className="user-menu-wrapper">
+        <FaUserCircle
+          size={28}
+          className="cursor-pointer"
+          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+        />
 
-      {isUserMenuOpen && (
-        <ul className="absolute right-0 top-16 z-50 w-40 space-y-4 rounded-b-md bg-neutral-900 py-4 shadow-md">
-          {isSignedIn ? (
-            <>
-              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link
-                  href="/dashboard/account"
-                  onClick={() => setIsUserMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link href="/" onClick={logoutHandler}>
-                  Logout
-                </Link>
-              </li>
-            </>
-          ) : (
-            <>
-              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link href="/login" onClick={() => setIsUserMenuOpen(false)}>
-                  Sign in
-                </Link>
-              </li>
-              <li className="mx-3 cursor-pointer text-sm font-medium text-gray-300 hover:text-white">
-                <Link href="/register" onClick={() => setIsUserMenuOpen(false)}>
-                  Register
-                </Link>
-              </li>
-            </>
+        <OutsideClickHandler
+          onOutsideClick={() => {
+            isUserMenuOpen && setIsUserMenuOpen(false);
+          }}
+        >
+          {isUserMenuOpen && (
+            <ul className="user-nav-list">
+              {session?.user ? (
+                <>
+                  <li>
+                    <Link
+                      prefetch={false}
+                      href="/dashboard/user"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <button onClick={logoutHandler}>Logout</button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link
+                      prefetch={false}
+                      href="/sign-in"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      Sign in
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      prefetch={false}
+                      href="/sign-up"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
           )}
-        </ul>
-      )}
-    </div>
+        </OutsideClickHandler>
+      </div>
+    </>
   );
 };

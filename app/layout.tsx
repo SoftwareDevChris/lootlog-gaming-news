@@ -1,22 +1,18 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { press_start, lato } from "./fonts";
 
-// Clerk Auth
-import { ClerkProvider } from "@clerk/nextjs";
+import "./layout.scss";
+
+import type { Metadata } from "next";
 
 import { Toaster } from "react-hot-toast";
 
-// Components
 import { Header } from "@/components/header/Header";
-import { Footer } from "@/components/Footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Footer } from "@/components/footer/Footer";
 
 export const metadata: Metadata = {
-  title: "Loot Log - Gaming News and Reviews",
+  title: "Loot Log - Gaming News and more",
   description:
-    "Loot Log is your source for the lastest gaming news and reviews.",
+    "Loot Log is your source for the lastest news in the gaming world",
 };
 
 export default function RootLayout({
@@ -25,17 +21,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.className} relative bg-neutral-900`}>
+    <html lang="en" className={`${press_start.variable} ${lato.variable}`}>
+      <body>
+        <div id="app">
           <Header />
           <Toaster />
-          <div className="relative flex min-h-[calc(100svh-540px-64px)] flex-col md:min-h-[calc(100vh-240px-64px)]">
-            {children}
-          </div>
+          <div id="app-portal">{children}</div>
           <Footer />
-        </body>
-      </html>
-    </ClerkProvider>
+        </div>
+      </body>
+    </html>
   );
 }
