@@ -1,16 +1,5 @@
 "use server";
 
-import { z } from "zod";
-
-// Firebase
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
-import { storage } from "./firebase";
-
 // Prisma
 import { prisma } from "./prismaClient";
 
@@ -78,7 +67,7 @@ export async function createNewCategory(data: FormData) {
 // ----------------------------------
 export async function toggleArticlePublicStatusById(
   articleId: number,
-  isPublished: boolean,
+  isPublished: boolean
 ) {
   const shouldPublish = !isPublished;
 
@@ -104,7 +93,7 @@ export async function toggleArticlePublicStatusById(
 // -----------------------------------
 export async function toggleArticleFeatureStatusById(
   articleId: number,
-  isFeatured: boolean,
+  isFeatured: boolean
 ) {
   const shouldFeature = !isFeatured;
 

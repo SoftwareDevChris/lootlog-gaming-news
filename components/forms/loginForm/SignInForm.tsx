@@ -37,7 +37,7 @@ export const SignInForm = () => {
       <form action={handleSignIn}>
         {/* Email */}
         <div className="input-group">
-          <Label htmlFor="enail">Email</Label>
+          <Label htmlFor="email">Email</Label>
           <Input name="email" type="email" />
         </div>
 
