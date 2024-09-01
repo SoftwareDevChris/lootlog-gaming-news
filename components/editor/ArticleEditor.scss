@@ -1,8 +1,8 @@
-@import "/utils/variables";
+@use "../../styles/abstracts/" as *;
 
 #editor {
   border: 1px solid $dark-700;
-  border-radius: 0.33rem;
+  border-radius: $radius-md;
   overflow: hidden;
 
   .editor-toolbar {
@@ -19,7 +19,7 @@
       button {
         padding: 0.4rem;
         margin: 0 0.2rem;
-        border-radius: 0.33rem;
+        border-radius: $radius-md;
 
         &:hover {
           background-color: $dark-400;
@@ -37,6 +37,9 @@
     background-color: $dark-600;
 
     > div {
+      min-height: 500px;
+      padding: 0.5rem;
+
       &:focus {
         outline: none;
       }

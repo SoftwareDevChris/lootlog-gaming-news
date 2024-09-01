@@ -32,6 +32,7 @@ import { createNewsArticle } from "@/lib/articleService";
 // Toast
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
+import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
 
 type Props = {
   category: TCategory;
@@ -78,41 +79,40 @@ export const CreateArticleForm: React.FC<Props> = ({ category }) => {
   );
 
   return (
-    <div className="form-wrapper">
-      <h1>Create article</h1>
-      <form action={action} className="create-article-form">
-        {/* Title */}
-        <div className="input-group">
-          <Label htmlFor="title">Title</Label>
-          <Input required name="title" />
-          <p className="input-error">{state.errors?.title}</p>
-        </div>
+    <div style={{ marginTop: "1rem" }}>
+      <div className="form-wrapper">
+        <form action={action} className="create-article-form">
+          {/* Title */}
+          <div className="input-group">
+            <Label htmlFor="title">Title</Label>
+            <Input required name="title" />
+            <p className="input-error">{state.errors?.title}</p>
+          </div>
 
-        <div className="input-group">
-          <Label htmlFor="subtitle">Subtitle</Label>
-          <Input required name="subtitle" />
-          <p className="input-error">{state.errors?.subtitle}</p>
-        </div>
+          <div className="input-group">
+            <Label htmlFor="subtitle">Subtitle</Label>
+            <Input required name="subtitle" />
+            <p className="input-error">{state.errors?.subtitle}</p>
+          </div>
 
-        {/* Image */}
-        <div className="input-group">
-          <Label>{"Select image (1300x732 or above)"}</Label>
-          <Input name="image" required type="file" accept="image/*" />
-          <p className="input-error">{state.errors?.image}</p>
-        </div>
+          {/* Image */}
+          <div className="input-group">
+            <Label>{"Select image (1300x732 or above)"}</Label>
+            <Input name="image" required type="file" accept="image/*" />
+            <p className="input-error">{state.errors?.image}</p>
+          </div>
 
-        {/* Content */}
-        <div className="input-group">
-          <Label>Article body</Label>
-          <DynamicArticleEditor onChange={(text) => setBody(text)} />
-          <p className="input-error">{state.errors?.body}</p>
-        </div>
+          {/* Content */}
+          <div className="input-group">
+            <Label>Article body</Label>
+            <DynamicArticleEditor onChange={(text) => setBody(text)} />
+            <p className="input-error">{state.errors?.body}</p>
+          </div>
 
-        {/* Save */}
-        <Button type="submit" className="button btn-primary">
-          <span>Create</span>
-        </Button>
-      </form>
+          {/* Save */}
+          <FormSubmitButton title="Create article" />
+        </form>
+      </div>
     </div>
   );
 };

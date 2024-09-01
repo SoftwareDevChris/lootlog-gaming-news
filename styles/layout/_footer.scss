@@ -1,4 +1,4 @@
-@import "/utils/variables";
+@use "../abstracts/" as a;
 
 footer {
   .footer-inner-container {
@@ -9,13 +9,13 @@ footer {
 
     max-width: 1300px;
     margin: 0 auto;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
 
-    background-color: $dark-600;
+    background-color: a.$dark-700;
     border-top-left-radius: 0.33rem;
     border-top-right-radius: 0.33rem;
 
-    @media screen and (min-width: $bp-md) {
+    @media screen and (min-width: a.$bp-md) {
       grid-template-columns: repeat(3, 1fr);
       padding: 1rem;
     }
@@ -29,13 +29,13 @@ footer {
         text-align: center;
         text-transform: uppercase;
         font-size: 1.5rem;
-        font-family: $font-pressStart;
-        color: $dark-100;
+        font-family: a.$font-pressStart;
+        color: a.$dark-100;
         margin: 0;
 
         span {
-          font-family: $font-pressStart;
-          color: $orange-700;
+          font-family: a.$font-pressStart;
+          color: a.$orange-700;
         }
       }
     }

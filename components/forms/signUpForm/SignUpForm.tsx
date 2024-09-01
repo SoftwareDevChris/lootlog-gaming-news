@@ -1,7 +1,5 @@
 "use client";
 
-import "./SignUpForm.scss";
-
 import { useState } from "react";
 import { redirect } from "next/navigation";
 
@@ -13,6 +11,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button/Button";
 import { Input } from "@/components/ui/input/Input";
 import { Label } from "@/components/ui/label/Label";
+import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
 
 export const SignUpForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,37 +35,35 @@ export const SignUpForm = () => {
         {/* Firstname */}
         <div className="input-group">
           <Label htmlFor="firstName">Firstname</Label>
-          <Input type="text" name="firstName" />
+          <Input type="text" name="firstName" required />
         </div>
 
         {/* Lastname */}
         <div className="input-group">
           <Label htmlFor="lastName">Lastname</Label>
-          <Input type="text" name="lastName" />
+          <Input type="text" name="lastName" required />
         </div>
 
         {/* Email */}
         <div className="input-group">
           <Label htmlFor="email">Email</Label>
-          <Input type="email" name="email" />
+          <Input type="email" name="email" required />
         </div>
 
         {/* Password */}
         <div className="input-group">
           <Label htmlFor="password">Password</Label>
-          <Input type="password" name="password" />
+          <Input type="password" name="password" required />
         </div>
 
         {/* Repeat Password */}
         <div className="input-group">
           <Label htmlFor="repeatedPassword">Repeat password</Label>
-          <Input type="password" name="repeatedPassword" />
+          <Input type="password" name="repeatedPassword" required />
         </div>
 
         {/* Submit */}
-        <Button type="submit" className="button btn-primary">
-          <span>Create Account</span>
-        </Button>
+        <FormSubmitButton title="Create account" />
       </form>
     </div>
   );

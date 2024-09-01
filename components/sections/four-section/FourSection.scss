@@ -1,4 +1,4 @@
-@import "/utils/variables";
+@use "../../../styles/abstracts/" as *;
 
 .articles-four-section {
   display: grid;

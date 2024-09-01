@@ -1,5 +1,4 @@
-@import "/utils/variables";
-@import "/utils/forms";
+@use "../../../../styles/abstracts/" as *;
 
 .create-article-form {
   .input-group {

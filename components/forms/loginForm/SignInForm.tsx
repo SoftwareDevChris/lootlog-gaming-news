@@ -1,7 +1,5 @@
 "use client";
 
-import "./SignInForm.scss";
-
 import { useState } from "react";
 import { redirect } from "next/navigation";
 
@@ -12,7 +10,7 @@ import toast from "react-hot-toast";
 // Components
 import { Label } from "@/components/ui/label/Label";
 import { Input } from "@/components/ui/input/Input";
-import { Button } from "@/components/ui/button/Button";
+import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
 
 export const SignInForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -37,20 +35,17 @@ export const SignInForm = () => {
       <form action={handleSignIn}>
         {/* Email */}
         <div className="input-group">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" type="email" />
+          <Label htmlFor="email">Email address</Label>
+          <Input name="email" type="email" required />
         </div>
 
         {/* Password */}
         <div className="input-group">
           <Label htmlFor="password">Password</Label>
-          <Input name="password" type="password" />
+          <Input name="password" type="password" required />
         </div>
 
-        {/* Submit */}
-        <Button type="submit" className="button btn-primary">
-          <span>Sign in</span>
-        </Button>
+        <FormSubmitButton title="Sign in" />
       </form>
     </div>
   );

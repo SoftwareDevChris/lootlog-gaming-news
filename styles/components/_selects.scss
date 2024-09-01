@@ -1,4 +1,4 @@
-@import "/utils/variables";
+@use "../abstracts" as a;
 
 .select-wrapper {
   position: relative;
@@ -13,23 +13,23 @@
     align-items: center;
     justify-content: center;
 
-    border-radius: 0.25rem;
+    border-radius: a.$radius-sm;
     padding: 0.5rem 1rem;
 
-    background-color: $dark-600;
-    border: 1px solid $dark-600;
+    background-color: a.$dark-600;
+    border: 1px solid a.$dark-600;
     text-transform: capitalize;
 
     &:hover {
-      border: 1px solid $dark-500;
+      border: 1px solid a.$dark-500;
     }
 
     &--open {
-      border: 1px solid $dark-500;
+      border: 1px solid a.$dark-500;
     }
 
     > span {
-      color: $dark-100;
+      color: a.$dark-100;
     }
   }
 }
@@ -37,6 +37,8 @@
 .select-options {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
+
   position: absolute;
   left: 0;
   top: 3rem;
@@ -45,17 +47,21 @@
   width: 100%;
   max-width: 12rem;
 
-  background-color: $dark-600;
-  border: 1px solid $dark-500;
-  border-radius: 0.33rem;
+  background-color: a.$dark-600;
+  border: 1px solid a.$dark-500;
+  border-radius: a.$radius-md;
 
   > .select-option {
     padding: 0.5rem;
     text-align: start;
     text-transform: capitalize;
 
+    background-color: inherit;
+    border: none;
+    outline: none;
+
     &:hover {
-      background-color: $dark-500;
+      background-color: a.$dark-500;
     }
   }
 }

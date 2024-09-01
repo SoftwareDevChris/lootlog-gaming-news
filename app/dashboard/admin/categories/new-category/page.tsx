@@ -1,5 +1,3 @@
-import "./NewCategoryPage.scss";
-
 import { CreateCategoryForm } from "@/components/forms/articleForms/createCategoryForm/CreateCategoryForm";
 
 export default function NewCategoryPage() {

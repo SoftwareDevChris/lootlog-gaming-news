@@ -1,7 +1,5 @@
 import { FC } from "react";
 
-import "./Label.scss";
-
 type Props = {
   children: string;
 } & React.LabelHTMLAttributes<HTMLLabelElement>;

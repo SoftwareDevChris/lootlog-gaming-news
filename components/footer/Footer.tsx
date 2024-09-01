@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import "./Footer.scss";
-
 import { FaFacebook, FaYoutube, FaTwitter } from "react-icons/fa";
 
 import { ROUTES } from "@/utils/routes";
@@ -12,10 +10,10 @@ export const Footer: React.FC = () => {
       <div className="footer-inner-container">
         {/* Logo and mission text */}
         <div className="logo-container">
-          <h5>
+          <h6 className="logo">
             Loot
             <span>Log</span>
-          </h5>
+          </h6>
         </div>
 
         {/* Navigation */}

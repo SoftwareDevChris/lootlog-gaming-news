@@ -26,7 +26,7 @@ export async function signIn(data: FormData) {
     if (user) {
       const isMatching = await comparePassword(
         credentials.password,
-        user.password,
+        user.password
       );
 
       if (isMatching) {
@@ -50,7 +50,7 @@ export async function signIn(data: FormData) {
         });
 
         return { status: 200, message: "OK" };
-      } else return { status: 400, message: "invalid credentials" };
+      } else return { status: 400, message: "wrong e-mail or password" };
     }
   } catch (err) {
     console.error(err);

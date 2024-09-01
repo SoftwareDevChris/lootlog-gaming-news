@@ -1,7 +1,5 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-
-import "./Select.scss";
+import { FC, useState } from "react";
 
 import { FiArrowDown, FiArrowUp } from "react-icons/fi";
 import { TCategory } from "@/types/types";

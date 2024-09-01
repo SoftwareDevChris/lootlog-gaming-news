@@ -1,0 +1,22 @@
+@use "../abstracts/" as a;
+
+* {
+  color: a.$dark-100;
+  font-size: 1rem;
+  font-family: a.$font-lato;
+}
+
+body {
+  background-color: a.$dark-700;
+}
+
+#app-portal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 64px);
+
+  @media screen and (min-width: 768px) {
+    min-height: calc(100vh - 64px);
+  }
+}

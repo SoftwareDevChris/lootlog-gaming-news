@@ -1,6 +1,3 @@
-import "./Header.scss";
-
-// Next
 import Link from "next/link";
 
 import { getSession } from "@/lib/sessionService";
@@ -18,7 +15,7 @@ export const Header: React.FC = async () => {
         {/* Logo and title */}
         <div className="logo-wrapper">
           <Link prefetch={false} href="/">
-            <h1>
+            <h1 className="logo">
               Loot
               <span>Log</span>
             </h1>

@@ -1,4 +1,4 @@
-@import "/utils/variables";
+@use "../../../../styles/abstracts" as a;
 
 .loading-spinner-wrapper {
   &.spinner-initial {
@@ -26,11 +26,11 @@
   }
 
   .spinner-orange {
-    fill: $orange-700;
+    fill: a.$orange-700;
   }
 
   .spinner-dark {
-    fill: $dark-500;
+    fill: a.$dark-500;
   }
 }
 

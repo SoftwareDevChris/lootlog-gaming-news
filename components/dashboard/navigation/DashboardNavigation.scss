@@ -1,4 +1,4 @@
-@import "/utils/variables";
+@use "../../../styles/abstracts/" as *;
 
 .sidebar {
   position: absolute;
@@ -10,7 +10,6 @@
   overflow: hidden;
 
   background-color: $dark-600;
-  border-right: 0.5px solid $dark-400;
 
   transition: width 250ms ease-out;
 

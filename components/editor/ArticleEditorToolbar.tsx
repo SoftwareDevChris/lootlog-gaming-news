@@ -16,7 +16,6 @@ import {
   Heading3,
   Link,
   Unlink,
-  WrapText,
 } from "lucide-react";
 
 type Props = {
@@ -56,7 +55,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
         {/* Heading 2 */}
         <Toggle
           className={
-            editor.isActive("heading", { level: 2 }) ? "text-blue-500" : ""
+            editor.isActive("heading", { level: 2 })
+              ? "btn-toggle-active"
+              : "btn-toggle"
           }
           pressed={editor.isActive("heading", { level: 2 })}
           onClick={() =>
@@ -68,7 +69,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
         {/* Heading 3 */}
         <Toggle
           className={
-            editor.isActive("heading", { level: 3 }) ? "text-blue-500" : ""
+            editor.isActive("heading", { level: 3 })
+              ? "btn-toggle-active"
+              : "btn-toggle"
           }
           pressed={editor.isActive("heading", { level: 3 })}
           onPressedChange={() =>
@@ -82,7 +85,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
       <div className="editor-toolbar-group">
         {/* Bold */}
         <Toggle
-          className={editor.isActive("bold") ? "text-blue-500" : ""}
+          className={
+            editor.isActive("bold") ? "btn-toggle-active" : "btn-toggle"
+          }
           pressed={editor.isActive("bold")}
           onPressedChange={() => editor.chain().focus().toggleBold().run()}
         >
@@ -90,7 +95,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
         </Toggle>
         {/* Strike */}
         <Toggle
-          className={editor.isActive("strike") ? "text-blue-500" : ""}
+          className={
+            editor.isActive("strike") ? "btn-toggle-active" : "btn-toggle"
+          }
           pressed={editor.isActive("strike")}
           onPressedChange={() => editor.chain().focus().toggleStrike().run()}
         >
@@ -98,7 +105,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
         </Toggle>
         {/* Italic */}
         <Toggle
-          className={editor.isActive("italic") ? "text-blue-500" : ""}
+          className={
+            editor.isActive("italic") ? "btn-toggle-active" : "btn-toggle"
+          }
           pressed={editor.isActive("italic")}
           onPressedChange={() => editor.chain().focus().toggleItalic().run()}
         >
@@ -106,7 +115,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
         </Toggle>
         {/* Blockquote */}
         <Toggle
-          className={editor.isActive("block") ? "text-blue-500" : ""}
+          className={
+            editor.isActive("block") ? "btn-toggle-active" : "btn-toggle"
+          }
           pressed={editor.isActive("block")}
           onPressedChange={() =>
             editor.chain().focus().toggleBlockquote().run()
@@ -119,12 +130,17 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
       <div className="editor-toolbar-group">
         <Toggle
           onClick={setLink}
-          className={editor.isActive("link") ? "text-blue-500" : ""}
+          className={
+            editor.isActive("link") ? "btn-toggle-active" : "btn-toggle"
+          }
         >
           <Link size={iconSize} />
         </Toggle>
         <Toggle
           onClick={() => editor.chain().focus().unsetLink().run()}
+          className={
+            editor.isActive("link") ? "btn-toggle-active" : "btn-toggle"
+          }
           disabled={!editor.isActive("link")}
         >
           <Unlink size={iconSize} />
@@ -132,7 +148,7 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
       </div>
       {/* New Line */}
       {/* <Toggle
-        className={editor.isActive("newline") ? "text-blue-500" : ""}
+        className={editor.isActive("newline") ? "btn-toggle-active" : ""}
         pressed={editor.isActive("newline")}
         onPressedChange={() => editor.chain().focus().setHardBreak().run()}
       >
@@ -144,7 +160,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
       {/* ----- */}
       <div className="editor-toolbar-group">
         <Toggle
-          className={editor.isActive("list") ? "text-blue-500" : ""}
+          className={
+            editor.isActive("list") ? "btn-toggle-active" : "btn-toggle"
+          }
           pressed={editor.isActive("list")}
           onPressedChange={() =>
             editor.chain().focus().toggleBulletList().run()
@@ -153,7 +171,9 @@ export const ArticleEditorToolbar: React.FC<Props> = ({ editor }) => {
           <List size={18} />
         </Toggle>
         <Toggle
-          className={editor.isActive("list") ? "text-blue-500" : ""}
+          className={
+            editor.isActive("list") ? "btn-toggle-active" : "btn-toggle"
+          }
           pressed={editor.isActive("list")}
           onPressedChange={() =>
             editor.chain().focus().toggleOrderedList().run()
