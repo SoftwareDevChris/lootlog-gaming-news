@@ -1,70 +1,152 @@
 "use client";
 
-import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-import { signUp } from "@/lib/authService";
+import { useState } from "react";
+
+import { createUser } from "@/lib/api-routes";
+import { TCreateUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
 
-// Components
-import { Button } from "@/components/ui/button/Button";
-import { Input } from "@/components/ui/input/Input";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
 import { Label } from "@/components/ui/label/Label";
 import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
 
 export const SignUpForm = () => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
-  const handleSignUp = async (data: FormData) => {
-    const res = await signUp(data);
+  const router = useRouter();
 
-    if (res?.status === 201) {
-      toast.success("Sign up success");
-      redirect("/sign-in");
-    } else {
-      res?.message && setErrorMessage(res?.message);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<TCreateUserForm>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      repeatedPassword: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<TCreateUserForm> = async (data) => {
+    setErrorMessage([]);
+
+    const res = await createUser(data);
+
+    if (!res.ok) {
+      const toJson = await res.json();
+      setErrorMessage(toJson.message);
       return;
     }
+
+    toast.success("You have created an account!", {
+      position: "bottom-right",
+    });
+    router.push("/");
   };
 
   return (
-    <div className="form-wrapper auth-form">
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <form action={handleSignUp}>
-        {/* Firstname */}
-        <div className="input-group">
-          <Label htmlFor="firstName">Firstname</Label>
-          <Input type="text" name="firstName" required />
+    <div className="auth-page">
+      <div className="form-wrapper auth-form">
+        <div className="title-container">
+          <h2>Sign up</h2>
         </div>
 
-        {/* Lastname */}
-        <div className="input-group">
-          <Label htmlFor="lastName">Lastname</Label>
-          <Input type="text" name="lastName" required />
-        </div>
+        {errorMessage && <p className="form-error-message">{errorMessage}</p>}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* ///////// */}
+          {/* Firstname */}
+          {/* ///////// */}
+          <div className="input-group">
+            <Label htmlFor="firstName">Firstname</Label>
+            <Controller
+              name="firstName"
+              control={control}
+              render={({ field }) => <input {...field} required />}
+            />
+            {errors.firstName?.message && (
+              <p className="input-error">{errors.firstName.message}</p>
+            )}
+          </div>
 
-        {/* Email */}
-        <div className="input-group">
-          <Label htmlFor="email">Email</Label>
-          <Input type="email" name="email" required />
-        </div>
+          {/* //////// */}
+          {/* Lastname */}
+          {/* //////// */}
+          <div className="input-group">
+            <Label htmlFor="lastName">Lastname</Label>
+            <Controller
+              name="lastName"
+              control={control}
+              render={({ field }) => <input {...field} required />}
+            />
+            {errors.lastName?.message && (
+              <p className="input-error">{errors.lastName.message}</p>
+            )}
+          </div>
+          {/* ///// */}
+          {/* Email */}
+          {/* ///// */}
+          <div className="input-group">
+            <Label htmlFor="email">Email</Label>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => <input {...field} required />}
+            />
+            {errors.email?.message && (
+              <p className="input-error">{errors.email.message}</p>
+            )}
+          </div>
 
-        {/* Password */}
-        <div className="input-group">
-          <Label htmlFor="password">Password</Label>
-          <Input type="password" name="password" required />
-        </div>
+          {/* //////// */}
+          {/* Password */}
+          {/* //////// */}
+          <div className="input-group">
+            <Label htmlFor="password">Password</Label>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <input {...field} type="password" required />
+              )}
+            />
+            {errors.password?.message && (
+              <p className="input-error">{errors.password.message}</p>
+            )}
+          </div>
+          {/* /////////////// */}
+          {/* Repeat Password */}
+          {/* /////////////// */}
+          <div className="input-group">
+            <Label htmlFor="repeatedPassword">Repeat password</Label>
+            <Controller
+              name="repeatedPassword"
+              control={control}
+              render={({ field }) => (
+                <input {...field} type="password" required />
+              )}
+            />
+            {errors.repeatedPassword?.message && (
+              <p className="input-error">{errors.repeatedPassword.message}</p>
+            )}
+          </div>
+          {/* ////// */}
+          {/* Submit */}
+          {/* ////// */}
+          <FormSubmitButton title="Create account" disabled={isSubmitting} />
+        </form>
 
-        {/* Repeat Password */}
-        <div className="input-group">
-          <Label htmlFor="repeatedPassword">Repeat password</Label>
-          <Input type="password" name="repeatedPassword" required />
+        <div className="link-container">
+          <p>Do you already have an account?</p>
+          <Link href="/sign-in">Sign in</Link>
         </div>
-
-        {/* Submit */}
-        <FormSubmitButton title="Create account" />
-      </form>
+      </div>
     </div>
   );
 };

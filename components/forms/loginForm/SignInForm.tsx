@@ -1,52 +1,108 @@
 "use client";
 
-import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-import { signIn } from "@/lib/authService";
+import { useState } from "react";
+
+import { login } from "@/lib/api-routes";
+import { TSignInUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
 
-// Components
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
 import { Label } from "@/components/ui/label/Label";
-import { Input } from "@/components/ui/input/Input";
 import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
 
 export const SignInForm = () => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
-  const handleSignIn = async (data: FormData) => {
-    setErrorMessage("");
+  const router = useRouter();
 
-    const res = await signIn(data);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<TSignInUserForm>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-    if (res?.status === 200) {
-      toast.success("Login success");
-      redirect("/");
-    } else {
-      res?.message && setErrorMessage(res?.message);
+  const onSubmit: SubmitHandler<TSignInUserForm> = async (data) => {
+    const res = await login(data);
+
+    const toJson = await res.json();
+    console.log(res);
+    console.log(toJson);
+
+    if (!res.ok) {
+      const toJson = await res.json();
+      setErrorMessage(toJson.message);
       return;
     }
+
+    toast.success("You have created an account!", {
+      position: "bottom-right",
+    });
+    router.push("/");
   };
 
   return (
-    <div className="form-wrapper auth-form">
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <form action={handleSignIn}>
-        {/* Email */}
-        <div className="input-group">
-          <Label htmlFor="email">Email address</Label>
-          <Input name="email" type="email" required />
+    <div className="auth-page">
+      <div className="form-wrapper auth-form">
+        <div className="title-container">
+          <h2>Sign in</h2>
         </div>
 
-        {/* Password */}
-        <div className="input-group">
-          <Label htmlFor="password">Password</Label>
-          <Input name="password" type="password" required />
-        </div>
+        {errorMessage && <p className="form-error-message">{errorMessage}</p>}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* ///// */}
+          {/* Email */}
+          {/* ///// */}
+          <div className="input-group">
+            <Label htmlFor="email">Email</Label>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => <input {...field} required />}
+            />
+            {errors.email?.message && (
+              <p className="input-error">{errors.email.message}</p>
+            )}
+          </div>
 
-        <FormSubmitButton title="Sign in" />
-      </form>
+          {/* //////// */}
+          {/* Password */}
+          {/* //////// */}
+          <div className="input-group">
+            <Label htmlFor="password">Password</Label>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <input {...field} type="password" required />
+              )}
+            />
+            {errors.password?.message && (
+              <p className="input-error">{errors.password.message}</p>
+            )}
+          </div>
+
+          {/* ////// */}
+          {/* Submit */}
+          {/* ////// */}
+          <FormSubmitButton title="Sign in" disabled={isSubmitting} />
+        </form>
+
+        <div className="link-container">
+          <p style={{ marginBottom: "1rem" }}>Forgot password?</p>
+          <p>Do you not have an account yet?</p>
+          <Link href="/sign-up">Sign up</Link>
+        </div>
+      </div>
     </div>
   );
 };

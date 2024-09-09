@@ -5,6 +5,7 @@ import { getSession } from "@/lib/sessionService";
 // Components
 import { UserMenu } from "./UserMenu";
 import { Navigation } from "./Navigation";
+import { Logo } from "../logo/Logo";
 
 export const Header: React.FC = async () => {
   const session = await getSession();
@@ -12,15 +13,7 @@ export const Header: React.FC = async () => {
   return (
     <header>
       <div className="header-content">
-        {/* Logo and title */}
-        <div className="logo-wrapper">
-          <Link prefetch={false} href="/">
-            <h1 className="logo">
-              Loot
-              <span>Log</span>
-            </h1>
-          </Link>
-        </div>
+        <Logo />
 
         {/* Navigation */}
         <Navigation />

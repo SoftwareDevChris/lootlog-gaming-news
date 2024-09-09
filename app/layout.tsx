@@ -23,12 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${press_start.variable} ${lato.variable}`}>
       <body>
-        <div id="app">
-          <Header />
-          <Toaster />
-          <div id="app-portal">{children}</div>
-          <Footer />
-        </div>
+        <Header />
+        <Toaster />
+        <div id="app-shell">{children}</div>
       </body>
     </html>
   );

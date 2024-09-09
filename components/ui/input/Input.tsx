@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC, forwardRef } from "react";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement>;
 
-export const Input: FC<Props> = ({ ...props }) => {
+export const Input = (props: Props) => {
   return <input {...props} />;
 };

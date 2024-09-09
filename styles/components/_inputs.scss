@@ -27,4 +27,12 @@ input {
     background-color: a.$dark-600;
     border: 1px solid a.$orange-700;
   }
+
+  &.input-error {
+    border: 1px solid a.$red-300;
+  }
+
+  &.input-error-message {
+    color: a.$red-300;
+  }
 }

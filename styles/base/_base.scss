@@ -10,10 +10,17 @@ body {
   background-color: a.$dark-700;
 }
 
-#app-portal {
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#app-shell {
   position: relative;
   display: flex;
   flex-direction: column;
+
   min-height: calc(100svh - 64px);
 
   @media screen and (min-width: 768px) {

@@ -1,22 +1,20 @@
-import { useFormStatus } from "react-dom";
-
 import { Button } from "@/components/ui/button/Button";
 import { LoadingSpinner } from "@/components/ui/loading/spinner/LoadingSpinner";
 
 type Props = {
   title: string;
+  disabled: boolean;
 };
 
-export const FormSubmitButton = ({ title }: Props) => {
-  const status = useFormStatus();
-
+export const FormSubmitButton = ({ title, disabled }: Props) => {
   return (
     <Button
+      type="submit"
       className="button btn-submit"
-      disabled={status.pending}
-      aria-disabled={status.pending}
+      disabled={disabled}
+      aria-disabled={disabled}
     >
-      {status.pending ? <LoadingSpinner theme="orange" size="small" /> : title}
+      {disabled ? <LoadingSpinner theme="orange" size="small" /> : title}
     </Button>
   );
 };
