@@ -1,9 +1,9 @@
 import { TArticle } from "./article.types";
 
 export enum UserRoleEnum {
-  "USER",
-  "AUTHOR",
-  "ADMIN",
+  USER = "USER",
+  AUTHOR = "AUTHOR",
+  ADMIN = "ADMIN",
 }
 
 export type TUser = {

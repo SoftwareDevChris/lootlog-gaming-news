@@ -6,7 +6,7 @@ type Props = {
 };
 
 export const LoadingSpinner: React.FC<Props> = ({ theme, size }) => {
-  const fill = theme === "orange" ? "spinner-orange" : "spinner-dark";
+  const fill = theme === "orange" ? "spinner-orange" : "spinner-white";
   const spinnerSize =
     size === "small"
       ? "spinner-small"

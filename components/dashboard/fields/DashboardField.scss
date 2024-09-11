@@ -38,5 +38,9 @@
     font-size: 1rem;
     font-weight: 400;
     color: $dark-100;
+
+    &.name {
+      text-transform: capitalize;
+    }
   }
 }

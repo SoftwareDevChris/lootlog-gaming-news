@@ -21,6 +21,7 @@ export default async function AccountPage() {
           label="Name"
           description="Your full name."
           value={`${session?.user.firstName} ${session?.user.lastName}`}
+          type="name"
         />
         <DashboardField
           label="Email"

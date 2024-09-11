@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button/Button";
+import { useState } from "react";
+import { LoadingSpinner } from "@/components/ui/loading/spinner/LoadingSpinner";
 
 type Props = {
   label: string;
@@ -20,9 +22,13 @@ export const DashboardDeleteAccountField: React.FC<Props> = ({
   description,
   userId,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
   const handleDeleteUser = async () => {
+    setIsLoading(true);
+
     const res = await deleteUser(userId);
 
     if (res.ok) {
@@ -32,6 +38,7 @@ export const DashboardDeleteAccountField: React.FC<Props> = ({
     }
 
     toast.error("An unknown error occurred", { position: "bottom-right" });
+    setIsLoading(false);
     return;
   };
 
@@ -42,8 +49,12 @@ export const DashboardDeleteAccountField: React.FC<Props> = ({
         <p className="dashboard-field-description">{description}</p>
       </div>
       <div className="">
-        <Button onClick={handleDeleteUser} className="btn-delete">
-          <span>Delete</span>
+        <Button
+          disabled={isLoading}
+          onClick={handleDeleteUser}
+          className="btn-delete"
+        >
+          {isLoading ? <LoadingSpinner size="small" theme="white" /> : "Delete"}
         </Button>
       </div>
     </div>

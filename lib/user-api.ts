@@ -3,14 +3,16 @@ import { removeCookie, setUserCookie } from "./cookies";
 import { TUser } from "@/types/user.types";
 
 export async function createUser(data: TCreateUserForm) {
+  const user = {
+    ...data,
+    firstName: data.firstName.toLowerCase(),
+    lastName: data.lastName.toLowerCase(),
+    email: data.email.toLowerCase(),
+  };
+
   const response = await fetch("http://localhost:3456/user/create", {
     method: "POST",
-    body: JSON.stringify({
-      ...data,
-      firstName: data.firstName.toLowerCase(),
-      lastName: data.lastName.toLowerCase(),
-      email: data.email.toLowerCase(),
-    } as TCreateUserForm),
+    body: JSON.stringify(user),
     headers: {
       "Content-Type": "application/json",
     },
