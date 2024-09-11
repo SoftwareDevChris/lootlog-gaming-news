@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getSession } from "@/lib/sessionService";
+import { getSession } from "@/lib/session";
 
 import { DashboardDeleteAccountField } from "@/components/dashboard/fields/DashboardDeleteAccountField";
 import { DashboardField } from "@/components/dashboard/fields/DashboardField";

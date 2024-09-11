@@ -11,7 +11,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { storage } from "./firebase";
-import { getSession } from "./sessionService";
+import { getSession } from "./session";
 import {
   newsArticleSchema,
   TInitialNewsArticleState,

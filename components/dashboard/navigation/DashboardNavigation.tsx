@@ -21,7 +21,7 @@ import {
   FiUser,
   FiUsers,
 } from "react-icons/fi";
-import { getSession } from "@/lib/sessionService";
+import { getSession } from "@/lib/session";
 
 export const DashboardNavigation: React.FC = async () => {
   const session = await getSession();

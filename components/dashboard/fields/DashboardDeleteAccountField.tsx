@@ -1,7 +1,7 @@
 "use client";
 
 // Auth functions
-import { deleteUser } from "@/lib/authService";
+import { deleteUser } from "@/lib/user-api";
 
 // Toast
 import toast from "react-hot-toast";
@@ -25,14 +25,14 @@ export const DashboardDeleteAccountField: React.FC<Props> = ({
   const handleDeleteUser = async () => {
     const res = await deleteUser(userId);
 
-    if (res.status === 200) {
-      toast("Your account has been deleted.", {
-        icon: "👋",
-      });
-      router.push("/");
-    } else {
-      toast.error("An error occurred. Please try again later.");
+    if (res.ok) {
+      toast("Your account is now deleted", { position: "bottom-right" });
+      router.replace("/");
+      return;
     }
+
+    toast.error("An unknown error occurred", { position: "bottom-right" });
+    return;
   };
 
   return (

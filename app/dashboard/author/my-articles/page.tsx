@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import "./MyArticlesPage.scss";
 
-import { getSession } from "@/lib/sessionService";
+import { getSession } from "@/lib/session";
 import { getAllArticlesByUser } from "@/lib/articleService";
 
 import { ArticleTable } from "@/components/tables/ArticleTable";

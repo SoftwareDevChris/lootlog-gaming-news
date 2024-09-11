@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { login } from "@/lib/api-routes";
+import { login } from "@/lib/user-api";
 import { TSignInUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
@@ -14,6 +14,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Label } from "@/components/ui/label/Label";
 import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
+import { TUser } from "@/types/user.types";
 
 export const SignInForm = () => {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
@@ -34,20 +35,17 @@ export const SignInForm = () => {
   const onSubmit: SubmitHandler<TSignInUserForm> = async (data) => {
     const res = await login(data);
 
-    const toJson = await res.json();
-    console.log(res);
-    console.log(toJson);
-
-    if (!res.ok) {
-      const toJson = await res.json();
-      setErrorMessage(toJson.message);
+    if (res.ok) {
+      toast.success("You are now logged in", {
+        position: "bottom-right",
+      });
+      router.push("/");
       return;
     }
 
-    toast.success("You have created an account!", {
-      position: "bottom-right",
-    });
-    router.push("/");
+    const jsonResponse = await res.json();
+    setErrorMessage(jsonResponse.message);
+    return;
   };
 
   return (
@@ -59,9 +57,6 @@ export const SignInForm = () => {
 
         {errorMessage && <p className="form-error-message">{errorMessage}</p>}
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* ///// */}
-          {/* Email */}
-          {/* ///// */}
           <div className="input-group">
             <Label htmlFor="email">Email</Label>
             <Controller
@@ -74,9 +69,6 @@ export const SignInForm = () => {
             )}
           </div>
 
-          {/* //////// */}
-          {/* Password */}
-          {/* //////// */}
           <div className="input-group">
             <Label htmlFor="password">Password</Label>
             <Controller
@@ -91,9 +83,6 @@ export const SignInForm = () => {
             )}
           </div>
 
-          {/* ////// */}
-          {/* Submit */}
-          {/* ////// */}
           <FormSubmitButton title="Sign in" disabled={isSubmitting} />
         </form>
 

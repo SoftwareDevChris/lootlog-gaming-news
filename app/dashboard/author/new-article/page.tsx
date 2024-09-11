@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import dynamic from "next/dynamic";
 
 import { getAllCategories } from "@/lib/queries";
-import { getSession } from "@/lib/sessionService";
+import { getSession } from "@/lib/session";
 
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { createUser } from "@/lib/api-routes";
+import { createUser } from "@/lib/user-api";
 import { TCreateUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
@@ -45,7 +45,7 @@ export const SignUpForm = () => {
       return;
     }
 
-    toast.success("You have created an account!", {
+    toast.success("Account created!\nYou can now log in", {
       position: "bottom-right",
     });
     router.push("/");

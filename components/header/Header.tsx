@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getSession } from "@/lib/sessionService";
+import { getSession } from "@/lib/session";
 
 // Components
 import { UserMenu } from "./UserMenu";
@@ -9,6 +9,8 @@ import { Logo } from "../logo/Logo";
 
 export const Header: React.FC = async () => {
   const session = await getSession();
+
+  console.log(session);
 
   return (
     <header>

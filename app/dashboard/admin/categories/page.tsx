@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { getAllCategoriesWithArticles } from "@/lib/queries";
-import { getSession } from "@/lib/sessionService";
+import { getSession } from "@/lib/session";
 
 import { Button } from "@/components/ui/button/Button";
 

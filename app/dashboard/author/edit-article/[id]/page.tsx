@@ -1,5 +1,5 @@
 import { LoadingScreen } from "@/components/ui/loading/screen/LoadingScreen";
-import { getSession } from "@/lib/sessionService";
+import { getSession } from "@/lib/session";
 import { redirect, useParams } from "next/navigation";
 import { Suspense } from "react";
 

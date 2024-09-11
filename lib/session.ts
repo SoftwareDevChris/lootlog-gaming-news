@@ -1,7 +1,6 @@
 "use server";
 
-import { TAuthCookie } from "@/types/types";
-// import { SignJWT, jwtVerify } from "jose";
+import { TAuthCookie } from "@/types/auth.types";
 import * as jose from "jose";
 
 const alg = "HS256";
