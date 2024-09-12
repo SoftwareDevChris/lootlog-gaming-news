@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { createUser } from "@/lib/user-api";
+import { signUp } from "@/lib/user-api";
 import { TCreateUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
@@ -37,7 +37,7 @@ export const SignUpForm = () => {
   const onSubmit: SubmitHandler<TCreateUserForm> = async (data) => {
     setErrorMessage([]);
 
-    const res = await createUser(data);
+    const res = await signUp(data);
 
     if (!res.ok) {
       const toJson = await res.json();
@@ -60,9 +60,6 @@ export const SignUpForm = () => {
 
         {errorMessage && <p className="form-error-message">{errorMessage}</p>}
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* ///////// */}
-          {/* Firstname */}
-          {/* ///////// */}
           <div className="input-group">
             <Label htmlFor="firstName">Firstname</Label>
             <Controller
@@ -75,9 +72,6 @@ export const SignUpForm = () => {
             )}
           </div>
 
-          {/* //////// */}
-          {/* Lastname */}
-          {/* //////// */}
           <div className="input-group">
             <Label htmlFor="lastName">Lastname</Label>
             <Controller
@@ -89,9 +83,7 @@ export const SignUpForm = () => {
               <p className="input-error">{errors.lastName.message}</p>
             )}
           </div>
-          {/* ///// */}
-          {/* Email */}
-          {/* ///// */}
+
           <div className="input-group">
             <Label htmlFor="email">Email</Label>
             <Controller
@@ -104,9 +96,6 @@ export const SignUpForm = () => {
             )}
           </div>
 
-          {/* //////// */}
-          {/* Password */}
-          {/* //////// */}
           <div className="input-group">
             <Label htmlFor="password">Password</Label>
             <Controller
@@ -120,9 +109,7 @@ export const SignUpForm = () => {
               <p className="input-error">{errors.password.message}</p>
             )}
           </div>
-          {/* /////////////// */}
-          {/* Repeat Password */}
-          {/* /////////////// */}
+
           <div className="input-group">
             <Label htmlFor="repeatedPassword">Repeat password</Label>
             <Controller
@@ -136,9 +123,7 @@ export const SignUpForm = () => {
               <p className="input-error">{errors.repeatedPassword.message}</p>
             )}
           </div>
-          {/* ////// */}
-          {/* Submit */}
-          {/* ////// */}
+
           <FormSubmitButton title="Create account" disabled={isSubmitting} />
         </form>
 

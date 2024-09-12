@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { login } from "@/lib/user-api";
+import { signIn } from "@/lib/user-api";
 import { TSignInUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
@@ -14,7 +14,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Label } from "@/components/ui/label/Label";
 import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
-import { TUser } from "@/types/user.types";
 
 export const SignInForm = () => {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
@@ -33,7 +32,7 @@ export const SignInForm = () => {
   });
 
   const onSubmit: SubmitHandler<TSignInUserForm> = async (data) => {
-    const res = await login(data);
+    const res = await signIn(data);
 
     if (res.ok) {
       toast.success("You are now logged in", {
