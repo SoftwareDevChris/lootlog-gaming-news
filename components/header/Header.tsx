@@ -10,8 +10,6 @@ import { Logo } from "../logo/Logo";
 export const Header: React.FC = async () => {
   const session = await getSession();
 
-  console.log(session);
-
   return (
     <header>
       <div className="header-content">

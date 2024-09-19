@@ -3,8 +3,7 @@
 // Prisma
 import { prisma } from "./prismaClient";
 
-// Types
-import { TArticle, TImage } from "@/types/types";
+import { TArticle, TImage } from "@/types/article.types";
 
 // ------------------
 // Get all categories
