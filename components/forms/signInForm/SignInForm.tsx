@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { signIn } from "@/lib/user-api";
+import { getCurrentUser, signIn } from "@/lib/user-api";
 import { TSignInUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
@@ -14,8 +14,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Label } from "@/components/ui/label/Label";
 import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
+import { useUserStore } from "@/store/user-store";
 
 export const SignInForm = () => {
+  const setUser = useUserStore().setUser;
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   const router = useRouter();
@@ -32,18 +34,24 @@ export const SignInForm = () => {
   });
 
   const onSubmit: SubmitHandler<TSignInUserForm> = async (data) => {
-    const res = await signIn(data);
+    const signInResponse = await signIn(data);
 
-    if (res.ok) {
-      toast.success("You are now logged in", {
-        position: "bottom-right",
-      });
-      router.push("/");
+    if (signInResponse.ok) {
+      const userDetailsResponse = await getCurrentUser();
+      const userDetailsAsJson = await userDetailsResponse.json();
+
+      if (userDetailsResponse.ok) {
+        setUser(userDetailsAsJson);
+        router.push("/");
+      }
+
+      const userDetailsError = userDetailsAsJson.message;
+      setErrorMessage(userDetailsError);
       return;
     }
 
-    const jsonResponse = await res.json();
-    setErrorMessage(jsonResponse.message);
+    const signInError = await signInResponse.json().then((res) => res.message);
+    setErrorMessage(signInError);
     return;
   };
 

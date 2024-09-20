@@ -5,18 +5,19 @@ import Link from "next/link";
 import OutsideClickHandler from "react-outside-click-handler";
 import toast from "react-hot-toast";
 
-import { TAuthCookie } from "@/types/auth.types";
+import { deleteCookie } from "@/lib/cookies";
 
 import { FaUserCircle } from "react-icons/fa";
+import { useUserStore } from "@/store/user-store";
 
-type Props = {
-  session: TAuthCookie | null;
-};
-
-export const UserMenu: React.FC<Props> = ({ session }) => {
+export const UserMenu = () => {
+  const user = useUserStore().user;
+  const setUser = useUserStore().setUser;
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const logoutHandler = async () => {
+    await deleteCookie("jwt");
+    setUser(null);
     toast("You are now logged out", { position: "bottom-right" });
   };
 
@@ -36,7 +37,7 @@ export const UserMenu: React.FC<Props> = ({ session }) => {
         >
           {isUserMenuOpen && (
             <ul className="user-nav-list">
-              {session?.user ? (
+              {user ? (
                 <>
                   <li>
                     <Link

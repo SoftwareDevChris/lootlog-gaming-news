@@ -7,9 +7,9 @@ export enum UserRoleEnum {
 }
 
 export type TUser = {
-  id?: number;
+  id: number;
   email: string;
-  role?: UserRoleEnum;
+  role: UserRoleEnum;
   firstName: string;
   lastName: string;
   articles?: TArticle[] | null;
