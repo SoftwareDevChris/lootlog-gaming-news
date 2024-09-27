@@ -3,7 +3,7 @@
 header {
   position: static;
   top: 0;
-  height: 64px;
+  height: a.$header_height;
   width: 100%;
 
   border-bottom: 1px solid a.$orange-700;
@@ -59,20 +59,28 @@ header {
         .mobile-nav-list {
           position: absolute;
           left: 0;
-          top: 64px;
+          top: a.$header_height;
           width: 100%;
+
+          max-height: 0;
+          overflow: hidden;
+          transition: all 150ms ease-in;
 
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           gap: 1.5rem;
-          padding: 1rem;
           z-index: 99;
 
           background-color: a.$dark-600;
           border-bottom-left-radius: 0.33rem;
           border-bottom-right-radius: 0.33rem;
+
+          &.active {
+            max-height: 50rem;
+            padding: 1rem;
+          }
 
           @media screen and (min-width: a.$bp-md) {
             display: none;
@@ -113,26 +121,13 @@ header {
       grid-column: 4 / 5;
       grid-row: 1 / 2;
 
-      width: 28px;
+      width: fit-content;
       align-items: center;
       justify-self: flex-end;
       z-index: 50;
 
       > svg:hover {
         cursor: pointer;
-      }
-
-      .user-nav-list {
-        position: absolute;
-        right: 0;
-        top: 64px;
-        z-index: 99;
-        width: 10rem;
-        padding: 0.5rem;
-
-        background-color: a.$dark-600;
-        border-bottom-left-radius: 0.33rem;
-        border-bottom-right-radius: 0.33rem;
       }
 
       li {

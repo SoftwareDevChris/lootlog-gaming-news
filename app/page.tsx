@@ -1,9 +1,3 @@
-import dynamic from "next/dynamic";
-
-import { getArticlesByCategory } from "@/lib/articleService";
-
-import { NewsSection } from "@/components/sections/news-section/NewsSection";
-
 // const DynamicVideoSection = dynamic(() =>
 //   import("../components/sections/video-section/VideoSection").then(
 //     (mod) => mod.VideoSection

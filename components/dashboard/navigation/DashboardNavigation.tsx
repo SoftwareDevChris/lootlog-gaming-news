@@ -1,17 +1,11 @@
+import { getUserDetails } from "@/lib/user";
 import "./DashboardNavigation.scss";
-
-import { useState } from "react";
-
-// Types
-import { TUser } from "@/types/types";
 
 // Components
 import { DashboardNavigationItem } from "./DashboardNavigationItem";
 
 // Icons
 import {
-  FiArrowLeft,
-  FiArrowRight,
   FiBox,
   FiEdit,
   FiFolder,
@@ -21,12 +15,11 @@ import {
   FiUser,
   FiUsers,
 } from "react-icons/fi";
-import { getSession } from "@/lib/session";
 
-export const DashboardNavigation: React.FC = async () => {
-  const session = await getSession();
+export const DashboardNavigation = async () => {
+  const user = await getUserDetails();
 
-  const userRole = session?.user.role;
+  if (!user?.id) return null;
 
   return (
     <div className="sidebar">
@@ -39,8 +32,8 @@ export const DashboardNavigation: React.FC = async () => {
         />
 
         {/* Authors & Admins */}
-        {userRole === "AUTHOR" ||
-          (userRole === "ADMIN" && (
+        {user?.role === "AUTHOR" ||
+          (user?.role === "ADMIN" && (
             <>
               <DashboardNavigationItem
                 title="New article"
@@ -68,7 +61,7 @@ export const DashboardNavigation: React.FC = async () => {
         />
 
         {/* Admin */}
-        {userRole === "ADMIN" && (
+        {user?.role === "ADMIN" && (
           <>
             {/* Divider */}
             <div className="dashboard-nav-divider"></div>

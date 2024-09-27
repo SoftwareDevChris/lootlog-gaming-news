@@ -1,12 +1,11 @@
 import { create } from "zustand";
-import { TUser } from "@/types/user.types";
 
 type TUserStore = {
-  user: TUser | null;
-  setUser: (user: TUser | null) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (status: boolean) => void;
 };
 
 export const useUserStore = create<TUserStore>((set) => ({
-  user: null,
-  setUser: (userObj) => set({ user: userObj }),
+  isLoggedIn: false,
+  setIsLoggedIn: (status) => set({ isLoggedIn: status }),
 }));

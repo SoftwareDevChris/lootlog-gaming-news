@@ -1,11 +1,8 @@
-type Props = {
-  children: React.ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  className?: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  // Add custom props here if needed
+}
 
-export const Button: React.FC<Props> = ({ children, ...props }) => {
+export const Button = ({ children, ...props }: ButtonProps) => {
   return (
     <button {...props} className={`button ${props.className}`}>
       {children}

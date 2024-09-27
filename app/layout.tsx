@@ -1,13 +1,11 @@
-import { press_start, lato } from "./fonts";
-
-import "./layout.scss";
-
 import type { Metadata } from "next";
 
-import { Toaster } from "react-hot-toast";
+import { press_start, lato } from "./fonts";
+import "./layout.scss";
 
+import { Toaster } from "react-hot-toast";
 import { Header } from "@/components/header/Header";
-import { Footer } from "@/components/footer/Footer";
+import { Provider } from "./provider";
 
 export const metadata: Metadata = {
   title: "Loot Log - Gaming News and more",
@@ -23,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${press_start.variable} ${lato.variable}`}>
       <body>
-        <Header />
-        <Toaster />
-        <div id="app-shell">{children}</div>
+        <Provider>
+          <Header />
+          <Toaster />
+          <div id="app-shell">{children}</div>
+        </Provider>
       </body>
     </html>
   );

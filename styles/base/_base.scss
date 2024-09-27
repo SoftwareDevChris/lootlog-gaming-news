@@ -6,8 +6,17 @@
   font-family: a.$font-lato;
 }
 
+html {
+  height: 100%;
+  width: 100%;
+}
+
 body {
   background-color: a.$dark-700;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
@@ -20,10 +29,11 @@ main {
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1;
 
-  min-height: calc(100svh - 64px);
+  min-height: calc(100svh - a.$header_height);
 
-  @media screen and (min-width: 768px) {
-    min-height: calc(100vh - 64px);
+  @media screen and (min-width: a.$bp-md) {
+    min-height: calc(100vh - a.$header_height);
   }
 }

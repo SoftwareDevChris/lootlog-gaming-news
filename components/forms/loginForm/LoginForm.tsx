@@ -1,12 +1,12 @@
 "use client";
+import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { useState } from "react";
+import { login } from "@/lib/auth/";
 
-import { getCurrentUser, signIn } from "@/lib/user-api";
-import { TSignInUserForm } from "@/types/form.types";
+import { TLoginForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
 
@@ -16,9 +16,9 @@ import { Label } from "@/components/ui/label/Label";
 import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
 import { useUserStore } from "@/store/user-store";
 
-export const SignInForm = () => {
-  const setUser = useUserStore().setUser;
+export const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  const setIsLoggedIn = useUserStore().setIsLoggedIn;
 
   const router = useRouter();
 
@@ -26,31 +26,25 @@ export const SignInForm = () => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<TSignInUserForm>({
+  } = useForm<TLoginForm>({
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit: SubmitHandler<TSignInUserForm> = async (data) => {
-    const signInResponse = await signIn(data);
+  const onSubmit: SubmitHandler<TLoginForm> = async (data) => {
+    setErrorMessage([]);
+    const signInResponse = await login(data);
 
     if (signInResponse.ok) {
-      const userDetailsResponse = await getCurrentUser();
-      const userDetailsAsJson = await userDetailsResponse.json();
-
-      if (userDetailsResponse.ok) {
-        setUser(userDetailsAsJson);
-        router.push("/");
-      }
-
-      const userDetailsError = userDetailsAsJson.message;
-      setErrorMessage(userDetailsError);
+      setIsLoggedIn(true);
+      toast.success("You are now logged in");
+      router.push("/dashboard/user");
       return;
     }
 
-    const signInError = await signInResponse.json().then((res) => res.message);
+    const signInError = await signInResponse.json().then((err) => err.message);
     setErrorMessage(signInError);
     return;
   };

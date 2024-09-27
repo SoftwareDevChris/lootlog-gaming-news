@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { signUp } from "@/lib/user-api";
+import { signUp } from "@/lib/auth/";
 import { TCreateUserForm } from "@/types/form.types";
 
 import toast from "react-hot-toast";
@@ -14,10 +14,12 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Label } from "@/components/ui/label/Label";
 import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
+import { useUserStore } from "@/store/user-store";
 
 export const SignUpForm = () => {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
+  const setIsLoggedIn = useUserStore().setIsLoggedIn;
   const router = useRouter();
 
   const {
@@ -37,18 +39,19 @@ export const SignUpForm = () => {
   const onSubmit: SubmitHandler<TCreateUserForm> = async (data) => {
     setErrorMessage([]);
 
-    const res = await signUp(data);
+    const signUpResponse = await signUp(data);
 
-    if (!res.ok) {
-      const toJson = await res.json();
-      setErrorMessage(toJson.message);
-      return;
+    if (signUpResponse.ok) {
+      setIsLoggedIn(true);
+      toast.success("Your account has been created", {
+        position: "bottom-right",
+      });
+      router.push("/dashboard/user");
     }
 
-    toast.success("Account created!\nYou can now log in", {
-      position: "bottom-right",
-    });
-    router.push("/");
+    const signUpError = await signUpResponse.json().then((err) => err.message);
+    setErrorMessage(signUpError);
+    return;
   };
 
   return (

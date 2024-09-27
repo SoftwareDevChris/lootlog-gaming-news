@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import "./DashboardLayout.scss";
 
 import { DashboardNavigation } from "@/components/dashboard/navigation/DashboardNavigation";

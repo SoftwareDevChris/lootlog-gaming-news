@@ -1,7 +1,7 @@
 import { TArticle } from "./article.types";
 import { UserRoleEnum } from "./user.types";
 
-export type TSignInUserForm = {
+export type TLoginForm = {
   email: string;
   password: string;
 };
