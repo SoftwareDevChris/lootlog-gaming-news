@@ -1,19 +1,21 @@
 import { redirect } from "next/navigation";
 
-import { getUserDetails } from "@/lib/user";
+import { getCurrentUserFromServer } from "@/lib/user";
 
 import { DashboardField } from "@/components/dashboard/fields/DashboardField";
 import { DashboardFieldWithButton } from "@/components/dashboard/fields/DashboardFieldWithButton";
-import { SignOutButton } from "@/components/buttons/signOut/SignOutButton";
+import { SignOutButton } from "@/components/buttons/SignOutButton";
 
 export default async function AccountPage() {
-  const user = await getUserDetails();
+  const user = await getCurrentUserFromServer();
+
+  console.log("User from account page:", user);
 
   if (!user?.id) redirect("/login");
 
   return (
     <div className="account-page">
-      <h1>Account details</h1>
+      <h1>My account</h1>
 
       <div style={{ marginTop: "1rem" }}>
         <DashboardField

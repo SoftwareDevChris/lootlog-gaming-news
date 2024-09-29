@@ -1,11 +1,15 @@
+import Link from "next/link";
+
 import { getAllUsers } from "@/lib/user";
+
+import { Button } from "@/components/ui/button/Button";
 
 export default async function UsersPage() {
   const users = await getAllUsers();
 
   return (
     <>
-      <div>List all users</div>
+      <h1>All users</h1>
 
       <table>
         <thead>
@@ -15,7 +19,7 @@ export default async function UsersPage() {
             <th>Lastname</th>
             <th>Email</th>
             <th>Role</th>
-            <th>Articles</th>
+            <th></th>
           </tr>
         </thead>
 
@@ -27,7 +31,11 @@ export default async function UsersPage() {
               <td>{user.lastName}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
-              <td>{user.articles?.length}</td>
+              <td>
+                <Link href={`users/${user.id}`}>
+                  <Button className="btn-basic">Edit</Button>
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>

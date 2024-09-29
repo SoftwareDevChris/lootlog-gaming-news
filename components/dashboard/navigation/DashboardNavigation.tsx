@@ -1,4 +1,4 @@
-import { getUserDetails } from "@/lib/user";
+import { getCurrentUserFromServer } from "@/lib/user";
 import "./DashboardNavigation.scss";
 
 // Components
@@ -17,7 +17,7 @@ import {
 } from "react-icons/fi";
 
 export const DashboardNavigation = async () => {
-  const user = await getUserDetails();
+  const user = await getCurrentUserFromServer();
 
   if (!user?.id) return null;
 

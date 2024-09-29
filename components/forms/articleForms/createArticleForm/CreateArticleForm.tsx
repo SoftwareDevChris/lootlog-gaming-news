@@ -32,7 +32,7 @@ import { createNewsArticle } from "@/lib/articleService";
 // Toast
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
-import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
+import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/SubmitFormButton";
 
 type Props = {
   category: TCategory;

@@ -15,7 +15,7 @@ import { TInitialVideoArticleState } from "@/lib/schemas";
 import { Input } from "@/components/ui/input/Input";
 import { Label } from "@/components/ui/label/Label";
 import { Button } from "@/components/ui/button/Button";
-import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
+import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/SubmitFormButton";
 
 const DynamicArticleEditor = dynamic(
   () =>

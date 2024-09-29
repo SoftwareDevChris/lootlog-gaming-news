@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Label } from "@/components/ui/label/Label";
-import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
+import { SubmitFormButton } from "@/components/buttons/SubmitFormButton";
 import { useUserStore } from "@/store/user-store";
 
 export const LoginForm = () => {
@@ -50,7 +50,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="auth-page">
+    <div className="login-page">
       <div className="form-wrapper auth-form">
         <div className="title-container">
           <h2>Sign in</h2>
@@ -84,7 +84,7 @@ export const LoginForm = () => {
             )}
           </div>
 
-          <FormSubmitButton title="Sign in" disabled={isSubmitting} />
+          <SubmitFormButton title="Login" disabled={isSubmitting} />
         </form>
 
         <div className="link-container">

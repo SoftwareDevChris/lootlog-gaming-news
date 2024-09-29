@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Label } from "@/components/ui/label/Label";
-import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/FormSubmitButton";
+import { FormSubmitButton } from "@/components/buttons/FormSubmitButton/SubmitFormButton";
 import { useUserStore } from "@/store/user-store";
 
 export const SignUpForm = () => {
@@ -55,7 +55,7 @@ export const SignUpForm = () => {
   };
 
   return (
-    <div className="auth-page">
+    <div className="signup-page">
       <div className="form-wrapper auth-form">
         <div className="title-container">
           <h2>Sign up</h2>

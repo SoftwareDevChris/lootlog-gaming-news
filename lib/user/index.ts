@@ -1,16 +1,15 @@
 import { TUser } from "@/types/user.types";
 import { getCookie, removeCookie } from "../auth/session";
-import { signOut } from "../auth";
 
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+const serverUrl = process.env.NEXT_PUBLIC_BACKEND_URL_SERVER;
 
-export const getUserDetails = async () => {
+export const getCurrentUserFromServer = async () => {
   const cookie = await getCookie("session");
 
-  if (!cookie?.value) throw new Error("No session was found");
+  if (!cookie?.value) return null;
 
   try {
-    const res = await fetch(`${backendUrl}/api/auth/user`, {
+    const res = await fetch(`${serverUrl}/api/users/me`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -19,14 +18,29 @@ export const getUserDetails = async () => {
       },
     });
 
-    if (res.ok) {
-      return (await res.json()) as TUser;
-    }
+    const fromJson = await res.json();
+    return fromJson;
   } catch (error) {
-    await removeCookie("session");
-    await removeCookie("refresh");
     console.error("Error getting user details:", error);
-    throw new Error("Failed to get user details");
+    return null;
+  }
+};
+
+export const getUserById = async (userId: number) => {
+  const cookie = await getCookie("session");
+
+  if (!cookie?.value) return null;
+
+  try {
+    const res = await fetch(`/api/users/find/${userId}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    return (await res.json()) as TUser;
+  } catch (error) {
+    console.error("Error getting user details:", error);
+    return null;
   }
 };
 
@@ -36,7 +50,7 @@ export const getAllUsers = async () => {
   if (!cookie?.value) throw new Error("No session was found");
 
   try {
-    const res = await fetch(`${backendUrl}/api/users`, {
+    const res = await fetch(`${serverUrl}/api/users`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -45,6 +59,29 @@ export const getAllUsers = async () => {
       },
     });
     return (await res.json()) as TUser[];
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    return null;
+  }
+};
+
+export const updateUser = async (user: Partial<TUser>) => {
+  const cookie = await getCookie("session");
+
+  if (!cookie?.value) return null;
+
+  try {
+    const res = await fetch(`${serverUrl}/api/users`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `${cookie?.name}=${cookie?.value}`,
+      },
+    });
+
+    return res;
   } catch (error) {
     console.error("Error fetching user details:", error);
     return null;

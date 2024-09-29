@@ -12,5 +12,6 @@ export type TUser = {
   role: UserRoleEnum;
   firstName: string;
   lastName: string;
+  isVerified: boolean;
   articles?: TArticle[] | null;
 };

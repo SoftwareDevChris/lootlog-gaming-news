@@ -6,7 +6,7 @@ type Props = {
   disabled: boolean;
 };
 
-export const FormSubmitButton = ({ title, disabled }: Props) => {
+export const SubmitFormButton = ({ title, disabled }: Props) => {
   return (
     <Button
       type="submit"
