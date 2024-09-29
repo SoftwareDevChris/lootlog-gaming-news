@@ -6,8 +6,14 @@ table {
   border: 1px solid a.$dark-400;
 
   tr {
-    background-color: a.$dark-500;
     border-bottom: 1px solid a.$dark-400;
+
+    &:nth-child(odd) {
+      background-color: a.$dark-400;
+    }
+    &:nth-child(even) {
+      background-color: a.$dark-500;
+    }
   }
 
   th {

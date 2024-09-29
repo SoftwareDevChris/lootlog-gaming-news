@@ -1,4 +1,5 @@
 import { TCreateUserForm, TLoginForm } from "@/types/form.types";
+import { removeCookie } from "./session";
 
 export async function login(user: TLoginForm) {
   const response = await fetch(`/api/auth/login`, {
@@ -23,6 +24,11 @@ export async function signUp(data: TCreateUserForm) {
   });
 
   return response;
+}
+
+export async function signOut() {
+  await removeCookie("session");
+  await removeCookie("refresh");
 }
 
 export async function deleteUser(userId: number) {
